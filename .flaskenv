@@ -1,0 +1,3 @@
+FLASK_APP=bookreview.py
+FLASK_ENV=development
+SECRET_KEY=pk_eb5460248ab54b6896b767ada572b4ce
