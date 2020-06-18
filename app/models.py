@@ -13,6 +13,9 @@ class People(db.Model):
     comments = db.Column(db.String, nullable=False)
     bookReviews = db.relationship('BookReview', backref='people', lazy=True)
 
+    def __repr__(self):
+        return '<Person: User Name: {}, Email: {}, hash: {}, comments: {}>'.format(self.username, self.email, self.hash, self.comments)    
+
 
 class Book(db.Model):
     __tablename__ = "books"
