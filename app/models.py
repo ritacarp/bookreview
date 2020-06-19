@@ -55,8 +55,8 @@ class BookReview(db.Model):
     people_id = db.Column(db.Integer, db.ForeignKey('people.id'),  nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
     review = db.Column(db.String, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
     review_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
-    score = db.Column(db.Integer, nullable=True)
  
  
 
