@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid pt-3">
+      <div class="row">
+
+        <div class="col-sm-6">
+
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.username(size="32", autofocus=true, placeholder="Requested Username", class="form-control form-control-sm") }}
+            {% for error in form.username.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.email(size="32", autofocus=true, placeholder="Email", class="form-control form-control-sm") }}
+            {% for error in form.email.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+
+        </div>
+
+
+        <div class="form-group">
+            {{ form.firstName(size="32", autofocus=true, placeholder="First Name", class="form-control form-control-sm") }}
+            {% for error in form.firstName.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.lastName(size="32", autofocus=true, placeholder="Last Name", class="form-control form-control-sm") }}
+            {% for error in form.lastName.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password(size="32", placeholder="Password", class="form-control form-control-sm") }}
+            {% for error in form.password.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirm(size="32", placeholder="Confirm Password", class="form-control form-control-sm") }}
+            {% for error in form.confirm.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <p>{{ form.submit(class="btn btn-primary") }}</p>
+    </form>
+
+        </div>
+
+      <div class="col-sm-6" style="text-align:left">
+         <H6>Password</H6>
+         <ul>
+<li> <small>Must be a minimum of 8 characters.</small></li>
+<li> <small>Must contain letters, numbers, and symbols.</small></li>
+<li><small>Passwords must match.</small></li>
+ </ul>
+      </div>
+
+
+      </div>
+
+
+    </div>
+
+
+{% endblock %}

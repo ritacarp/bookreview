@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, request, url_for
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
 
 @app.route('/<vTitle>/<vName>')
 @app.route('/index/<vTitle>/<vName>')
@@ -48,7 +48,6 @@ def login():
     # if request.method == "POST":
     
     if form.validate_on_submit():
-    
         flash('Login requested for user {}, remember_me={}'.format(
             form.username.data, form.remember_me.data))
         return redirect(url_for('index'))
@@ -58,7 +57,22 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     # """Register user"""
-    return "In Register"
+    # https://flask.palletsprojects.com/en/1.1.x/patterns/wtforms/
+    
+    form = RegisterForm()
+
+    # Either if request.method == "POST" OR form.validate_on_submit(): works
+    # The form.validate_on_submit() method does all the form processing work.
+    # https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iii-web-forms
+    
+    # if request.method == "POST":
+
+    if form.validate_on_submit():
+        flash('Register requested for user {}, firstName={}, lastName={}'.format(
+            form.username.data, form.firstName.data, form.lastName.data))
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
+
 
 
 @app.route("/Search", methods=["GET", "POST"])
