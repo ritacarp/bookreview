@@ -8,7 +8,6 @@ flask-wtf==0.14.3
 gunicorn==20.0.4
 itsdangerous==1.1.0
 jinja2==2.11.2
-libpq
 mako==1.1.0
 markupsafe==1.1.1
 openssl==1.1.1g
