@@ -1,5 +1,6 @@
 from datetime import datetime
 from app import db
+from sqlalchemy_utils import force_instant_defaults
 
 #from flask_sqlalchemy import SQLAlchemy
 #db = SQLAlchemy()
@@ -24,6 +25,9 @@ from app import db
 
 #def defaultNow(context):
 #    return datetime.utcnow
+
+force_instant_defaults()
+
 
 class People(db.Model):
     __tablename__ = "people"
