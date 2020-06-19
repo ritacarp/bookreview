@@ -8,7 +8,7 @@ flask-wtf==0.14.3
 gunicorn==20.0.4
 itsdangerous==1.1.0
 jinja2==2.11.2
-krb5==1.17.1
+krb5
 libpq==12.2
 mako==1.1.0
 markupsafe==1.1.1
