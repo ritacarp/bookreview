@@ -20,14 +20,6 @@ from sqlalchemy_utils import force_instant_defaults
 # Take away:  db.relationship() call arguments are 1) Model Class Name 2) Table Name 3) lazy
 #             db.ForeignKey('people.id'), or, more generally (TABLE_NAME.COLUMN_NAME)
 
-#def defaultZero(context):
-#    return 0
-
-#def defaultNow(context):
-#    return datetime.utcnow
-
-force_instant_defaults()
-
 
 class People(db.Model):
     __tablename__ = "people"
@@ -64,6 +56,7 @@ class BookReview(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
     review = db.Column(db.String, nullable=False)
     review_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
+    score = db.Column(db.Integer, nullable=True)
  
  
 
