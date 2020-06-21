@@ -119,6 +119,7 @@ def importBooks():
                 connection.commit()
                 connection.close()
                 print("PostgreSQL connection is closed")
+                return "There was an error importing Books."
 
-
+    return "Books have been successfully imported!"
 
