@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, request, url_for
 from app import app
 from app.forms import LoginForm, RegisterForm
-
+import psycopg2
 import os
 
 @app.route('/<vTitle>/<vName>')
