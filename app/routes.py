@@ -2,6 +2,8 @@ from flask import render_template, flash, redirect, request, url_for
 from app import app
 from app.forms import LoginForm, RegisterForm
 
+import os
+
 @app.route('/<vTitle>/<vName>')
 @app.route('/index/<vTitle>/<vName>')
 @app.route('/')
