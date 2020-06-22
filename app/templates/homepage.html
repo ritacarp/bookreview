@@ -17,14 +17,14 @@
         {% for book in allBooks %}
            {% set count.value = count.value + 1 %}
 
-           {% if count.value % 5 == 1 %}
+           {% if count.value % 10 == 1 %}
            <div class="card-body">
               <div class="row" style="padding-right:10px">
            {% endif %}
 
                  <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-isbn='{{book["isbn"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
 
-          {% if count.value % 5 == 0 %}
+          {% if count.value % 10 == 0 %}
               </div>
            </div>
           {% endif %}
