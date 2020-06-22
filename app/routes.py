@@ -132,8 +132,23 @@ def importBooks():
 
 @app.route("/backgoundJobs", methods=["GET", "POST"])
 def runBackgroundJobs():
-    q = Queue(connection=conn)
-    #result = foo(15,40)
-    result = q.enqueue(foo, 325,355)
-    print("\n\nIn calling program createRQ:  function foo with arguments start=325, end=355 returned a count of ", result)
-    return("In calling route backgoundJobs:  function foo with arguments start=325, end=355 returned a count of ", result)
+    # this import solves a rq bug which currently exists
+    from app.helpers import foo
+
+    job = q.enqueue_call(
+        func=foo, args=(275,315), result_ttl=5000
+    )
+    print(job.get_id())
+    
+    return "Background job foo queued with arguments start=275 end=315!."
+
+
+@app.route("/results/<job_key>", methods=['GET'])
+def get_results(job_key):
+
+    job = Job.fetch(job_key, connection=conn)
+
+    if job.is_finished:
+        return str(job.result), 200
+    else:
+        return "Nay!", 202

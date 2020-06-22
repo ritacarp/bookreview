@@ -56,7 +56,7 @@ def grLookupByID(grID):
             authorName = authorsNodes[i].text
             allAuthors = allAuthors + authorName
             i += 1
-        print("\n\nallAuthors = ", allAuthors)
+        #print("\n\nallAuthors = ", allAuthors)
 
 
         return {
@@ -77,3 +77,10 @@ def grLookupByID(grID):
         
     return None
 
+
+def foo(start=0, end=10):
+    i=0
+    for x in range(start, end):
+        i += 1
+        print("In test worker:  x = ", x)
+    return(i)
