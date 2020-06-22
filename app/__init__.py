@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 
 from rq import Queue
 from rq.job import Job
-from worker import conn
+from app.worker import conn
 
 app = Flask(__name__)
 app.config.from_object(Config)
