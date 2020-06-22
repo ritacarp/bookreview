@@ -134,6 +134,6 @@ def importBooks():
 def runBackgroundJobs():
     q = Queue(connection=conn)
     #result = foo(15,40)
-    result = q.enqueue(foo, 25,55)
-    print("\n\nIn calling program createRQ:  function foo with arguments start=25, end=55 returned a count of ", result)
-    return("In calling route backgoundJobs:  function foo with arguments start=25, end=55 returned a count of ", result)
+    result = q.enqueue(foo, 325,355)
+    print("\n\nIn calling program createRQ:  function foo with arguments start=325, end=355 returned a count of ", result)
+    return("In calling route backgoundJobs:  function foo with arguments start=325, end=355 returned a count of ", result)
