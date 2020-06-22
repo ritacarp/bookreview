@@ -1,4 +1,4 @@
-from app.backgoundJobs import foo
+from app.helpers import foo
 from rq import Queue
 from worker import conn
 
