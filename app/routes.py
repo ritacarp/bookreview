@@ -153,4 +153,4 @@ def get_results(job_key):
     if job.is_finished:
         return str(job.result), 200
     else:
-        return "Nay!", 202
+        return "Boo!!", 202
