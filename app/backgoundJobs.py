@@ -1,11 +1,5 @@
 
-def foo(start=0, end=10):
-    i=0
-    for x in range(start, end):
-        i += 1
-        print("In test worker:  x = ", x)
-    return(i)
-
+from app.helpers import foo
 
 if __name__ == '__main__':
     
