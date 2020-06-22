@@ -1,43 +1,44 @@
 from flask import render_template, flash, redirect, request, url_for
-from app import app
+from app import app, grBookList
 from app.forms import LoginForm, RegisterForm
+from app.helpers import grLookupByID
 import psycopg2
 import os
+import random
 
-@app.route('/<vTitle>/<vName>')
-@app.route('/index/<vTitle>/<vName>')
 @app.route('/')
 @app.route('/index')
 
-def index(vTitle="",vName=""):
-    if not vTitle:
-        title="Title for new uses"
-    else:
-        title=vTitle
+def index():
 
-    if not vName:
-        user = {'username': 'All New Users'}
-    else:
-        user = {'username': vName}
-        
+    #http://www.datasciencemadesimple.com/strip-lstriprstrip-strip-function-python/
+    #To strip off leading zeros - I googled python strip leading zeros
+    
+    #To shuffle a list
+    # https://note.nkmk.me/en/python-random-shuffle/
+    
+    randomList = grBookList.copy()
+    random.shuffle(randomList)
+    print("\n\ngrBookList = ", str(grBookList).strip('[]'))
+    print("\n\n1) randomList = ", str(randomList).strip('[]'))
+    displayList = randomList[0:10]
+    print("\n\n2) displayList = ", str(displayList).strip('[]'))
+    
 
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
+    allBooks = []
+    for bookID in displayList:
+       book = grLookupByID(bookID)
+       allBooks.append(book)
+    #print("\n\nallBooks = ",allBooks)
+    for book in allBooks:
+        print("\n\book = ",book)
 
+    return render_template("homepage.html",
+                            allBooks=allBooks
+                            )
+    
 
-    return render_template("index.html",
-                               title=title,
-                               user = user,
-                               posts=posts
-                               )
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
