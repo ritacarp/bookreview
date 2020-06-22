@@ -140,7 +140,7 @@ def runBackgroundJobs():
     job = q.enqueue_call(
         func=foo, args=(275,315), result_ttl=5000
     )
-    print("/backgound job id = " + job.get_id())
+    print("\n\nbackgound job id = " + job.get_id())
     
     return "Background job foo queued with arguments start=275 end=315!."
 
