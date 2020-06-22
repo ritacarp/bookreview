@@ -6,11 +6,6 @@ import psycopg2
 import os
 import random
 
-from app.backgoundJobs import foo
-from rq import Queue
-from worker import conn
-
-
 @app.route('/')
 @app.route('/index')
 
