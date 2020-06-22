@@ -35,8 +35,8 @@ def index():
        book = grLookupByID(bookID)
        allBooks.append(book)
     #print("\n\nallBooks = ",allBooks)
-    for book in allBooks:
-        print("\n\book = ",book)
+    #for book in allBooks:
+    #    print("\n\nbook = ",book)
 
     return render_template("homepage.html",
                             allBooks=allBooks
@@ -136,4 +136,4 @@ def runBackgroundJobs():
     #result = foo(15,40)
     result = q.enqueue(foo, 25,55)
     print("\n\nIn calling program createRQ:  function foo with arguments start=25, end=55 returned a count of ", result)
-
+    return("In calling route backgoundJobs:  function foo with arguments start=25, end=55 returned a count of ", result)
