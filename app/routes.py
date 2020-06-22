@@ -6,6 +6,13 @@ import psycopg2
 import os
 import random
 
+from rq import Queue
+from rq.job import Job
+from app.worker import conn
+
+q = Queue(connection=conn)
+
+
 @app.route('/')
 @app.route('/index')
 
