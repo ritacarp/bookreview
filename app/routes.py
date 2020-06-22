@@ -6,6 +6,11 @@ import psycopg2
 import os
 import random
 
+from app.backgoundJobs import foo
+from rq import Queue
+from worker import conn
+
+
 @app.route('/')
 @app.route('/index')
 
@@ -123,4 +128,12 @@ def importBooks():
                 return "There was an error importing Books."
 
     return "Books have been successfully imported!"
+
+
+@app.route("/backgoundJobs", methods=["GET", "POST"])
+def runBackgroundJobs():
+    q = Queue(connection=conn)
+    #result = foo(15,40)
+    result = q.enqueue(foo, 25,55)
+    print("\n\nIn calling program createRQ:  function foo with arguments start=25, end=55 returned a count of ", result)
 
