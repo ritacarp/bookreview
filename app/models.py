@@ -1,6 +1,7 @@
 from datetime import datetime
 from app import db
 from sqlalchemy_utils import force_instant_defaults
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #from flask_sqlalchemy import SQLAlchemy
 #db = SQLAlchemy()
@@ -26,12 +27,18 @@ class People(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
-    hash = db.Column(db.String, nullable=False)
-    comments = db.Column(db.String, nullable=False)
+    hash = db.Column(db.String, nullable=True)
+    comments = db.Column(db.String, nullable=True)
     bookReviews = db.relationship('BookReview', backref='reviewer', lazy=True)
 
     def __repr__(self):
         return '<Person: User Name: {}, Email: {}, hash: {}, comments: {}>'.format(self.username, self.email, self.hash, self.comments)    
+
+    def set_password(self, password):
+        self.hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hash, password)
 
 
 class Book(db.Model):

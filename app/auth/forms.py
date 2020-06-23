@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators
 from wtforms.validators import DataRequired, email_validator, EqualTo, ValidationError
+from app.models import People
 import re
 
 class LoginForm(FlaskForm):
@@ -21,7 +22,12 @@ class RegisterForm(FlaskForm):
                                          ])
     confirm  = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField('Register')
-    
+
+    def validate_username(self, username):
+        person = People.query.filter_by(username=username.data).first()
+        if person is not None:
+            raise ValidationError(_('Please use a different username.'))
+
 
     def validate_email(form, field):
   
@@ -30,7 +36,9 @@ class RegisterForm(FlaskForm):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
         if(re.search(regex,field.data)):  
-            pass
+            person = People.query.filter_by(email=email.data).first()
+            if person is not None:
+                raise ValidationError(_('Please use a different email address.'))
         else:  
             raise ValidationError('Email address is not valid')
 

@@ -1,13 +1,16 @@
-from flask import render_template, flash, redirect, request, url_for
-from app import app, grBookList
-from app.forms import LoginForm, RegisterForm
-from app.helpers import grLookupByID
+from flask import render_template, flash, redirect, url_for, request, g, jsonify, current_app
+from flask_login import current_user, login_required
+from app import db, grBookList
+from app.models import People, Book, BookReview
+from app.main import bp
+from app.main.helpers  import grLookupByID
+
 import psycopg2
 import os
 import random
 
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
+@bp.route('/index')
 
 def index():
 
@@ -69,56 +72,24 @@ def index():
 
     
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    
-    # Either if request.method == "POST" OR form.validate_on_submit(): works
-    # The form.validate_on_submit() method does all the form processing work.
-    # https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iii-web-forms
-    
-    # if request.method == "POST":
-    
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect(url_for('index'))
-    return render_template('login.html', title='Sign In', form=form)
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    # """Register user"""
-    # https://flask.palletsprojects.com/en/1.1.x/patterns/wtforms/
-    
-    form = RegisterForm()
-
-    # Either if request.method == "POST" OR form.validate_on_submit(): works
-    # The form.validate_on_submit() method does all the form processing work.
-    # https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iii-web-forms
-    
-    # if request.method == "POST":
-
-    if form.validate_on_submit():
-        flash('Register requested for user {}, firstName={}, lastName={}'.format(
-            form.username.data, form.firstName.data, form.lastName.data))
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
 
 
 
-@app.route("/Search", methods=["GET", "POST"])
-@app.route("/search", methods=["GET", "POST"])
+
+
+
+@bp.route("/Search", methods=["GET", "POST"])
+@bp.route("/search", methods=["GET", "POST"])
 def search():
     # """Search for books""
     return "Search for books"
     
-@app.route("/review", methods=["GET", "POST"])
+@bp.route("/review", methods=["GET", "POST"])
 def review():
     # """Review a Book""
     return "Review a Book"
     
-@app.route("/importBooks", methods=["GET", "POST"])
+@bp.route("/importBooks", methods=["GET", "POST"])
 def importBooks():
     conString =  os.getenv("DATABASE_URL")
 
