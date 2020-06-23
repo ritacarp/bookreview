@@ -27,9 +27,35 @@ def index():
     
 
     allBooks = []
-    for bookID in displayList:
-       book = grLookupByID(bookID)
-       allBooks.append(book)
+    
+    idx = -1
+    bookCount = 0
+    loopCount = 0
+    maxLoops = len(randomList)
+    while True:
+
+        loopCount += 1
+        if loopCount > maxLoops:
+            break
+
+        idx += 1
+        # print("idx = ", idx, "Loop Count = ", loopCount)
+
+        grBookID = randomList[idx]
+        book = grLookupByID(grBookID)
+        if book["bookID"]:
+           allBooks.append(book)
+           bookCount += 1
+           if bookCount == 10:
+               break
+
+        # print("Book Count = ", bookCount)
+        
+        
+    
+    #for bookID in displayList:
+    #   book = grLookupByID(bookID)
+    #  allBooks.append(book)
     #print("\n\nallBooks = ",allBooks)
     #for book in allBooks:
     #    print("\n\nbook = ",book)
