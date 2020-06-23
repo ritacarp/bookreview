@@ -6,3 +6,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     GOODREADS_PUBLIC_KEY = os.environ.get('GOODREADS_PUBLIC_KEY')
+    REDIS_URL = os.environ.get('REDIS_URL')
