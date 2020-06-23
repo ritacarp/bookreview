@@ -46,7 +46,7 @@ def index():
         if book["bookID"]:
            allBooks.append(book)
            bookCount += 1
-           if bookCount == 10:
+           if bookCount == 9:
                break
 
         # print("Book Count = ", bookCount)
