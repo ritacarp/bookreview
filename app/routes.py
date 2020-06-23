@@ -31,6 +31,7 @@ def index():
     idx = -1
     bookCount = 0
     loopCount = 0
+    imagesPerRow = 9
     maxLoops = len(randomList)
     while True:
 
@@ -46,7 +47,7 @@ def index():
         if book["bookID"]:
            allBooks.append(book)
            bookCount += 1
-           if bookCount == 9:
+           if bookCount == imagesPerRow:
                break
 
         # print("Book Count = ", bookCount)
@@ -61,7 +62,8 @@ def index():
     #    print("\n\nbook = ",book)
 
     return render_template("homepage.html",
-                            allBooks=allBooks
+                            allBooks=allBooks,
+                            imagesPerRow=imagesPerRow
                             )
     
 
