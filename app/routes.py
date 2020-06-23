@@ -11,18 +11,19 @@ import random
 
 def index():
 
-    #http://www.datasciencemadesimple.com/strip-lstriprstrip-strip-function-python/
-    #To strip off leading zeros - I googled python strip leading zeros
+    # http://www.datasciencemadesimple.com/strip-lstriprstrip-strip-function-python/
+    # To strip off leading zeros - I googled python strip leading zeros
     
-    #To shuffle a list
+    # To shuffle a list
     # https://note.nkmk.me/en/python-random-shuffle/
     
     randomList = grBookList.copy()
     random.shuffle(randomList)
-    print("\n\ngrBookList = ", str(grBookList).strip('[]'))
-    print("\n\n1) randomList = ", str(randomList).strip('[]'))
+    # print("\n\ngrBookList = ", str(grBookList).strip('[]'))
+    #  print("\n\n1) randomList = ", str(randomList).strip('[]'))
+    
     displayList = randomList[0:10]
-    print("\n\n2) displayList = ", str(displayList).strip('[]'))
+    # print("\n\n2) displayList = ", str(displayList).strip('[]'))
     
 
     allBooks = []

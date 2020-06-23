@@ -11,20 +11,21 @@
         <p>{{book.author}}<p>
         <p>{{book.bookID}}<p>
         #}
+        {% set imagesPerRow = namespace(value=10) %}
 
 
         {% set count = namespace(value=0) %}
         {% for book in allBooks %}
            {% set count.value = count.value + 1 %}
 
-           {% if count.value % 10 == 1 %}
+           {% if count.value % imagesPerRow.value == 1 %}
            <div class="card-body">
               <div class="row" style="padding-right:10px">
            {% endif %}
 
                  <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["bookID"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
 
-          {% if count.value % 10 == 0 %}
+          {% if count.value % imagesPerRow.value == 0 %}
               </div>
            </div>
           {% endif %}

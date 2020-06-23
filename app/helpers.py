@@ -26,30 +26,37 @@ def grLookupByID(grID):
         
         bookIDNode = root.findall("./book/id")
         grBookID = bookIDNode[0].text
+        print("grBookID = ", grBookID)
         
         isbnNode = root.findall("./book/isbn")
-        isbn = (isbnNode[0].text).strip()
-        print("\n\nisbn = ", isbn)
+        isbn = isbnNode[0].text
+        if isbn:
+            isbn.strip()
+        print("isbn = ", isbn)
         
         asinNode = root.findall("./book/asin")
-        asin = (asinNode[0].text).strip()
-        print("\n\niasin = ", asin)
+        asin = asinNode[0].text
+        if asin:
+            asin.strip()
+        print("asin = ", asin)
 
         kindle_asinNode = root.findall("./book/kindle_asin")
-        kindle_asin = (kindle_asinNode[0].text).strip()
-        print("\n\nikindle_asin = ", kindle_asin)
+        kindle_asin = kindle_asinNode[0].text
+        if kindle_asin:
+            kindle_asin.strip()
+        print("kindle_asin = ", kindle_asin)
         
         bookID = asin
         if bookID is None or bookID == "":
             bookID = kindle_asin
         if bookID is None or bookID == "":
             bookID = isbn
-        print("\n\nibookID = ", bookID)
+        print("bookID = ", bookID)
 
         
         titleNode = root.findall("./book/title")
         title = titleNode[0].text
-        # print("\n\ntitle = ", title)
+        # print("title = ", title)
         
         descriptionNode = root.findall("./book/description")
         description = "<h6><small>" + descriptionNode[0].text + "</small></h6>"
@@ -73,6 +80,7 @@ def grLookupByID(grID):
             allAuthors = allAuthors + authorName
             i += 1
         #print("\n\nallAuthors = ", allAuthors)
+        print("\n\n")
 
 
         return {
