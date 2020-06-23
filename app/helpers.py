@@ -28,8 +28,24 @@ def grLookupByID(grID):
         grBookID = bookIDNode[0].text
         
         isbnNode = root.findall("./book/isbn")
-        isbn = isbnNode[0].text
-        # print("\n\nisbn = ", isbn)
+        isbn = (isbnNode[0].text).strip()
+        print("\n\nisbn = ", isbn)
+        
+        asinNode = root.findall("./book/asin")
+        asin = (asinNode[0].text).strip()
+        print("\n\niasin = ", asin)
+
+        kindle_asinNode = root.findall("./book/kindle_asin")
+        kindle_asin = (kindle_asinNode[0].text).strip()
+        print("\n\nikindle_asin = ", kindle_asin)
+        
+        bookID = asin
+        if bookID is None or bookID == "":
+            bookID = kindle_asin
+        if bookID is None or bookID == "":
+            bookID = isbn
+        print("\n\nibookID = ", bookID)
+
         
         titleNode = root.findall("./book/title")
         title = titleNode[0].text
@@ -62,6 +78,9 @@ def grLookupByID(grID):
         return {
             "grBookID": grBookID,
             "isbn": isbn,
+            "asin": asin,
+            "kindle_asin": kindle_asin,
+            "bookID": bookID,
             "title": title,
             "description": description,
             "image_url": image_url,
@@ -69,8 +88,7 @@ def grLookupByID(grID):
             "author": allAuthors
         }
 
-        
-        
+
     except (KeyError, TypeError, ValueError):
         print("An error occurred trying to parse content of response\n\n")
         return None

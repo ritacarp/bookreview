@@ -9,7 +9,7 @@
         {#
         <h1>{{book.title}}</h1>
         <p>{{book.author}}<p>
-        <p>{{book.isbn}}<p>
+        <p>{{book.bookID}}<p>
         #}
 
 
@@ -22,7 +22,7 @@
               <div class="row" style="padding-right:10px">
            {% endif %}
 
-                 <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-isbn='{{book["isbn"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
+                 <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["bookID"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
 
           {% if count.value % 10 == 0 %}
               </div>
@@ -44,8 +44,8 @@
   $('.bookButton').on('click', function () {
      var thisID = $(this).attr("id" )
      var handle = "#" + thisID
-     var isbn = $(handle).attr("data-isbn" )
-     var url = "https://www.amazon.com/dp/" + isbn
+     var bookID = $(handle).attr("data-bookID" )
+     var url = "https://www.amazon.com/dp/" + bookID
      var win = window.open(url, '_blank');
 
   });
