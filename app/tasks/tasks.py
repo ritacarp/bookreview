@@ -26,12 +26,12 @@ def example(intervalInSecods):
     print('Task completed')
 
 
-def queryGoodReads(grISBN):
+def task_grLookupByISBN(grISBN):
     job = get_current_job()
-    print(f"Starting Task queryGoodReads with ISBN {grISBN}")
+    print(f"Starting task_grLookupByISBN with ISBN {grISBN}")
     grLookupByISBN(grISBN)
 
-def grLookupIDByISBNAll():
+def task_grLookupIDByISBN():
     job = get_current_job()
-    print(f"Starting Task grLookupIDByISBNAll with no arguments")
+    print(f"Starting task_grLookupIDByISBN with no arguments")
     grLookupIDByISBN()
