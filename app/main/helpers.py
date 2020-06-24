@@ -119,8 +119,9 @@ def grLookupByISBN(grISBN = ""):
             return None
         
         try:  
-            grBookID = response.content
-            print(f"The grBookID is {grBookID}")
+            print(f"The response is {response.content}")
+            grBookID = str(response.content, 'utf-8')
+            print(f"The GoodReads Book ID is {grBookID}")
             return None
         except (KeyError, TypeError, ValueError):
             print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
