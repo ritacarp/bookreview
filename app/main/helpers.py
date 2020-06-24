@@ -121,12 +121,22 @@ def grLookupByISBN(grISBN):
     try:  
         print(f"The response is {response.content}")
         grBookID = str(response.content, 'utf-8')
-        print(f"The GoodReads Book ID is {grBookID}")
+        print(f"Calling grLookupByID with grBookID = {grBookID}")
+        book = grLookupByID(grBookID):
+        print(f"grLookupByISBN:  book = {book}")
         return None
     except (KeyError, TypeError, ValueError):
         print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
         return None
 
+
+def goodreadsLookup:
+    # https://flask-bookreviews.herokuapp.com/launchTask/goodreadsLookup
+    filter = "%grish%")
+    books = Book.query.filter(Book.author.like(filter)).all()
+    for book in books:
+        grISBN = book.isbn
+        grLookupByISBN(grISBN)
 
 
 def foo(start=0, end=10):
