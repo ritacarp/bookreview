@@ -12,6 +12,27 @@ import rq
 # from rq.job import Job
 # from worker import conn
 
+
+# Most Flask extensions are initialized by creating an instance of the extension and passing the application as an argument
+# Example:  db = SQLAlchemy(app)
+# But when initializing Blueprints, we have a lot of little apps
+# There is not a global app
+#
+# Therefore, we create an instance of each flask extension in the global scope as before, but no arguments are passed to it.
+# Example:  
+#          db = SQLAlchemy() - see below
+# Then, we have a function called create_app, which is an application factory function
+# The first line in the function creates the Flask application, and the second line reads the config variables
+# And then we can tie the extension instances to application by calling the method init_app to bind the extension to the
+#      application that we just created
+# Example:  
+#          db.init_app(app) - Remember, we created db in the global scope, and here we are binding it to the application
+#
+# Who calls the application factory function?
+# The module that starts the application:  in this case bookreview.py which we defined in environment variable FLASK_APP 
+# The top-level bookreview.py script, which is the only module in which the application now exists in the global scope.
+
+
 db = SQLAlchemy()
 migrate = Migrate()
 bootstrap = Bootstrap()
@@ -40,6 +61,10 @@ def create_app(config_class=Config):
     
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+    
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('flask-bookreviews-tasks', connection=app.redis)
+
 
     
     print("create_app:  Secret Key = ", app.config['SECRET_KEY'])
