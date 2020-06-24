@@ -4,7 +4,7 @@ import urllib.parse
 # import xml.etree.ElementTree as ET
 from app.models import Book
 import math
-import from app.main.helpers import grLookupByID
+from app.main.helpers import grLookupByID
 
 
 def grLookupByISBN(grISBN):
