@@ -1,5 +1,6 @@
 import time
 from rq import get_current_job
+from app.main.helpers import grLookupByID, grLookupByISBN
 
 from app import create_app
 
@@ -13,7 +14,7 @@ def example(intervalInSecods):
         seconds = 60
 
     job = get_current_job()
-    print('Starting task')
+    print('Starting Task')
     for i in range(seconds):
         job.meta['progress'] = 100.0 * i / seconds
         job.save_meta()
@@ -22,3 +23,9 @@ def example(intervalInSecods):
     job.meta['progress'] = 100
     job.save_meta()
     print('Task completed')
+
+
+def queryGoodReads(grISBN):
+    job = get_current_job()
+    print(f"Starting Task queryGoodReads with ISBN {grISBN}")
+    grLookupByISBN(grISBN)

@@ -104,6 +104,29 @@ def grLookupByID(grID):
     return None
 
 
+def grLookupByISBN(grISBN):
+    """Look up quote for symbol."""
+    # https://docs.python.org/3.4/library/xml.etree.elementtree.html
+
+    # Contact API
+    try:
+        api_key = os.environ.get("GOODREADS_PUBLIC_KEY")
+        response = requests.get(f"https://www.goodreads.com/book/isbn_to_id/{grISBN}?key={api_key}") 
+        response.raise_for_status()
+    except requests.RequestException:        
+        print(f"There was an exception raised in function grLookupByISBN({grISBN}) \n\n")
+        return None
+        
+    try:  
+        grBookID = response
+        print(f"The grBookID is {grBookID}")
+        return None
+    except (KeyError, TypeError, ValueError):
+        print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
+        return None
+
+
+
 def foo(start=0, end=10):
     i=0
     for x in range(start, end):

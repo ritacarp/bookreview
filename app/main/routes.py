@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from app import db, grBookList
 from app.models import People, Book, BookReview
 from app.main import bp
-from app.main.helpers  import grLookupByID
+from app.main.helpers import grLookupByID
 
 import psycopg2
 import os
@@ -77,6 +77,7 @@ def index():
 @bp.route("/launchTask/<taskName>/<args>", methods=["GET", "POST"])
 
 def launchTask(taskName="", args=""):
+    # https://python-rq.org/
     if taskName:
         if args:
             current_app.task_queue.enqueue('app.tasks.' + taskName, args)
