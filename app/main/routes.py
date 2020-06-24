@@ -76,7 +76,7 @@ def index():
 @bp.route("/launchTask/<taskName>", methods=["GET", "POST"])
 def launchTask(taskName=""):
     if taskName:
-        current_app.task_queue.enqueue(('app.tasks.' + taskName)
+        current_app.task_queue.enqueue('app.tasks.' + taskName)
         return f"Task {taskName} has been successfully submitted!"
     else:
         return "Please provide a task name (/launchTask/<task_name>)"
