@@ -21,12 +21,14 @@ def grLookupByISBN(grISBN):
         return None
         
     try:  
-        print(f"The response is {response.content}")
+        #print(f"The response is {response.content}")
         grBookID = str(response.content, 'utf-8')
-        print(f"Calling grLookupByID with grBookID = {grBookID}")
-        book = grLookupByID(grBookID)
-        print(f"\n\n grLookupByISBN:  UPDATE DATABASE HERE WITH BOOK = {book}")
-        return None
+        return grBookID
+        
+        #print(f"Calling grLookupByID with grBookID = {grBookID}")
+        #book = grLookupByID(grBookID)
+        #print(f"\n\n grLookupByISBN:  UPDATE DATABASE HERE WITH BOOK = {book}")
+        #return None
     except (KeyError, TypeError, ValueError):
         print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
         return None
@@ -42,10 +44,12 @@ def goodreadsLookup():
     count = 0
     for book in books:
         count += 1
-        grISBN = book.isbn
+        # grISBN = book.isbn
+        # grBookID = grLookupByISBN(grISBN)
+        grBookID = grLookupByISBN(book.isbn)
         if count % interval == 0:
-            print(f"\n\ngoodreadsLookup {count}: Calling grLookupByISBN({grISBN})")
-        grLookupByISBN(grISBN)
+            print(f"\n\ngoodreadsLookup {count}: Found Book ID {grBookID} for ISBN {book.isbn})")
+
     print("Task goodreadsLookup() Finished Successfully!")
 
 
