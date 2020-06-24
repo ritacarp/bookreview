@@ -4,6 +4,7 @@ from app import db, grBookList
 from app.models import People, Book, BookReview
 from app.main import bp
 from app.main.helpers import grLookupByID
+import math
 
 import psycopg2
 import os
@@ -89,6 +90,22 @@ def launchTask(taskName="", args=""):
         return "Please provide a task name (/launchTask/<taskName>/)"
 
 
+@bp.route("/testLower", methods=["GET", "POST"])
+def testLower():
+    filter = "%grish%"
+    print(f"testLower: filter is {filter}")
+    books = Book.query.filter( Book.author.ilike(filter)).all()
+    print(f"The number of books returned is {len(books)}")
+    interval = math.floor(len(books) / 10)
+    print(f"Interval = {interval}")
+        
+    count = 0
+    for book in books:
+        count += 1
+        if count % interval == 0:
+            print(f"testLower {count}:  Title: {book.title} ; Author: {book.author} ; ISBN: {book.isbn}")
+    print(f"testLower: Done")
+    return "testLower is done"
 
 
 @bp.route("/Search", methods=["GET", "POST"])

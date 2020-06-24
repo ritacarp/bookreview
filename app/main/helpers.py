@@ -132,11 +132,19 @@ def grLookupByISBN(grISBN):
 
 def goodreadsLookup():
     # https://flask-bookreviews.herokuapp.com/launchTask/goodreadsLookup
+    print("Starting task goodreadsLookup()")
     filter = "%grish%"
-    books = Book.query.filter( func.lower(Book.author).like(filter)).all()
+    books = Book.query.filter( Book.author.ilike(filter)).all()
+    interval = math.floor(len(books) / 10)
+    
+    count = 0
     for book in books:
+        count += 1
         grISBN = book.isbn
+        if count % interval == 0:
+            print(f"goodreadsLookup: Calling grLookupByISBN({grISBN})")
         grLookupByISBN(grISBN)
+    print("Task goodreadsLookup() Finished Successfully!")
 
 
 def foo(start=0, end=10):
