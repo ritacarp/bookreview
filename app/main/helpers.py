@@ -105,34 +105,27 @@ def grLookupByID(grID):
     return None
 
 
-def grLookupByISBN(grISBN = ""):
+def grLookupByISBN(grISBN):
     """Look up quote for symbol."""
     # https://docs.python.org/3.4/library/xml.etree.elementtree.html
-    
-    if not grISBN:
-        filter = "%grish%"
-        books = Book.query.filter(Book.author.like(filter)).all()
-        for book in books:
-            grISBN = book.isbn
 
-            for isbn in grISBN:
-                # Contact API
-                try:
-                    api_key = os.environ.get("GOODREADS_PUBLIC_KEY")
-                    response = requests.get(f"https://www.goodreads.com/book/isbn_to_id/{grISBN}?key={api_key}") 
-                    response.raise_for_status()
-                except requests.RequestException:        
-                    print(f"There was an exception raised in function grLookupByISBN({grISBN}) \n\n")
-                    return None
+    # Contact API
+    try:
+        api_key = os.environ.get("GOODREADS_PUBLIC_KEY")
+        response = requests.get(f"https://www.goodreads.com/book/isbn_to_id/{grISBN}?key={api_key}") 
+        response.raise_for_status()
+    except requests.RequestException:        
+        print(f"There was an exception raised in function grLookupByISBN({grISBN}) \n\n")
+        return None
         
-                try:  
-                    print(f"The response is {response.content}")
-                    grBookID = str(response.content, 'utf-8')
-                    print(f"The GoodReads Book ID is {grBookID}")
-                    return None
-                except (KeyError, TypeError, ValueError):
-                    print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
-                    return None
+    try:  
+        print(f"The response is {response.content}")
+        grBookID = str(response.content, 'utf-8')
+        print(f"The GoodReads Book ID is {grBookID}")
+        return None
+    except (KeyError, TypeError, ValueError):
+        print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
+        return None
 
 
 
