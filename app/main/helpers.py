@@ -122,7 +122,7 @@ def grLookupByISBN(grISBN):
         print(f"The response is {response.content}")
         grBookID = str(response.content, 'utf-8')
         print(f"Calling grLookupByID with grBookID = {grBookID}")
-        book = grLookupByID(grBookID):
+        book = grLookupByID(grBookID)
         print(f"grLookupByISBN:  book = {book}")
         return None
     except (KeyError, TypeError, ValueError):
