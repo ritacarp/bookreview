@@ -21,14 +21,9 @@ def grLookupByISBN(grISBN):
         return None
         
     try:  
-        #print(f"The response is {response.content}")
         grBookID = str(response.content, 'utf-8')
         return grBookID
         
-        #print(f"Calling grLookupByID with grBookID = {grBookID}")
-        #book = grLookupByID(grBookID)
-        #print(f"\n\n grLookupByISBN:  UPDATE DATABASE HERE WITH BOOK = {book}")
-        #return None
     except (KeyError, TypeError, ValueError):
         print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
         return None
@@ -37,18 +32,35 @@ def grLookupByISBN(grISBN):
 def grLookupIDByISBN():
     # https://flask-bookreviews.herokuapp.com/launchTask/grLookupIDByISBN
     print("Starting task grLookupIDByISBN()")
+    
+    # These 2 lines are for testing:  Replace with the real filter
     filter = "%grish%"
     books = Book.query.filter( Book.author.ilike(filter)).all()
+    
+    totalCount = len(books)
     interval = math.floor(len(books) / 10)
     
     count = 0
+    successCount = 0
+    failCount = 0
     for book in books:
         count += 1
+        
         grBookID = grLookupByISBN(book.isbn)
+        
+        # Update the book record with the grBookID
+        if grBookID:
+            successCount += 1
+            print(f"Hurray!!  Got GR Book ID {grBookID} from ISBN {book.isbn}")
+        else:
+            failCount += 1
+            print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
+
         if count % interval == 0:
             print(f"\n\ngrLookupIDByISBN {count}: Found Book ID {grBookID} for ISBN {book.isbn})")
 
-    print("Task grLookupIDByISBN() Finished Successfully!")
+    print("\n\nTask grLookupIDByISBN() Finished Successfully!")
+    print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
 
 
 def foo(start=0, end=10):

@@ -8,7 +8,7 @@ from app import create_app
 app = create_app()
 app.app_context().push()
 
-def example(intervalInSecods):
+def task_example(intervalInSecods):
     try:
         seconds = int(intervalInSecods)
     except ValueError:
@@ -23,13 +23,14 @@ def example(intervalInSecods):
         time.sleep(1)
     job.meta['progress'] = 100
     job.save_meta()
-    print('Task completed')
+    print('task_example completed')
 
 
 def task_grLookupByISBN(grISBN):
     job = get_current_job()
     print(f"Starting task_grLookupByISBN with ISBN {grISBN}")
     grLookupByISBN(grISBN)
+
 
 def task_grLookupIDByISBN():
     job = get_current_job()
