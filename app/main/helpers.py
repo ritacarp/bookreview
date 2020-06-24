@@ -130,7 +130,7 @@ def grLookupByISBN(grISBN):
         return None
 
 
-def goodreadsLookup:
+def goodreadsLookup():
     # https://flask-bookreviews.herokuapp.com/launchTask/goodreadsLookup
     filter = "%grish%")
     books = Book.query.filter(Book.author.like(filter)).all()
