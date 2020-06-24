@@ -44,8 +44,6 @@ def goodreadsLookup():
     count = 0
     for book in books:
         count += 1
-        # grISBN = book.isbn
-        # grBookID = grLookupByISBN(grISBN)
         grBookID = grLookupByISBN(book.isbn)
         if count % interval == 0:
             print(f"\n\ngoodreadsLookup {count}: Found Book ID {grBookID} for ISBN {book.isbn})")
