@@ -6,7 +6,12 @@ from app import create_app
 app = create_app()
 app.app_context().push()
 
-def example(seconds):
+def example(intervalInSecods):
+    try:
+        seconds = int(intervalInSecods)
+    except ValueError:
+        seconds = 60
+
     job = get_current_job()
     print('Starting task')
     for i in range(seconds):
