@@ -118,7 +118,7 @@ def grLookupByISBN(grISBN):
         return None
         
     try:  
-        grBookID = response
+        grBookID = response.content
         print(f"The grBookID is {grBookID}")
         return None
     except (KeyError, TypeError, ValueError):
