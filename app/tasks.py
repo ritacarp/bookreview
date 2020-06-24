@@ -25,11 +25,12 @@ def example(intervalInSecods):
     print('Task completed')
 
 
-def queryGoodReads(grISBN=""):
+def queryGoodReads(grISBN):
     job = get_current_job()
-    if grISBN:
-        print(f"Starting Task queryGoodReads for a list of ISBN")
-        goodreadsLookup()
-    else:
-        print(f"Starting Task queryGoodReads with ISBN {grISBN}")
-        grLookupByISBN(grISBN)
+    print(f"Starting Task queryGoodReads with ISBN {grISBN}")
+    grLookupByISBN(grISBN)
+
+def goodreadsLookupAll():
+    job = get_current_job()
+    print(f"Starting Task goodreadsLookupAll")
+    goodreadsLookup()
