@@ -1,6 +1,7 @@
 import time
 from rq import get_current_job
-from app.main.helpers import grLookupByID, grLookupByISBN, goodreadsLookup
+from app.main.helpers import grLookupByID
+from app.tasks.helpers import grLookupByISBN, goodreadsLookup
 
 from app import create_app
 
