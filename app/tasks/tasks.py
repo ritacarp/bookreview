@@ -1,7 +1,7 @@
 import time
 from rq import get_current_job
 from app.main.helpers import grLookupByID
-from app.tasks.helpers import grLookupByISBN, goodreadsLookup
+from app.tasks.helpers import grLookupByISBN, grLookupIDByISBN
 
 from app import create_app
 
@@ -31,7 +31,7 @@ def queryGoodReads(grISBN):
     print(f"Starting Task queryGoodReads with ISBN {grISBN}")
     grLookupByISBN(grISBN)
 
-def goodreadsLookupAll():
+def grLookupIDByISBNAll():
     job = get_current_job()
-    print(f"Starting Task goodreadsLookupAll with no arguments")
-    goodreadsLookup()
+    print(f"Starting Task grLookupIDByISBNAll with no arguments")
+    grLookupIDByISBN()
