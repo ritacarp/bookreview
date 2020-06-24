@@ -3,6 +3,7 @@ import requests
 import urllib.parse
 import xml.etree.ElementTree as ET
 from app.models import Book
+import math
 
 
 
