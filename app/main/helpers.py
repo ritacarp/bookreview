@@ -110,7 +110,7 @@ def grLookupByISBN(grISBN = ""):
     # https://docs.python.org/3.4/library/xml.etree.elementtree.html
     
     if not grISBN:
-        filter = "%grish%")
+        filter = "%grish%"
         books = Book.query.filter(Book.author.like(filter)).all()
         for book in books:
             grISBN = book.isbn
