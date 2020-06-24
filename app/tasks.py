@@ -32,5 +32,5 @@ def queryGoodReads(grISBN):
 
 def goodreadsLookupAll():
     job = get_current_job()
-    print(f"Starting Task goodreadsLookupAll")
+    print(f"Starting Task goodreadsLookupAll with no arguments")
     goodreadsLookup()

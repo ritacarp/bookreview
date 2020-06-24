@@ -81,9 +81,10 @@ def launchTask(taskName="", args=""):
     if taskName:
         if args:
             current_app.task_queue.enqueue('app.tasks.' + taskName, args)
+            return f"Task {taskName} has been successfully submitted with arguments {args}!"
         else:
             current_app.task_queue.enqueue('app.tasks.' + taskName)
-        return f"Task {taskName} has been successfully submitted!"
+            return f"Task {taskName} has been successfully submitted!"
     else:
         return "Please provide a task name (/launchTask/<taskName>/)"
 
