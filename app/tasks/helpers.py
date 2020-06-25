@@ -105,10 +105,10 @@ def booksUpdateByGRID():
             print(f"booksUpdateByGRID():  book = {book}")
             successCount += 1
         except:
-            failCount = += 1
+            failCount += 1
 
         if count % interval == 0:
-            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID {(book.grBookID})")
+            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID ({book.grBookID})")
 
     print("\n\nTask nbooksUpdateByGRID() Finished Successfully!")
     print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
