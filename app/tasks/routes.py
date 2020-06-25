@@ -86,8 +86,9 @@ def importBooks():
 
     return "Books have been successfully imported!"
 
-@bp.route("/updateBooks", methods=["GET", "POST"])
-def updateBooks():
+@bp.route("/updateBooksGRID", methods=["GET", "POST"])
+def updateBooksGRID():
     print("updateBooks: started grLookupIDByISBN")
     grLookupIDByISBN()
     return "updateBooks: grLookupIDByISBN Finished Successfully!"
+

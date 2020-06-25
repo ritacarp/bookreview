@@ -51,7 +51,7 @@ def grLookupIDByISBN():
         return
 
        
-    interval = math.floor(len(books) / 50)
+    interval = math.ceil(len(books) / 50)
     
     count = 0
     successCount = 0
