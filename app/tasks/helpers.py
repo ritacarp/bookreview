@@ -35,11 +35,13 @@ def grLookupIDByISBN():
     print("Starting task grLookupIDByISBN()")
     
     # These 2 lines are for testing:  Replace with the real filter
-    filter = "%grish%"
-    books = Book.query.filter( Book.author.ilike(filter)).all()
+    #filter = "%grish%"
+    #books = Book.query.filter( Book.author.ilike(filter)).all()
+    
+    books = Book.query.all()
     
     totalCount = len(books)
-    interval = math.floor(len(books) / 10)
+    interval = math.floor(len(books) / 50)
     
     count = 0
     successCount = 0
@@ -54,10 +56,10 @@ def grLookupIDByISBN():
             successCount += 1
             book.grBookID = grBookID
             db.session.commit()
-            print(f"Hurray!!  Updated GR Book ID {grBookID} from ISBN {book.isbn} !!")
+            #print(f"Hurray!!  Updated GR Book ID {grBookID} from ISBN {book.isbn} !!")
         else:
             failCount += 1
-            print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
+            #print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
 
         if count % interval == 0:
             print(f"\n\ngrLookupIDByISBN {count}: Found Book ID {grBookID} for ISBN {book.isbn})")
