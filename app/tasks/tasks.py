@@ -1,7 +1,7 @@
 import time
 from rq import get_current_job
 from app.main.helpers import grLookupByID
-from app.tasks.helpers import grLookupByISBN, grLookupIDByISBN
+from app.tasks.helpers import grLookupByISBN, grUpdateIDByISBN, updateBooksByGRID
 
 from app import create_app
 
@@ -32,7 +32,12 @@ def task_grLookupByISBN(grISBN):
     grLookupByISBN(grISBN)
 
 
-def task_grLookupIDByISBN():
+def task_grUpdateIDByISBN():
     job = get_current_job()
-    print(f"Starting task_grLookupIDByISBN with no arguments")
-    grLookupIDByISBN()
+    print(f"Starting task_grUpdateIDByISBN with no arguments")
+    grUpdateIDByISBN()
+
+def task_updateBooksByGRID():
+    job = get_current_job()
+    print(f"Starting task_updateBooksByGRID with no arguments")
+    updateBooksByGRID()

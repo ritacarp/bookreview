@@ -6,7 +6,7 @@ from app.models import Book
 import math
 from app.main.helpers import grLookupByID
 from app import db
-from sqlalchemy.sql import column
+from app.main.helpers import grLookupByID
 
 
 def grLookupByISBN(grISBN):
@@ -31,9 +31,9 @@ def grLookupByISBN(grISBN):
         return None
 
 
-def grLookupIDByISBN():
-    # https://flask-bookreviews.herokuapp.com/launchTask/grLookupIDByISBN
-    print("Starting task grLookupIDByISBN()")
+def grUpdateIDByISBN():
+    # https://flask-bookreviews.herokuapp.com/launchTask/grUpdateIDByISBN
+    print("Starting task grUpdateIDByISBN()")
     
     # These 2 lines are for testing:  Replace with the real filter
     # filter = "%grish%"
@@ -72,10 +72,47 @@ def grLookupIDByISBN():
             # print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
 
         if count % interval == 0:
-            print(f"\n\ngrLookupIDByISBN {count}: Processing Book ID {grBookID})")
+            print(f"\n\ngrUpdateIDByISBN {count}: Processing Book ID {grBookID})")
 
-    print("\n\nTask grLookupIDByISBN() Finished Successfully!")
+    print("\n\nTask grUpdateIDByISBN() Finished Successfully!")
     print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
+
+
+def booksUpdateByGRID():
+    # These 2 lines are for testing:  Replace with the real filter
+    filter = "%grish%"
+    books = Book.query.filter( and_(Book.author.ilike(filter), Book.grBookID != None)  ).all()
+    
+    try:
+       totalCount = len(books)
+    except:
+       totalCount = 0
+    
+    print(f"booksUpdateByGRID():  There are {totalCount} records in the books result set")
+    if totalCount == 0:
+        return
+
+       
+    interval = math.ceil(len(books) / 50)
+    
+    count = 0
+    successCount = 0
+    failCount = 0
+    for book in books:
+        count += 1
+        try:
+            book = grLookupByID(book.grBookID)
+            print(f"booksUpdateByGRID():  book = {book}"
+            successCount += 1
+        except:
+            failCount = += 1
+
+        if count % interval == 0:
+            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID {(book.grBookID})")
+
+    print("\n\nTask nbooksUpdateByGRID() Finished Successfully!")
+    print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
+
 
 
 def foo(start=0, end=10):
