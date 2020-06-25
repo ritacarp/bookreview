@@ -5,6 +5,7 @@ import urllib.parse
 from app.models import Book
 import math
 from app.main.helpers import grLookupByID
+from app import db
 
 
 def grLookupByISBN(grISBN):

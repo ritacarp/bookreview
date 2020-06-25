@@ -4,6 +4,7 @@ from app import db
 from app.models import People, Book, BookReview
 from app.tasks import bp
 # from app.main.helpers import grLookupByID
+from app.tasks.helpers import grLookupIDByISBN
 import math
 
 import psycopg2
@@ -26,6 +27,9 @@ def launchTask(taskName="", args=""):
             return f"Task {taskName} has been successfully submitted!"
     else:
         return "Please provide a task name (/launchTask/<taskName>/)"
+
+
+
 
 
 @bp.route("/testLower", methods=["GET", "POST"])
@@ -82,3 +86,8 @@ def importBooks():
 
     return "Books have been successfully imported!"
 
+@bp.route("/updateBooks", methods=["GET", "POST"])
+def updateBooks():
+    print("updateBooks: started grLookupIDByISBN")
+    grLookupIDByISBN()
+    return "updateBooks: grLookupIDByISBN Finished Successfully!"
