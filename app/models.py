@@ -15,8 +15,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # The backref argument defines the name of a field that will be added to the objects (records) of the "many" class 
 #     that points back at the "one" object.
-# So here I am naming the backref in the People class to author
-# This will add a bookreview.author expression that will return the author of a given a book review.
+# So here I am naming the backref in the People class to reviewer
+# This will add a bookreview.reviewer expression that will return the reviewer of a given a book review.
 
 # Take away:  db.relationship() call arguments are 1) Model Class Name 2) Table Name 3) lazy
 #             db.ForeignKey('people.id'), or, more generally (TABLE_NAME.COLUMN_NAME)
@@ -44,14 +44,26 @@ class People(db.Model):
 class Book(db.Model):
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key=True)
-    isbn = db.Column(db.String(80), unique=True, nullable=False)
+    isbn = db.Column(db.String, unique=True, nullable=False)
     title = db.Column(db.String, nullable=False)
     author = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    review_count = db.Column(db.Integer, nullable=True, default=0)
-    average_score = db.Column(db.Float, nullable=True, default=0)
+    review_count = db.Column(db.Integer, nullable=True)
+    ratings_count = db.Column(db.Integer, nullable=True)
+    average_score = db.Column(db.Float, nullable=True)
+    grBookID = db.Column(db.String, nullable=True)
+    asin = db.Column(db.String, nullable=True)
+    kindle_asin = db.Column(db.String, nullable=True)
+    isbn13 = db.Column(db.String, nullable=True)
+    Stars_1 = db.Column(db.Integer, nullable=True)
+    Stars_2 = db.Column(db.Integer, nullable=True)
+    Stars_3 = db.Column(db.Integer, nullable=True)
+    Stars_4 = db.Column(db.Integer, nullable=True) 
+    Stars_5 = db.Column(db.Integer, nullable=True) 
+    image_url = db.Column(db.String, nullable=True)
+    thumbnail_url = db.Column(db.String, nullable=True)
+    description = db.Column(db.Integer, nullable=True) 
     bookReviews = db.relationship('BookReview', backref='book', lazy=True)
-
     def __repr__(self):
         return '<Book: ISBN: {}, Title: {}, Author: {}, Year: {}>'.format(self.isbn, self.title, self.author, self.year)    
 
