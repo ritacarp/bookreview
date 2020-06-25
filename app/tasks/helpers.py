@@ -51,7 +51,9 @@ def grLookupIDByISBN():
         # Update the book record with the grBookID
         if grBookID:
             successCount += 1
-            print(f"Hurray!!  Got GR Book ID {grBookID} from ISBN {book.isbn}")
+            book.grBookID = grBookID
+            db.session.commit()
+            print(f"Hurray!!  Updated GR Book ID {grBookID} from ISBN {book.isbn} !!")
         else:
             failCount += 1
             print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
