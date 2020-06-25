@@ -23,7 +23,7 @@ def launchTask(taskName="", args=""):
             current_app.task_queue.enqueue('app.tasks.tasks.' + taskName, args, job_timeout='1h')
             return f"Task {taskName} has been successfully submitted with arguments {args}!"
         else:
-            current_app.task_queue.enqueue('app.tasks.tasks.' + taskName)
+            current_app.task_queue.enqueue('app.tasks.tasks.' + taskName, job_timeout='1h')
             return f"Task {taskName} has been successfully submitted!"
     else:
         return "Please provide a task name (/launchTask/<taskName>/)"
