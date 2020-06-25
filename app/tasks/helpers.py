@@ -6,6 +6,7 @@ from app.models import Book
 import math
 from app.main.helpers import grLookupByID
 from app import db
+from sqlalchemy.sql import column
 
 
 def grLookupByISBN(grISBN):
@@ -38,9 +39,18 @@ def grLookupIDByISBN():
     #filter = "%grish%"
     #books = Book.query.filter( Book.author.ilike(filter)).all()
     
-    books = Book.query.all()
+    books = Book.query.filter(Book.grBookID == None).all()
+
+    try:
+       totalCount = len(books)
+    except:
+       totalCount = 0
     
-    totalCount = len(books)
+    print(f"grBookID == None:  There are {totalCount} records in the books result set")
+    if totalCount == 0:
+        return
+
+       
     interval = math.floor(len(books) / 50)
     
     count = 0
@@ -56,10 +66,10 @@ def grLookupIDByISBN():
             successCount += 1
             book.grBookID = grBookID
             db.session.commit()
-            #print(f"Hurray!!  Updated GR Book ID {grBookID} from ISBN {book.isbn} !!")
+            print(f"Hurray!!  Updated GR Book ID {grBookID} from ISBN {book.isbn} !!")
         else:
             failCount += 1
-            #print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
+            print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
 
         if count % interval == 0:
             print(f"\n\ngrLookupIDByISBN {count}: Found Book ID {grBookID} for ISBN {book.isbn})")
