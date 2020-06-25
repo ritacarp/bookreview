@@ -7,6 +7,7 @@ import math
 from app.main.helpers import grLookupByID
 from app import db
 from app.main.helpers import grLookupByID
+from sqlalchemy import and_, or_
 
 
 def grLookupByISBN(grISBN):
@@ -98,17 +99,17 @@ def booksUpdateByGRID():
     count = 0
     successCount = 0
     failCount = 0
-    for book in books:
+    for row in books:
         count += 1
         try:
-            book = grLookupByID(book.grBookID)
+            book = grLookupByID(row.grBookID)
             print(f"booksUpdateByGRID():  book = {book}")
             successCount += 1
         except:
             failCount += 1
 
         if count % interval == 0:
-            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID ({book.grBookID})")
+            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID ({row.grBookID})")
 
     print("\n\nTask nbooksUpdateByGRID() Finished Successfully!")
     print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
