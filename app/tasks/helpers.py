@@ -102,7 +102,7 @@ def booksUpdateByGRID():
         count += 1
         try:
             book = grLookupByID(book.grBookID)
-            print(f"booksUpdateByGRID():  book = {book}"
+            print(f"booksUpdateByGRID():  book = {book}")
             successCount += 1
         except:
             failCount = += 1
