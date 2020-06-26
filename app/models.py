@@ -62,6 +62,7 @@ class Book(db.Model):
     stars_5 = db.Column(db.Integer, nullable=True) 
     image_url = db.Column(db.String, nullable=True)
     thumbnail_url = db.Column(db.String, nullable=True)
+    description = db.Column(db.String, nullable=True)
     amazon_lookup_id = db.Column(db.String, nullable=True)
     bookReviews = db.relationship('BookReview', backref='book', lazy=True)
     def __repr__(self):
