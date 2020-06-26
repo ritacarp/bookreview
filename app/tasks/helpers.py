@@ -39,10 +39,10 @@ def grUpdateIDByISBN():
     print("Starting task grUpdateIDByISBN()")
     
     # These 2 lines are for testing:  Replace with the real filter
-    filter = "%grish%"
-    books = Book.query.filter( Book.author.ilike(filter)).all()
+    # filter = "%grish%"
+    # books = Book.query.filter( Book.author.ilike(filter)).all()
     
-    # books = Book.query.filter(Book.gr_bookid == None).all()
+    books = Book.query.filter(Book.gr_bookid == None).all()
 
     try:
        totalCount = len(books)
@@ -88,8 +88,10 @@ def booksUpdateByGRID():
     # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_updateBooksByGRID
     
     # These 2 lines are for testing:  Replace with the real filter
-    filter = "%grish%"
-    books = Book.query.filter( and_(Book.author.ilike(filter), Book.gr_bookid != None)  ).all()
+    # filter = "%grish%"
+    # books = Book.query.filter( and_(Book.author.ilike(filter), Book.gr_bookid != None)  ).all()
+    
+    books = Book.query.filter(Book.gr_bookid != None).all()
     
     try:
        totalCount = len(books)
