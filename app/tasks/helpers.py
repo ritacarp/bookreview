@@ -33,14 +33,15 @@ def grLookupByISBN(grISBN):
 
 
 def grUpdateIDByISBN():
-    # https://flask-bookreviews.herokuapp.com/launchTask/grUpdateIDByISBN
+    # 127.0.0.1/tasks/test_updateBooksGRID
+    # https://flask-bookreviews.herokuapp.com/launchTask/task_grUpdateIDByISBN
     print("Starting task grUpdateIDByISBN()")
     
     # These 2 lines are for testing:  Replace with the real filter
-    # filter = "%grish%"
-    # books = Book.query.filter( Book.author.ilike(filter)).all()
+    filter = "%grish%"
+    books = Book.query.filter( Book.author.ilike(filter)).all()
     
-    books = Book.query.filter(Book.gr_bookid == None).all()
+    # books = Book.query.filter(Book.gr_bookid == None).all()
 
     try:
        totalCount = len(books)
@@ -60,12 +61,14 @@ def grUpdateIDByISBN():
     for book in books:
         count += 1
         
-        grBookID = grLookupByISBN(book.isbn)
+        #grBookID = grLookupByISBN(book.isbn)
+        goodreadsBookID = grLookupByISBN(book.isbn)
         
         # Update the book record with the grBookID
-        if grBookID:
+        if goodreadsBookID:
             successCount += 1
-            book.gr_bookid = grBookID
+            #book.gr_bookid = grBookID
+            book.set_gr_bookid(goodreadsBookID)
             db.session.commit()
             # print(f"Hurray!!  Updated GR Book ID {book.gr_bookid} from ISBN {book.isbn} !!")
         else:
@@ -73,13 +76,16 @@ def grUpdateIDByISBN():
             # print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
 
         if count % interval == 0:
-            print(f"\n\ngrUpdateIDByISBN {count}: Processing Book ID {grBookID})")
+            print(f"\n\ngrUpdateIDByISBN {count}: Processing goodreads Book ID {goodreadsBookID})")
 
     print("\n\nTask grUpdateIDByISBN() Finished Successfully!")
     print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
 
 
 def booksUpdateByGRID():
+    # 127.0.0.1/tasks/test_BooksUpdateByGRID
+    # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_updateBooksByGRID
+    
     # These 2 lines are for testing:  Replace with the real filter
     filter = "%grish%"
     books = Book.query.filter( and_(Book.author.ilike(filter), Book.gr_bookid != None)  ).all()
@@ -102,13 +108,24 @@ def booksUpdateByGRID():
     for book in books:
         count += 1
         try:
-            grBook = grLookupByID(book.gr_bookid)
-            # print(f"\n\nbooksUpdateByGRID():  book = {grBook}")
-            thisBook = Book.query.get(book.id)
-            print(f"\n\n RITA  booksUpdateByGRID():  book to update = {thisBook}")
-            thisBook.description = grBook.description
-            thisBook.image_url = grBook.image_url
-            thisBook.thumbnail_url = grBook.thumbnail_url
+            goodreadsBook = grLookupByID(book.gr_bookid)
+            #print(f"\n\nbooksUpdateByGRID():  goodreads book = {goodreadsBook}")
+            
+            book.set_review_count(goodreadsBook["review_count"])
+            book.set_ratings_count(goodreadsBook["ratings_count"])
+            book.set_average_score(goodreadsBook["average_score"])
+            book.set_asin(goodreadsBook["asin"])
+            book.set_kindle_asin(goodreadsBook["kindle_asin"])
+            book.set_isbn13(goodreadsBook["isbn13"])
+            book.set_stars_1(goodreadsBook["stars_1"])
+            book.set_stars_2(goodreadsBook["stars_2"])
+            book.set_stars_3(goodreadsBook["stars_3"])
+            book.set_stars_4(goodreadsBook["stars_4"])
+            book.set_stars_5(goodreadsBook["stars_5"])
+            book.set_description(goodreadsBook["description"])
+            book.set_image_url(goodreadsBook["image_url"])
+            book.set_thumbnail_url(goodreadsBook["thumbnail_url"])
+            book.set_amazon_lookup_id(goodreadsBook["amazon_lookup_id"])
             db.session.commit()
             successCount += 1
         except:

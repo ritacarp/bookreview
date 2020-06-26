@@ -86,6 +86,7 @@ def importBooks():
 
     return "Books have been successfully imported!"
 
+# 127.0.0.1/tasks/test_updateBooksGRID
 @bp.route("/test_updateBooksGRID", methods=["GET", "POST"])
 def test_updateBooksGRID():
     print("test_updateBooksGRID(): started helpers.grUpdateIDByISBN()")
@@ -93,6 +94,7 @@ def test_updateBooksGRID():
     return "test_updateBooksGRID(): grUpdateIDByISBN() Finished Successfully!"
 
 
+# 127.0.0.1/tasks/test_BooksUpdateByGRID
 @bp.route("/test_BooksUpdateByGRID", methods=["GET", "POST"])
 def test_BooksUpdateByGRID():
     print("test_BooksUpdateByGRID(): started helpers.booksUpdateByGRID()")

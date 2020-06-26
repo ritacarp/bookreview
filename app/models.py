@@ -81,10 +81,22 @@ class Book(db.Model):
         self.year = year
 
     def set_review_count(self, review_count):
-        self.review_count = review_count
+        try:
+            self.review_count = int(review_count)
+        except:
+            self.review_count = 0
+
+    def set_ratings_count(self, ratings_count):
+        try:
+            self.ratings_count = int(ratings_count)
+        except:
+            self.ratings_count = 0
 
     def set_average_score(self, average_score):
-        self.average_score = average_score
+        try:
+            self.average_score = float(average_score)
+        except:
+            self.average_score = 0
 
     def set_gr_bookid(self, gr_bookid):
         self.gr_bookid = gr_bookid
@@ -99,19 +111,34 @@ class Book(db.Model):
         self.isbn13 = isbn13
 
     def set_stars_1(self, stars_1):
-        self.stars_1 = stars_1
+        try:
+            self.stars_1 = int(stars_1)
+        except:
+             self.stars_1 = 0
 
     def set_stars_2(self, stars_2):
-        self.stars_2 = stars_2
+        try:
+            self.stars_2 = int(stars_2)
+        except:
+             self.stars_2 = 0
 
     def set_stars_3(self, stars_3):
-        self.stars_3 = stars_3
+        try:
+            self.stars_3 = int(stars_3)
+        except:
+             self.stars_3 = 0
 
     def set_stars_4(self, stars_4):
-        self.stars_4 = stars_4
+        try:
+            self.stars_4 = int(stars_4)
+        except:
+             self.stars_4 = 0
 
     def set_stars_5(self, stars_5):
-        self.stars_5 = stars_5
+        try:
+            self.stars_5 = int(stars_5)
+        except:
+             self.stars_5 = 0
 
     def set_image_url(self, image_url):
         self.image_url = image_url

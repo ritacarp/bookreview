@@ -31,7 +31,7 @@ def grLookupByID(grID):
            gr_bookid = bookIDNode[0].text
         except:
            gr_bookid = ""
-        print("gr_bookid = ", gr_bookid)
+        #print("gr_bookid = ", gr_bookid)
         
         try:
            isbnNode = root.findall("./book/isbn")
@@ -40,7 +40,7 @@ def grLookupByID(grID):
                isbn.strip()
         except:
             isbn = ""
-        print("isbn = ", isbn)
+        #print("isbn = ", isbn)
 
         try:
            isbn13Node = root.findall("./book/isbn13")
@@ -49,7 +49,7 @@ def grLookupByID(grID):
                isbn13.strip()
         except:
             isbn13 = ""
-        print("isbn13 = ", isbn)
+        #print("isbn13 = ", isbn)
 
         try:
             asinNode = root.findall("./book/asin")
@@ -58,7 +58,7 @@ def grLookupByID(grID):
                 asin.strip()
         except:
             asin = ""
-        print("asin = ", asin)
+        #print("asin = ", asin)
 
         try:
             kindle_asinNode = root.findall("./book/kindle_asin")
@@ -67,49 +67,49 @@ def grLookupByID(grID):
                 kindle_asin.strip()
         except:
             kindle_asin = ""
-        print("kindle_asin = ", kindle_asin)
+        #print("kindle_asin = ", kindle_asin)
         
         amazon_lookup_id = asin
         if amazon_lookup_id is None or amazon_lookup_id == "":
             amazon_lookup_id = kindle_asin
         if amazon_lookup_id is None or amazon_lookup_id == "":
             amazon_lookup_id = isbn
-        print("amazon_lookup_id = ", amazon_lookup_id)
+        #print("amazon_lookup_id = ", amazon_lookup_id)
 
         try:
             titleNode = root.findall("./book/title")
             title = titleNode[0].text
         except:
             title = ""
-        print("title = ", title)
+        #print("title = ", title)
         
         try:
             descriptionNode = root.findall("./book/description")
             description = "<h6><small>" + descriptionNode[0].text + "</small></h6>"
         except:
             description = ""
-        print("\n\ndescription = ", description)
+        #print("\n\ndescription = ", description)
 
         try:
             image_urlNode = root.findall("./book/image_url")
             image_url = image_urlNode[0].text
         except:
             image_url = ""
-        # print("\n\nimage_url = ", image_url)
+        #print("\n\nimage_url = ", image_url)
 
         try:
             small_image_urlNode = root.findall("./book/small_image_url")
             small_image_url = small_image_urlNode[0].text
         except:
             small_image_url = ""
-        # print("\n\nsmall_image_url = ", small_image_url)
+        #print("\n\nthumbnail_url = ", small_image_url)
 
         try:
             average_ratingNode = root.findall("./book/average_rating")
             average_rating = average_ratingNode[0].text
         except:
             average_rating = 0
-        print("average_rating = ", average_rating)
+        #print("average_rating = ", average_rating)
 
         bookStars = {}
         try:
@@ -121,7 +121,7 @@ def grLookupByID(grID):
                 bookStars[stars[0]] = stars[1]
         except:
             rating_dist = ""
-        print("rating_dist = ", rating_dist)
+        #print("rating_dist = ", rating_dist)
 
         stars_1 = bookStars.get('1', 0)
         stars_2 = bookStars.get('2', 0)
@@ -129,12 +129,12 @@ def grLookupByID(grID):
         stars_4 = bookStars.get('4', 0)
         stars_5 = bookStars.get('5', 0)
         
-        print(f"5 stars = {stars_5}")
-        print(f"4 stars = {stars_4}")
-        print(f"3 stars = {stars_3}")
-        print(f"2 stars = {stars_2}")
-        print(f"1 stars = {stars_1}")
-        print("\n")
+        #print(f"5 stars = {stars_5}")
+        #print(f"4 stars = {stars_4}")
+        #print(f"3 stars = {stars_3}")
+        #print(f"2 stars = {stars_2}")
+        #print(f"1 stars = {stars_1}")
+        #print("\n")
         
         allAuthors = ""
         try:
@@ -155,18 +155,18 @@ def grLookupByID(grID):
             ratings_count = ratings_countNode[0].text
         except:
             ratings_count = 0
-        print("ratings_count = ", ratings_count)
+        #print("ratings_count = ", ratings_count)
         
         try:
             text_reviews_countNode = root.findall("./book/work/text_reviews_count")
-            reviews_count = text_reviews_countNode[0].text
+            review_count = text_reviews_countNode[0].text
         except:
-            reviews_count = 0
-        print("reviews_count = ", reviews_count)
+            review_count = 0
+        #print("reviews_count = ", review_count)
 
         
 
-        print("\n\n")
+        #print("\n\n")
 
 
         return {
@@ -180,10 +180,10 @@ def grLookupByID(grID):
             "title": title,
             "description": description,
             "image_url": image_url,
-            "thumbnail_url": small_image_urlNode,
+            "thumbnail_url": small_image_url,
             "author": allAuthors,
             "ratings_count": ratings_count,
-            "reviews_count": reviews_count,
+            "review_count": review_count,
             "average_score": average_rating,
             "stars_1": stars_1,
             "stars_2": stars_2,
