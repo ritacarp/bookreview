@@ -91,7 +91,9 @@ def booksUpdateByGRID():
     # filter = "%grish%"
     # books = Book.query.filter( and_(Book.author.ilike(filter), Book.gr_bookid != None)  ).all()
     
-    books = Book.query.filter(Book.gr_bookid != None).all()
+    #books = Book.query.filter(Book.gr_bookid != None).all()
+    
+    books = Book.query.filter(Book.image_url == None).all()
     
     try:
        totalCount = len(books)
