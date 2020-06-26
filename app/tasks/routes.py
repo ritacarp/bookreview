@@ -11,7 +11,6 @@ import psycopg2
 import os
 import random
 
-
 @bp.route("/launchTask", methods=["GET", "POST"])
 @bp.route("/launchTask/<taskName>", methods=["GET", "POST"])
 @bp.route("/launchTask/<taskName>/<args>", methods=["GET", "POST"])
@@ -30,8 +29,6 @@ def launchTask(taskName="", args=""):
 
     else:
         return "Please provide a task name (/launchTask/<taskName>/)"
-
-
 
 
 
