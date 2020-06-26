@@ -1,2 +1,2 @@
 web: flask db upgrade; flask translate compile; gunicorn bookreview:app
-clock: python clock.py
+worker: rq worker -u $REDIS_URL flask-bookreviews-tasks
