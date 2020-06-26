@@ -27,7 +27,7 @@ def example(intervalInSecods):
 
 
 def task_example(seconds):
-    https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_example/60
+    # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_example/60
     job = get_current_job()
     print(f"Starting task_example with number of seconds {seconds}")
     example(60)
