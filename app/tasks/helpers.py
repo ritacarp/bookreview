@@ -40,14 +40,14 @@ def grUpdateIDByISBN():
     # filter = "%grish%"
     # books = Book.query.filter( Book.author.ilike(filter)).all()
     
-    books = Book.query.filter(Book.grBookID == None).all()
+    books = Book.query.filter(Book.gr_bookid == None).all()
 
     try:
        totalCount = len(books)
     except:
        totalCount = 0
     
-    print(f"grBookID == None:  There are {totalCount} records in the books result set")
+    print(f"gr_bookid == None:  There are {totalCount} records in the books result set")
     if totalCount == 0:
         return
 
@@ -65,9 +65,9 @@ def grUpdateIDByISBN():
         # Update the book record with the grBookID
         if grBookID:
             successCount += 1
-            book.grBookID = grBookID
+            book.gr_bookid = grBookID
             db.session.commit()
-            # print(f"Hurray!!  Updated GR Book ID {grBookID} from ISBN {book.isbn} !!")
+            # print(f"Hurray!!  Updated GR Book ID {book.gr_bookid} from ISBN {book.isbn} !!")
         else:
             failCount += 1
             # print(f"Boo There was no record of ISBN  {book.isbn} in the goodreads database")
@@ -82,7 +82,7 @@ def grUpdateIDByISBN():
 def booksUpdateByGRID():
     # These 2 lines are for testing:  Replace with the real filter
     filter = "%grish%"
-    books = Book.query.filter( and_(Book.author.ilike(filter), Book.grBookID != None)  ).all()
+    books = Book.query.filter( and_(Book.author.ilike(filter), Book.gr_bookid != None)  ).all()
     
     try:
        totalCount = len(books)
@@ -99,17 +99,23 @@ def booksUpdateByGRID():
     count = 0
     successCount = 0
     failCount = 0
-    for row in books:
+    for book in books:
         count += 1
         try:
-            book = grLookupByID(row.grBookID)
-            print(f"booksUpdateByGRID():  book = {book}")
+            grBook = grLookupByID(book.gr_bookid)
+            # print(f"\n\nbooksUpdateByGRID():  book = {grBook}")
+            thisBook = Book.query.get(book.id)
+            print(f"\n\n RITA  booksUpdateByGRID():  book to update = {thisBook}")
+            thisBook.description = grBook.description
+            thisBook.image_url = grBook.image_url
+            thisBook.thumbnail_url = grBook.thumbnail_url
+            db.session.commit()
             successCount += 1
         except:
             failCount += 1
 
         if count % interval == 0:
-            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID ({row.grBookID})")
+            print(f"\n\nbooksUpdateByGRID() {count}: Processing Book ID ({book.gr_bookid})")
 
     print("\n\nTask nbooksUpdateByGRID() Finished Successfully!")
     print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")

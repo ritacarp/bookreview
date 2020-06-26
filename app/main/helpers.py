@@ -28,10 +28,10 @@ def grLookupByID(grID):
         
         try:
            bookIDNode = root.findall("./book/id")
-           grBookID = bookIDNode[0].text
+           gr_bookid = bookIDNode[0].text
         except:
-           grBookID = ""
-        print("grBookID = ", grBookID)
+           gr_bookid = ""
+        print("gr_bookid = ", gr_bookid)
         
         try:
            isbnNode = root.findall("./book/isbn")
@@ -69,12 +69,12 @@ def grLookupByID(grID):
             kindle_asin = ""
         print("kindle_asin = ", kindle_asin)
         
-        bookID = asin
-        if bookID is None or bookID == "":
-            bookID = kindle_asin
-        if bookID is None or bookID == "":
-            bookID = isbn
-        print("bookID = ", bookID)
+        amazon_lookup_id = asin
+        if amazon_lookup_id is None or amazon_lookup_id == "":
+            amazon_lookup_id = kindle_asin
+        if amazon_lookup_id is None or amazon_lookup_id == "":
+            amazon_lookup_id = isbn
+        print("amazon_lookup_id = ", amazon_lookup_id)
 
         try:
             titleNode = root.findall("./book/title")
@@ -170,13 +170,13 @@ def grLookupByID(grID):
 
 
         return {
-            "grBookID": grBookID,
-            "bookID": bookID,
+            "gr_bookid": gr_bookid,
+            "amazon_lookup_id": amazon_lookup_id,
             "isbn": isbn,
             "isbn13": isbn13,
             "asin": asin,
             "kindle_asin": kindle_asin,
-            "bookID": bookID,
+            "amazon_lookup_id": amazon_lookup_id,
             "title": title,
             "description": description,
             "image_url": image_url,

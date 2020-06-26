@@ -48,7 +48,7 @@ def index():
 
         grBookID = randomList[idx]
         book = grLookupByID(grBookID)
-        if book["bookID"]:
+        if book["amazon_lookup_id"]:
            allBooks.append(book)
            bookCount += 1
            if bookCount == imagesPerRow:
@@ -57,13 +57,6 @@ def index():
         # print("Book Count = ", bookCount)
 
     
-    #for bookID in displayList:
-    #   book = grLookupByID(bookID)
-    #  allBooks.append(book)
-    #print("\n\nallBooks = ",allBooks)
-    #for book in allBooks:
-    #    print("\n\nbook = ",book)
-
     return render_template("homepage.html",
                             allBooks=allBooks,
                             imagesPerRow=imagesPerRow
