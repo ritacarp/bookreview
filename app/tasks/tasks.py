@@ -8,7 +8,7 @@ from app import create_app
 app = create_app()
 app.app_context().push()
 
-def task_example(intervalInSecods):
+def example(intervalInSecods):
     try:
         seconds = int(intervalInSecods)
     except ValueError:
@@ -24,6 +24,14 @@ def task_example(intervalInSecods):
     job.meta['progress'] = 100
     job.save_meta()
     print('task_example completed')
+
+
+def task_example(seconds):
+    https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_example/60
+    job = get_current_job()
+    print(f"Starting task_example with number of seconds {seconds}")
+    example(60)
+
 
 
 def task_grLookupByISBN(grISBN):
