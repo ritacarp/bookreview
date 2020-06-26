@@ -63,7 +63,6 @@ class Book(db.Model):
     image_url = db.Column(db.String, nullable=True)
     thumbnail_url = db.Column(db.String, nullable=True)
     description = db.Column(db.Integer, nullable=True) 
-    bookID = db.Column(db.String, nullable=True)
     bookReviews = db.relationship('BookReview', backref='book', lazy=True)
     def __repr__(self):
         return '<Book: ISBN: {}, Title: {}, Author: {}, Year: {}>'.format(self.isbn, self.title, self.author, self.year)    
