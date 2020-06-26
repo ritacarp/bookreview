@@ -62,11 +62,67 @@ class Book(db.Model):
     stars_5 = db.Column(db.Integer, nullable=True) 
     image_url = db.Column(db.String, nullable=True)
     thumbnail_url = db.Column(db.String, nullable=True)
-    description = db.Column(db.Integer, nullable=True)
     amazon_lookup_id = db.Column(db.String, nullable=True)
     bookReviews = db.relationship('BookReview', backref='book', lazy=True)
     def __repr__(self):
         return '<Book: ISBN: {}, Title: {}, Author: {}, Year: {}>'.format(self.isbn, self.title, self.author, self.year)    
+
+    def set_isbn(self, isbn):
+        self.isbn = isbn
+
+    def set_title(self, title):
+        self.title = title
+
+    def set_author(self, author):
+        self.author = author
+
+    def set_year(self, year):
+        self.year = year
+
+    def set_review_count(self, review_count):
+        self.review_count = review_count
+
+    def set_average_score(self, average_score):
+        self.average_score = average_score
+
+    def set_gr_bookid(self, gr_bookid):
+        self.gr_bookid = gr_bookid
+
+    def set_asin(self, asin):
+        self.asin = asin
+
+    def set_kindle_asin(self, kindle_asin):
+        self.kindle_asin = kindle_asin
+
+    def set_isbn13(self, isbn13):
+        self.isbn13 = isbn13
+
+    def set_stars_1(self, stars_1):
+        self.stars_1 = stars_1
+
+    def set_stars_2(self, stars_2):
+        self.stars_2 = stars_2
+
+    def set_stars_3(self, stars_3):
+        self.stars_3 = stars_3
+
+    def set_stars_4(self, stars_4):
+        self.stars_4 = stars_4
+
+    def set_stars_5(self, stars_5):
+        self.stars_5 = stars_5
+
+    def set_image_url(self, image_url):
+        self.image_url = image_url
+
+    def set_thumbnail_url(self, thumbnail_url):
+        self.thumbnail_url = thumbnail_url
+
+    def set_description(self, description):
+        self.description = description
+
+    def set_amazon_lookup_id(self, amazon_lookup_id):
+        self.amazon_lookup_id = amazon_lookup_id
 
  
 class BookReview(db.Model):
