@@ -34,7 +34,8 @@ def grLookupByISBN(grISBN):
 
 def grUpdateIDByISBN():
     # 127.0.0.1/tasks/test_updateBooksGRID
-    # https://flask-bookreviews.herokuapp.com/launchTask/task_grUpdateIDByISBN
+    # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_grUpdateIDByISBN
+    
     print("Starting task grUpdateIDByISBN()")
     
     # These 2 lines are for testing:  Replace with the real filter

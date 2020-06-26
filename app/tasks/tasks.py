@@ -33,7 +33,7 @@ def task_grLookupByISBN(grISBN):
 
 
 def task_grUpdateIDByISBN():
-    # https://flask-bookreviews.herokuapp.com/launchTask/task_grUpdateIDByISBN
+    # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_grUpdateIDByISBN
     
     job = get_current_job()
     print(f"Starting task_grUpdateIDByISBN with no arguments")
