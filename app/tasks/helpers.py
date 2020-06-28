@@ -147,13 +147,9 @@ def booksUpdateByGRID():
 def booksGoogleUpdateByISBN():
     # 127.0.0.1/tasks/test_booksGoogleUpdateByISBN
     # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_booksGoogleUpdateByISBN
-    
-    
-    print("This is 1")
-    
 
-    
-    books = Book.query.filter(Book.image_url == 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png').all()
+    #books = Book.query.filter(Book.image_url == 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png').all()
+    books = Book.query.filter(Book.google_image_url == None).all()
 
     try:
        totalCount = len(books)
@@ -179,7 +175,7 @@ def booksGoogleUpdateByISBN():
             if google_image_url:
                 #print(f"the google image url is {google_image_url}")
                 book.set_google_image_url(google_image_url)
-                book.set_image_url(google_image_url)
+                book.set_homepage_image_url(google_image_url)
                 db.session.commit()
                 successCount += 1
             else:

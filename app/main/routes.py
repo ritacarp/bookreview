@@ -19,7 +19,7 @@ import random
 def index():
     imagesPerRow = 9
     bookList = []
-    books  = Book.query.filter(Book.image_url != None).order_by(desc(Book.average_score)).limit(100).all()
+    books  = Book.query.filter(Book.google_image_url != None).order_by(desc(Book.average_score)).limit(100).all()
     for book in books: 
         bookID = book.id
         bookList.append(bookID)
@@ -27,7 +27,7 @@ def index():
     random.shuffle(randomList)
     print("\n\nbookList = ", str(bookList).strip('[]'))
     print("\n\n1) randomList = ", str(randomList).strip('[]'))
-    displayList = randomList[0:9]
+    displayList = randomList[0:7]
     print("\n\n2) displayList = ", str(displayList).strip('[]'))
     allBooks = Book.query.filter(Book.id.in_(displayList))
     
