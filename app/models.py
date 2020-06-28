@@ -65,6 +65,7 @@ class Book(db.Model):
     description = db.Column(db.String, nullable=True)
     amazon_lookup_id = db.Column(db.String, nullable=True)
     google_image_url = db.Column(db.String, nullable=True)
+    homepage_image_url = db.Column(db.String, nullable=True)
     bookReviews = db.relationship('BookReview', backref='book', lazy=True)
     def __repr__(self):
         return '<Book: ISBN: {}, Title: {}, Author: {}, Year: {}>'.format(self.isbn, self.title, self.author, self.year)    
@@ -155,6 +156,9 @@ class Book(db.Model):
 
     def set_google_image_url(self, google_image_url):
         self.google_image_url = google_image_url
+
+    def set_homepage_image_url(self, homepage_image_url):
+        self.homepage_image_url = homepage_image_url
 
  
 class BookReview(db.Model):
