@@ -57,9 +57,7 @@ def task_updateBooksByGRID():
 
 
 
-
-
-def task_booksGoogleUpdateByISBN()
+def task_booksGoogleUpdateByISBN():
     job = get_current_job()
     print(f"Starting task_booksGoogleUpdateByISBN with no arguments")
     booksGoogleUpdateByISBN()
