@@ -199,3 +199,26 @@ def grLookupByID(grID):
         
     return None
 
+
+def googleLookupByISBN(isbn):
+    """Look up quote for symbol."""
+    # https://docs.python.org/3.4/library/xml.etree.elementtree.html
+
+    # Contact API
+    try:
+        response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}")        
+        response.raise_for_status()
+    except requests.RequestException:        
+        return None
+
+    try:
+        book = response.json()
+        image_url = book["items"][0]["volumeInfo"]["imageLinks"]["smallThumbnail"]
+        return image_url
+
+
+    except (KeyError, TypeError, ValueError):
+        print("An error occurred trying to parse content of response\n\n")
+        return None
+        
+    return None

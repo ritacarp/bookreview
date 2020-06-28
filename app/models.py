@@ -153,6 +153,9 @@ class Book(db.Model):
     def set_amazon_lookup_id(self, amazon_lookup_id):
         self.amazon_lookup_id = amazon_lookup_id
 
+    def set_google_image_url(self, google_image_url):
+        self.google_image_url = google_image_url
+
  
 class BookReview(db.Model):
     __tablename__ = "book_reviews"

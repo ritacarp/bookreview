@@ -4,7 +4,7 @@ from app import db
 from app.models import People, Book, BookReview
 from app.tasks import bp
 # from app.main.helpers import grLookupByID
-from app.tasks.helpers import grUpdateIDByISBN, booksUpdateByGRID
+from app.tasks.helpers import grUpdateIDByISBN, booksUpdateByGRID, booksGoogleUpdateByISBN
 import math
 
 import psycopg2
@@ -86,6 +86,7 @@ def importBooks():
 
     return "Books have been successfully imported!"
 
+
 # 127.0.0.1/tasks/test_updateBooksGRID
 @bp.route("/test_updateBooksGRID", methods=["GET", "POST"])
 def test_updateBooksGRID():
@@ -99,4 +100,13 @@ def test_updateBooksGRID():
 def test_BooksUpdateByGRID():
     print("test_BooksUpdateByGRID(): started helpers.booksUpdateByGRID()")
     booksUpdateByGRID()
-    return "test_BooksUpdateByGRID(): booksUpdateByGRID() Finished Successfully!"
+    return "test_BooksUpdateByGRID(): booksUpdateByGRID() Finished Successfully!"  
+
+
+
+# 127.0.0.1/tasks/test_booksGoogleUpdateByISBN
+@bp.route("/test_booksGoogleUpdateByISBN", methods=["GET", "POST"])
+def test_booksGoogleUpdateByISBN():
+    print("test_googleLookupByISBN(): started helpers.booksUpdateByGRID()")
+    booksGoogleUpdateByISBN()
+    return "test_booksGoogleUpdateByISBN(): booksGoogleUpdateByISBN() Finished Successfully!"

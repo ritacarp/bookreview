@@ -4,7 +4,7 @@ import urllib.parse
 # import xml.etree.ElementTree as ET
 from app.models import Book
 import math
-from app.main.helpers import grLookupByID
+from app.main.helpers import grLookupByID, googleLookupByISBN
 from app import db
 from app.main.helpers import grLookupByID
 from sqlalchemy import and_, or_
@@ -141,6 +141,72 @@ def booksUpdateByGRID():
 
     print("\n\nTask nbooksUpdateByGRID() Finished Successfully!")
     print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
+
+
+
+def booksGoogleUpdateByISBN():
+    # 127.0.0.1/tasks/test_booksGoogleUpdateByISBN
+    # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_booksGoogleUpdateByISBN
+    
+    
+    print("This is 1")
+    
+
+    
+    books = Book.query.filter(Book.image_url == 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png').all()
+
+    try:
+       totalCount = len(books)
+    except:
+       totalCount = 0
+
+
+    print(f"booksGoogleUpdateByISBN():  There are {totalCount} records in the books result set")
+    if totalCount == 0:
+        return
+
+    interval = math.ceil(len(books) / 50)
+
+    count = 0
+    successCount = 0
+    failCount = 0
+    for book in books:
+        count += 1
+        #print(f"\n\n{book}")
+        #print(f"booksGoogleUpdateByISBN(): the book id is {book.id}; the isbn is {book.isbn}")
+        try:
+            google_image_url = googleLookupByISBN(book.isbn)
+            if google_image_url:
+                #print(f"the google image url is {google_image_url}")
+                book.set_google_image_url(google_image_url)
+                book.set_image_url(google_image_url)
+                db.session.commit()
+                successCount += 1
+            else:
+                failCount += 1
+            
+        except:
+            failCount += 1
+            #print(f"There was an error getting google image url")
+            #image_url = None
+
+        if count % interval == 0:
+            print(f"\n\booksGoogleUpdateByISBN() {count}: Processing Book ID ({book.gr_bookid})")
+
+    print("\n\nTask nbooksGoogleUpdateByISBN() Finished Successfully!")
+    print(f"Success Count = {successCount}; Fail Count = {failCount}; Total Count = {totalCount}\n\n")
+
+
+
+    
+
+    
+     
+
+
+
+
+
 
 
 

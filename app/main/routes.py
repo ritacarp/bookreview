@@ -5,21 +5,52 @@ from app.models import People, Book, BookReview
 from app.main import bp
 from app.main.helpers import grLookupByID
 import math
+from sqlalchemy import asc, desc
 
 import psycopg2
 import os
 import random
 
+
+
 @bp.route('/')
 @bp.route('/index')
 
 def index():
+    imagesPerRow = 9
+    bookList = []
+    books  = Book.query.filter(Book.image_url != None).order_by(desc(Book.average_score)).limit(100).all()
+    for book in books: 
+        bookID = book.id
+        bookList.append(bookID)
+    randomList = bookList.copy()
+    random.shuffle(randomList)
+    print("\n\nbookList = ", str(bookList).strip('[]'))
+    print("\n\n1) randomList = ", str(randomList).strip('[]'))
+    displayList = randomList[0:9]
+    print("\n\n2) displayList = ", str(displayList).strip('[]'))
+    allBooks = Book.query.filter(Book.id.in_(displayList))
+    
+    
+    
+    return render_template("homepage.html",
+                            allBooks=allBooks,
+                            imagesPerRow=imagesPerRow
+                            )
+
+
+@bp.route('/Backup')
+@bp.route('/index/Backup')
+
+def indexBackup():
 
     # http://www.datasciencemadesimple.com/strip-lstriprstrip-strip-function-python/
     # To strip off leading zeros - I googled python strip leading zeros
     
     # To shuffle a list
     # https://note.nkmk.me/en/python-random-shuffle/
+    
+    allBooks = []
     
     randomList = grBookList.copy()
     random.shuffle(randomList)
