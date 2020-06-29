@@ -213,7 +213,7 @@ def googleLookupByISBN(isbn):
 
     try:
         book = response.json()
-        image_url = book["items"][0]["volumeInfo"]["imageLinks"]["smallThumbnail"]
+        image_url = book["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"]
         return image_url
 
 

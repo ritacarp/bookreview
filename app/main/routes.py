@@ -19,7 +19,7 @@ import random
 def index():
     imagesPerRow = 9
     bookList = []
-    books  = Book.query.filter(Book.google_image_url != None).order_by(desc(Book.average_score)).limit(100).all()
+    books  = Book.query.filter(Book.image_url != None).order_by(desc(Book.average_score)).limit(100).all()
     for book in books: 
         bookID = book.id
         bookList.append(bookID)

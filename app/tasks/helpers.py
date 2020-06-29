@@ -149,7 +149,7 @@ def booksGoogleUpdateByISBN():
     # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_booksGoogleUpdateByISBN
 
     #books = Book.query.filter(Book.image_url == 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png').all()
-    books = Book.query.filter(Book.google_image_url == None).all()
+    books = Book.query.filter(Book.google_image_url != None).all()
 
     try:
        totalCount = len(books)
