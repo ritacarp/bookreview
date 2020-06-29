@@ -25,6 +25,8 @@
 
                  {% if book["google_image_url"] %}
                      <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["google_image_url"]}}'>
+                 {% else %}
+                     <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
                  {% endif %}
 
           {% if count.value % imagesPerRow.value == 0 %}

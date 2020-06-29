@@ -27,7 +27,7 @@ def index():
     random.shuffle(randomList)
     print("\n\nbookList = ", str(bookList).strip('[]'))
     print("\n\n1) randomList = ", str(randomList).strip('[]'))
-    displayList = randomList[0:7]
+    displayList = randomList[0:8]
     print("\n\n2) displayList = ", str(displayList).strip('[]'))
     allBooks = Book.query.filter(Book.id.in_(displayList))
     
