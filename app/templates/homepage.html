@@ -11,7 +11,7 @@
         <p>{{book.author}}<p>
         <p>{{book.amazon_lookup_id}}<p>
         #}
-        {% set imagesPerRow = namespace(value=9) %}
+        {% set imagesPerRow = namespace(value=10) %}
 
 
         {% set count = namespace(value=0) %}
@@ -20,14 +20,30 @@
 
            {% if count.value % imagesPerRow.value == 1 %}
            <div class="card-body">
-              <div class="row" style="padding-right:10px">
+              <div class="row" style="padding-right:10px;">
            {% endif %}
 
+
+<span>
+
                  {% if book["google_image_url"] %}
-                     <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["google_image_url"]}}'>
+                     <img height="140" data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["google_image_url"]}}'>
                  {% else %}
-                     <img data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
+                     <img  height="140"  data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
                  {% endif %}
+ <p class="caption">
+<span id="star_1" class="star">&#9734;</span>
+<span id="star_2" class="star">&#9734;</span>
+<span id="star_3" class="star">&#9734;</span>
+<span id="star_4" class="star">&#9734;</span>
+<span id="star_5" class="star">&#9734;</span>
+
+ </p>
+
+</span>
+
+
+
 
           {% if count.value % imagesPerRow.value == 0 %}
               </div>
