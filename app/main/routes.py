@@ -31,8 +31,23 @@ def index():
     print("\n\n2) displayList = ", str(displayList).strip('[]'))
     allBooks = Book.query.filter(Book.id.in_(displayList))
     
-    
-    
+    for book in allBooks:
+        averageScore = book.average_score
+        if averageScore == 5.0:
+            scorePercent = 100
+            yellowStars = 5
+            paritalYellowStars = 0
+            clearStars = 0
+        else:
+            scorePercent =  ((averageScore / 5) * 100);
+            yellowStars = math.floor(averageScore)
+            paritalYellowStars = averageScore - yellowStars
+            clearStars = 5 - (yellowStars + 1)
+         
+        book.scorePercent = scorePercent
+
+
+
     return render_template("homepage.html",
                             allBooks=allBooks,
                             imagesPerRow=imagesPerRow

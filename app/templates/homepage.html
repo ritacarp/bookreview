@@ -31,17 +31,21 @@
                  {% else %}
                      <img  height="140"  data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
                  {% endif %}
- <p class="caption">
-<span id="star_1" class="star">&#9734;</span>
-<span id="star_2" class="star">&#9734;</span>
-<span id="star_3" class="star">&#9734;</span>
-<span id="star_4" class="star">&#9734;</span>
-<span id="star_5" class="star">&#9734;</span>
 
- </p>
+
+
+<div>
+<div class="homerating">
+    <div class="homerating-upper" style="width: {{book['scorePercent']}}%;">
+        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+    </div>
+    <div class="homerating-lower">
+        <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
+    </div>
+</div>
+</div>
 
 </span>
-
 
 
 

@@ -1,0 +1,108 @@
+    .box{
+        position: relative;
+        display: inline-block; /* Make the width of box same as image */
+    }
+    .box .text{
+        position: absolute;
+        z-index: 999;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        top: 10%; /* Adjust this value to move the positioned div up and down */
+        text-align: center;
+        width: 80%; /* Set the width of the positioned div */
+    }
+
+.top-left {
+  position: absolute;
+  top: 3px;
+  left: 35px;
+}
+
+.polaroid {
+  width: 320px;
+  padding: 10px 10px 20px 10px;
+  border: 1px solid #BFBFBF;
+  background-color: white;
+  box-shadow: 10px 10px 5px #aaaaaa;
+}
+
+
+.smallPolaroid {
+  height: 194px;
+}
+
+.dramatic {
+  display: none;
+}
+
+
+
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  text-align: center;
+  font-size: 30px;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+.rating > span:hover,
+.rating > span:hover ~ span {
+  color: transparent;
+}
+
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   width: 1.1em;
+   left: 0;
+   color: gold;
+}
+
+.yellowStar {
+   color: gold;
+   width: 1.1em;
+}
+
+.blackStar{
+   color: black;
+   width: 1.1em;
+}
+
+
+
+
+.homerating {
+  display: inline-block;
+  unicode-bidi: bidi-override;
+  color: gold;
+  margin: 0;
+  position: relative;
+  padding: 0;
+}
+
+.homerating-upper {
+  color: gold;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.homerating-lower {
+  padding: 0;
+  display: flex;
+  z-index: 0;
+}
+
+
+
+
+
