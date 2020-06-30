@@ -54,60 +54,34 @@ def index():
                             )
 
 
-@bp.route('/Backup')
-@bp.route('/index/Backup')
 
-def indexBackup():
+@bp.route('/book/')
+@bp.route('/book/<bookID>')
+def book(bookID=""):
+    if not bookID:
+        flash('Book ID is required for to view a book')
+        return redirect(url_for('main.index'))
+                            
+    book = Book.query.get(bookID)
 
-    # http://www.datasciencemadesimple.com/strip-lstriprstrip-strip-function-python/
-    # To strip off leading zeros - I googled python strip leading zeros
-    
-    # To shuffle a list
-    # https://note.nkmk.me/en/python-random-shuffle/
-    
-    allBooks = []
-    
-    randomList = grBookList.copy()
-    random.shuffle(randomList)
-    # print("\n\ngrBookList = ", str(grBookList).strip('[]'))
-    #  print("\n\n1) randomList = ", str(randomList).strip('[]'))
-    
-    displayList = randomList[0:10]
-    # print("\n\n2) displayList = ", str(displayList).strip('[]'))
-    
-
-    allBooks = []
-    
-    idx = -1
-    bookCount = 0
-    loopCount = 0
-    imagesPerRow = 9
-    maxLoops = len(randomList)
-    while True:
-
-        loopCount += 1
-        if loopCount > maxLoops:
-            break
-
-        idx += 1
-        # print("idx = ", idx, "Loop Count = ", loopCount)
-
-        grBookID = randomList[idx]
-        book = grLookupByID(grBookID)
-        if book["amazon_lookup_id"]:
-           allBooks.append(book)
-           bookCount += 1
-           if bookCount == imagesPerRow:
-               break
-
-        # print("Book Count = ", bookCount)
+    averageScore = book.average_score
+    if averageScore == 5.0:
+        scorePercent = 100
+        yellowStars = 5
+        paritalYellowStars = 0
+        clearStars = 0
+    else:
+        scorePercent =  ((averageScore / 5) * 100);
+        yellowStars = math.floor(averageScore)
+        paritalYellowStars = averageScore - yellowStars
+        clearStars = 5 - (yellowStars + 1)
+         
+    book.scorePercent = scorePercent
+    book.f_scorePercent = f"{scorePercent:,.2f}"
 
     
-    return render_template("homepage.html",
-                            allBooks=allBooks,
-                            imagesPerRow=imagesPerRow
-                            )
-    
+    return render_template("book.html",
+                            book=book)
 
     
 

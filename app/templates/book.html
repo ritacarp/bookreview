@@ -1,0 +1,107 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    One Book
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container-fluid pt-3">
+
+      <div class="row">
+
+        <div class="col-sm-4">
+
+
+<span><img class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;"></span>
+
+
+<div>
+  <div class="homerating" >
+    <span class="homerating-upper" style="width: {{book['scorePercent']}}%;">
+        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+    </span>
+    <span class="homerating-lower">
+        <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
+    </span>
+
+  </div>
+</div>
+
+{{book['f_scorePercent']}} out of {{book['review_count']}} ratings.
+
+<span>
+
+<div>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span> {{book['stars_5']}} ratings.
+</div>
+
+<div>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9734;</span> {{book['stars_4']}} ratings.
+</div>
+
+<div>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9734;</span>
+<span class="homerating">&#9734;</span> {{book['stars_3']}} ratings.
+</div>
+
+<div>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9734;</span>
+<span class="homerating">&#9734;</span>
+<span class="homerating">&#9734;</span> {{book['stars_2']}} ratings.
+</div>
+
+<div>
+<span class="homerating">&#9733;</span>
+<span class="homerating">&#9734;</span>
+<span class="homerating">&#9734;</span>
+<span class="homerating">&#9734;</span>
+<span class="homerating">&#9734;</span> {{book['stars_2']}} ratings.
+</div>
+
+</span>
+
+
+        </div>
+
+
+
+
+       <div class="col-sm-8">
+Book: {{book["title"]}}<br>
+Author:  {{book["author"]}}<br>
+
+
+Description:  {{book["description"] | safe}}<br>
+       </div>
+
+      </div>
+
+    </div>
+
+
+ <script type="text/javascript">
+  $('.bookButton').on('click', function () {
+     var bookID = $(this).attr("data-amazonLookupID" )
+     var url = "https://www.amazon.com/dp/" + bookID
+     var win = window.open(url, '_blank');
+
+  });
+ </script>
+
+{% endblock %}

@@ -27,14 +27,14 @@
 <span>
 
                  {% if book["google_image_url"] %}
-                     <img height="140" data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["google_image_url"]}}'>
+                     <img height="140" data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["id"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["google_image_url"]}}'>
                  {% else %}
-                     <img  height="140"  data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
+                     <img  height="140"  data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["id"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
                  {% endif %}
 
 
 
-<div>
+<div style="text-align:center">
 <div class="homerating">
     <div class="homerating-upper" style="width: {{book['scorePercent']}}%;">
         <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
@@ -65,12 +65,22 @@
   });
 
 
+  /*
+  $('.bookButton').on('click', function () {
+     var thisID = $(this).attr("id" )
+     var handle = "#" + thisID
+     var bookID = $(handle).attr("data-amazonLookupID" )
+     var url = "https://www.amazon.com/dp/" + bookID
+     var win = window.open(url, '_blank');
+
+  });
+  */
 
   $('.bookButton').on('click', function () {
      var thisID = $(this).attr("id" )
      var handle = "#" + thisID
      var bookID = $(handle).attr("data-bookID" )
-     var url = "https://www.amazon.com/dp/" + bookID
+     url = "{{ url_for('main.book', bookID=bookID) }}/" + bookID
      var win = window.open(url, '_blank');
 
   });
