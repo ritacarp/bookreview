@@ -1,7 +1,9 @@
 from datetime import datetime
-from app import db
-from sqlalchemy_utils import force_instant_defaults
+from app import db, login
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy_utils import force_instant_defaults
+
 
 #from flask_sqlalchemy import SQLAlchemy
 #db = SQLAlchemy()
@@ -22,7 +24,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 #             db.ForeignKey('people.id'), or, more generally (TABLE_NAME.COLUMN_NAME)
 
 
-class People(db.Model):
+class People(UserMixin, db.Model):
     __tablename__ = "people"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -39,6 +41,10 @@ class People(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.hash, password)
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 class Book(db.Model):

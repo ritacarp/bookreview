@@ -8,12 +8,11 @@ from app.auth.forms import LoginForm, RegisterForm
 from app.models import People
 
 
-
-
-    
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     form = LoginForm()
     
     # Either if request.method == "POST" OR form.validate_on_submit(): works
@@ -23,25 +22,37 @@ def login():
     # if request.method == "POST":
     
     if form.validate_on_submit():
-        user = Person.query.filter_by(username=form.username.data).first()
+        user = People.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash(_('Invalid username or password'))
             return redirect(url_for('auth.login'))
 
-        # login_user(user, remember=form.remember_me.data)
-        # next_page = request.args.get('next')
-        # if not next_page or url_parse(next_page).netloc != '':
-        #     next_page = url_for('main.index')
-        # return redirect(next_page)
+        # These next 3 lines are for testing
+        # flash('Login requested for user {}, remember_me={}'.format(
+        #     form.username.data, form.remember_me.data))
+        # return redirect(url_for('main.index'))
+
+        login_user(user, remember=form.remember_me.data)        
+        next_page = request.args.get('next')
+        
+        # For testing
+        if next_page:
+           print(f"next_page = {next_page};  url_parse(next_page).netloc = {url_parse(next_page).netloc}")
+        
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('main.index')
+        return redirect(next_page)
 
 
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect(url_for('main.index'))
+        
     return render_template('auth/login.html', title='Sign In', form=form)
 
 
 
+@bp.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -62,9 +73,9 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Register requested for user {}, firstName={}, lastName={}'.format(
-            form.username.data, form.firstName.data, form.lastName.data))
-        # flash(_('Congratulations, you are now a registered user!'))
+        #flash('Register requested for user {}, firstName={}, lastName={}'.format(
+        #    form.username.data, form.firstName.data, form.lastName.data))
+        flash(_('Congratulations, you are now a registered user!'))
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 

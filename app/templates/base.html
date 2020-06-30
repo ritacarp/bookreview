@@ -39,20 +39,21 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar">
-                {% if session.user_id %}
+
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.search') }}">Search</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.review') }}">Review</a></li>
                     </ul>
+                    {% if not current_user.is_anonymous %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
                     </ul>
-                {% else %}
+                    {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a></li>
                     </ul>
-                {% endif %}
+                    {% endif %}
             </div>
         </nav>
 

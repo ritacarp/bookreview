@@ -6,7 +6,6 @@ from app.models import Book
 import math
 from app.main.helpers import grLookupByID, googleLookupByISBN
 from app import db
-from app.main.helpers import grLookupByID
 from sqlalchemy import and_, or_
 
 

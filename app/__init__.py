@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from config import Config
+from flask_login import LoginManager
 
 from redis import Redis
 import rq
@@ -35,6 +36,10 @@ import rq
 
 db = SQLAlchemy()
 migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
+login.login_message = 'Please log in to access this page.'
+
 bootstrap = Bootstrap()
 
 grBookList = [3,2767052,2657,5907,5,6,1885,136251,5470,15881,7613,34,6148028,4671,48855,100915,7624,5107,968,77203,2429135,13496,11870085,10210,18135,17470674,19063,930,4667024,1934,3636,960,386162,18619684,5129,21480930,24178,157993,6185,2956,18405,33574273,10917]
@@ -48,6 +53,7 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     migrate.init_app(app, db)
+    login.init_app(app)
     bootstrap.init_app(app)
 
     from app.errors import bp as errors_bp

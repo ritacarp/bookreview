@@ -30,6 +30,21 @@
 
         </div>
 
+
+        <div class="form-group">
+            {{ form.firstName(size="32", autofocus=true, placeholder="First Name", class="form-control form-control-sm") }}
+            {% for error in form.firstName.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.lastName(size="32", autofocus=true, placeholder="Last Name", class="form-control form-control-sm") }}
+            {% for error in form.lastName.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
         <div class="form-group">
             {{ form.password(size="32", placeholder="Password", class="form-control form-control-sm") }}
             {% for error in form.password.errors %}
@@ -54,7 +69,9 @@
          <ul>
 <li> <small>Must be a minimum of 8 characters.</small></li>
 <li> <small>Must have at least one numeral.</small></li>
-<li> <small>Must have at least one alphabetic letter.</small></li>
+<li> <small>Must have at least one uppercase letter.</small></li>
+<li> <small>Must have at least one lowercase letter.</small></li>
+<li> <small>Must have at least one of the symbols ($ ! # % _~).</small></li>
 <li><small>Passwords must match.</small></li>
  </ul>
       </div>
