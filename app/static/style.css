@@ -80,6 +80,9 @@
   display: inline-block;
   unicode-bidi: bidi-override;
   color: gold;
+  font-size: 15px;
+  height: 10px;
+  width: auto;
   margin: 0;
   position: relative;
   padding: 0;
