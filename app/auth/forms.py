@@ -19,10 +19,14 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField('Register')
 
-    def validate_username(self, username):
-        person = People.query.filter_by(username=username.data).first()
+    def validate_username(self, field):
+        person = People.query.filter_by(username=field.data).first()
         if person is not None:
-            raise ValidationError('Please use a different username.')
+            note = 'This username is already in use.'
+            field.errors.append(note)
+            note = 'Please select a different username.'
+            field.errors.append(note)
+            #raise ValidationError(username.errors)
 
 
     def validate_email(form, field):
@@ -31,9 +35,13 @@ class RegisterForm(FlaskForm):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
         if(re.search(regex,field.data)):  
-            person = People.query.filter_by(email=email.data).first()
+            person = People.query.filter_by(email=field.data).first()
             if person is not None:
-                raise ValidationError(_('Please use a different email address.'))
+                note = 'This email address is already in use.'
+                field.errors.append(note)
+                note = 'Please use a different email address.'
+                field.errors.append(note)
+                #raise ValidationError(email.errors)
         else:  
             raise ValidationError('Email address is not valid')
 

@@ -25,10 +25,10 @@ def index():
         bookList.append(bookID)
     randomList = bookList.copy()
     random.shuffle(randomList)
-    print("\n\nbookList = ", str(bookList).strip('[]'))
-    print("\n\n1) randomList = ", str(randomList).strip('[]'))
+    # print("\n\nbookList = ", str(bookList).strip('[]'))
+    # print("\n\n1) randomList = ", str(randomList).strip('[]'))
     displayList = randomList[0:imagesPerRow]
-    print("\n\n2) displayList = ", str(displayList).strip('[]'))
+    # print("\n\n2) displayList = ", str(displayList).strip('[]'))
     allBooks = Book.query.filter(Book.id.in_(displayList))
     
     for book in allBooks:
@@ -55,33 +55,47 @@ def index():
 
 
 
-@bp.route('/book/')
-@bp.route('/book/<bookID>')
+@bp.route('/book', methods=["GET", "POST"])
+@bp.route('/book/<bookID>', methods=["GET", "POST"])
 def book(bookID=""):
-    if not bookID:
-        flash('Book ID is required for to view a book')
-        return redirect(url_for('main.index'))
+    if request.method == "GET":
+        if not bookID:
+            flash('Book ID is required for to view a book')
+            return redirect(url_for('main.index'))
                             
-    book = Book.query.get(bookID)
+        book = Book.query.get(bookID)
 
-    averageScore = book.average_score
-    if averageScore == 5.0:
-        scorePercent = 100
-        yellowStars = 5
-        paritalYellowStars = 0
-        clearStars = 0
-    else:
-        scorePercent =  ((averageScore / 5) * 100);
-        yellowStars = math.floor(averageScore)
-        paritalYellowStars = averageScore - yellowStars
-        clearStars = 5 - (yellowStars + 1)
+        averageScore = book.average_score
+        if averageScore == 5.0:
+            scorePercent = 100
+            yellowStars = 5
+            paritalYellowStars = 0
+            clearStars = 0
+        else:
+            scorePercent =  ((averageScore / 5) * 100);
+            yellowStars = math.floor(averageScore)
+            paritalYellowStars = averageScore - yellowStars
+            clearStars = 5 - (yellowStars + 1)
          
-    book.scorePercent = scorePercent
-    book.f_scorePercent = f"{scorePercent:,.2f}"
+        book.scorePercent = scorePercent
+        book.f_scorePercent = f"{scorePercent:,.2f}"
 
     
-    return render_template("book.html",
-                            book=book)
+        return render_template("book.html",
+                                book=book,
+                                bookID=bookID)
+
+    review = request.form.get("review")
+    
+    review = f"<p style='white-space: pre-line'>{review}</p>"
+    score = request.form.get("score")
+    userName = current_user.username
+    userID = current_user.id
+    bookID = request.form.get("bookID")
+    ##return f"Thank you, {userName} / {userID}  for your review of book {bookID} {review}"
+    flash(f"Thank you, {userName} / {userID} for your review of {score} stars for book {bookID} {review}", "success")
+    return redirect(url_for('main.index'))
+
 
     
 
@@ -91,9 +105,24 @@ def search():
     # """Search for books""
     return "Search for books"
     
-@bp.route("/review", methods=["GET", "POST"])
-def review():
-    # """Review a Book""
-    return "Review a Book"
+
+#@bp.route("/review", methods=["GET", "POST"])
+#@login_required
+#def review():
+#    # """Review a Book""
     
+#    #flash("This is message 1.<br>This is message 2.<br>This is message 3.", "success")  
+#    if request.method == "GET":
+#       return render_template("review.html")
+    
+#    review = request.form.get("review")
+    
+#    review = f"<p style='white-space: pre-line'>{review}</p>"
+#    score = request.form.get("score")
+#    userName = current_user.username
+#    userID = current_user.id
+#    bookID = request.form.get("bookID")
+#    ##return f"Thank you, {userName} / {userID}  for your review of book {bookID} {review}"
+#    flash(f"Thank you, {userName} / {userID} for your review of {score} stars for book {bookID} {review}", "success")
+#    return redirect(url_for('main.index'))
 

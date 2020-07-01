@@ -80,14 +80,47 @@
         </div>
 
 
-
-
        <div class="col-sm-8">
 Book: {{book["title"]}}<br>
 Author:  {{book["author"]}}<br>
 
+<div>
+<div id="description" class="expandable" style="padding-top:10px">
+{{book["description"] | safe}}
+</div>
+<a href="javascript:void(0)" id="show_more_less"><span id="lessMore">more ...</span></a>
+<div>
 
-Description:  {{book["description"] | safe}}<br>
+
+{% if current_user.is_anonymous %}
+
+<div style="padding-top:10px">please <a href="{{ url_for('auth.login') }}?next=/book/{{bookID}}">log in</a> to leave a review</div>
+
+{% else %}
+<form name=reviewForm id=reviewForm method="post" action="{{url_for('main.book')}}">
+<input type="hidden" name="bookID" id="bookID" value="{{bookID}}">
+<input type="hidden" name="score" id="score" value="">
+
+<div class="rating">
+<span id="star_1" class="star">&#9734;</span>
+<span id="star_2" class="star">&#9734;</span>
+<span id="star_3" class="star">&#9734;</span>
+<span id="star_4" class="star">&#9734;</span>
+<span id="star_5" class="star">&#9734;</span>
+</div>
+
+
+<div class="form-group green-border-focus">
+  <label for="review">Colorful border for review on :focus state</label>
+  <textarea class="form-control review" style="white-space: pre-wrap; "name="review" id="review" rows="3" ></textarea>
+</div>
+<button type="submit" class="btn btn-primary mb-2">Rate this book</button>
+</form>
+{% endif %}
+
+
+
+
        </div>
 
       </div>
@@ -102,6 +135,61 @@ Description:  {{book["description"] | safe}}<br>
      var win = window.open(url, '_blank');
 
   });
+
+
+       $('.star').on('click', function () {
+       thisID = $(this).attr("id" )
+
+
+       //alert("Star_" + thisID + " was clicked")
+
+       nbrOfYellowStars = thisID.replace("star_", "");
+       nbrOfClearStars = 5 - nbrOfYellowStars
+
+
+       for (i = 5; i >= nbrOfYellowStars; i--) {
+          //alert("Star_:" + i + " is yellow" )
+          handle = "#" + "star_" + i
+          $(handle).html("&#9733;" )
+          $(handle).removeClass("clearStar" )
+          $(handle).addClass("yellowStar" )
+
+          next = i-1;
+         }
+
+
+       for (i = next; i >= 1; i--) {
+          //alert("Star_:" + i + " is clear" )
+          handle = "#" + "star_" + i
+          $(handle).html("&#9734;" )
+          $(handle).removeClass("yellowStar" )
+          $(handle).addClass("clearStar" )
+       }
+
+       rating = 5 - nbrOfYellowStars
+       rating = rating + 1
+       //alert("Rating is " + rating)
+       $("input#score").val(rating)
+
+
+     });
+
+
+
+$("#show_more_less").on("click", function() {
+  if ($("#description" ).hasClass( "full_height" )) {
+      $("#description").removeClass("full_height");
+      $("#lessMore").text("more ...")
+  }
+  else {
+      $("#description").addClass("full_height");
+      $("#lessMore").text("less ...")
+  }
+});
+
+
+
+
  </script>
 
 {% endblock %}

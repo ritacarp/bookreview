@@ -37,6 +37,20 @@
 }
 
 
+.form-control:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.2rem rgba(252, 202, 3, 0.25);
+    } 
+
+
+.expandable {
+  height: 2.00em;
+  width:auto;
+  overflow: hidden;
+} 
+.full_height {
+  height: auto;
+}
 
 .rating {
   unicode-bidi: bidi-override;

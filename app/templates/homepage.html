@@ -81,7 +81,7 @@
      var handle = "#" + thisID
      var bookID = $(handle).attr("data-bookID" )
      url = "{{ url_for('main.book', bookID=bookID) }}/" + bookID
-     var win = window.open(url, '_blank');
+     var win = window.open(url,"_self");
 
   });
 

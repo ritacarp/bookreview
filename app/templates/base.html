@@ -42,7 +42,7 @@
 
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.search') }}">Search</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.review') }}">Review</a></li>
+                        <input type = "text" name="search" id="search" value="">
                     </ul>
                     {% if not current_user.is_anonymous %}
                     <ul class="navbar-nav ml-auto mt-2">
@@ -67,7 +67,7 @@
         {% endif %}
         -->
 
-
+        <!---
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -77,6 +77,22 @@
         </ul>
         {% endif %}
         {% endwith %}
+        --->
+
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible text-center fade show" role="alert">
+                <span>{{ message | safe }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
 
         <main class="container p-6">

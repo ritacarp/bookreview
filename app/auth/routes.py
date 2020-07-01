@@ -11,7 +11,7 @@ from app.models import People
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
     form = LoginForm()
     
@@ -24,7 +24,7 @@ def login():
     if form.validate_on_submit():
         user = People.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash(_('Invalid username or password'))
+            flash('Invalid username or password',"danger")
             return redirect(url_for('auth.login'))
 
         # These next 3 lines are for testing
@@ -35,12 +35,15 @@ def login():
         login_user(user, remember=form.remember_me.data)        
         next_page = request.args.get('next')
         
-        # For testing
-        if next_page:
-           print(f"next_page = {next_page};  url_parse(next_page).netloc = {url_parse(next_page).netloc}")
+        #print(f"\n\nlogin:  next_page = {next_page}")
         
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('main.index')
+        # For testing
+        #if next_page:
+        #   print(f"\n\nnext_page = {next_page};  url_parse(next_page).netloc = {url_parse(next_page).netloc}")
+        
+        #if not next_page or url_parse(next_page).netloc != '':
+        #    next_page = url_for('main.index')
+        
         return redirect(next_page)
 
 
@@ -52,7 +55,7 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -60,7 +63,10 @@ def register():
     # """Register user"""
     # https://flask.palletsprojects.com/en/1.1.x/patterns/wtforms/
     
+    
+    # Both of these lines work - I am using the fist form
     form = RegisterForm()
+    #form = RegisterForm(request.form)
 
     # Either if request.method == "POST" OR form.validate_on_submit(): works
     # The form.validate_on_submit() method does all the form processing work.
@@ -69,13 +75,13 @@ def register():
     # if request.method == "POST":
 
     if form.validate_on_submit():
-        user = Person(username=form.username.data, email=form.email.data, comments=form.password.data)
+        user = People(username=form.username.data, email=form.email.data, comments=form.password.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         #flash('Register requested for user {}, firstName={}, lastName={}'.format(
         #    form.username.data, form.firstName.data, form.lastName.data))
-        flash(_('Congratulations, you are now a registered user!'))
+        flash('Congratulations, you are now a registered user!<br>Please Log In.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 
