@@ -309,7 +309,11 @@ click <label for="reviewsToggle" style="cursor: pointer;">here</label> for revie
 <div>
 
 
+{% if user_review != "" %}
 <span id="yourReviewEdit" class="label">edit</span> your review
+{% else %}
+<span id="yourReviewEdit" class="label">add</span> a review
+{% endif %}
 
 <dialog id="yourReviewDialog" style="background: #F5F5F5;" data-isOpen='closed'>
   <div class="label" style="text-align:right;background: #F5F5F5;"><label id="yourReviewClose" for="yourReviewToggle" style="background-color: #F5F5F5;">close</label></div>
