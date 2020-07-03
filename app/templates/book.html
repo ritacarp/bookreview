@@ -14,10 +14,27 @@
 
         <div class="col-sm-4">
 
+<!---
+<span>
+<table>
+  <tr>
+    <td>
+      <img class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;">
+    </td>
+    <td>
+      <div>{{book["title"]}}</div>
+      <div style="margin-top:3px;margin-bottom:5px;">by {{book["author"]}}</div>
+    </td>
+  </tr>
+</table>
+</span>
+--->
 
-<span><img class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;"></span>
-
-
+<div class="row" style="margin-left:1px">
+   <img class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;">
+   <span style="margin-left:5px">
+         <div>{{book["title"]}}</div>
+         <div style="margin-top:3px;margin-bottom:5px;">by {{book["author"]}}</div>
 <div>
   <div class="homerating" >
     <span class="homerating-upper" style="width: {{book['scorePercent']}}%;">
@@ -29,17 +46,34 @@
 
   </div>
 </div>
+   </span>
+</div>
 
-{{book['f_scorePercent']}} out of {{book['review_count']}} ratings.
+<!---
+<div>
+  <div class="homerating" >
+    <span class="homerating-upper" style="width: {{book['scorePercent']}}%;">
+        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+    </span>
+    <span class="homerating-lower">
+        <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
+    </span>
+
+  </div>
+</div>
+--->
+
+{{book['scorePercent'] | pct}}% out of {{book['ratings_count'] | formatByLocale}} ratings.
 
 <span>
 
 <div>
+
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
-<span class="homerating">&#9733;</span> {{book['stars_5']}} ratings.
+<span class="homerating">&#9733;</span> {{ ((book['stars_5'] / book['ratings_count']) * 100) | pct }}%
 </div>
 
 <div>
@@ -47,7 +81,7 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
-<span class="homerating">&#9734;</span> {{book['stars_4']}} ratings.
+<span class="homerating">&#9734;</span> {{ ((book['stars_4'] / book['ratings_count']) * 100) | pct }}%
 </div>
 
 <div>
@@ -55,7 +89,7 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9734;</span>
-<span class="homerating">&#9734;</span> {{book['stars_3']}} ratings.
+<span class="homerating">&#9734;</span> {{ ((book['stars_3'] / book['ratings_count']) * 100) | pct }}%
 </div>
 
 <div>
@@ -63,7 +97,7 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9734;</span>
 <span class="homerating">&#9734;</span>
-<span class="homerating">&#9734;</span> {{book['stars_2']}} ratings.
+<span class="homerating">&#9734;</span> {{ ((book['stars_2'] / book['ratings_count']) * 100) | pct }}%
 </div>
 
 <div>
@@ -71,7 +105,7 @@
 <span class="homerating">&#9734;</span>
 <span class="homerating">&#9734;</span>
 <span class="homerating">&#9734;</span>
-<span class="homerating">&#9734;</span> {{book['stars_2']}} ratings.
+<span class="homerating">&#9734;</span> {{ ((book['stars_1'] / book['ratings_count']) * 100) | pct }}%
 </div>
 
 </span>
@@ -82,8 +116,10 @@
 
        <div class="col-sm-8">
 
+<!--
 <div>book: {{book["title"]}}</div>
 <div style="margin-top:3px;margin-bottom:5px;">author:  {{book["author"]}}</div>
+-->
 
 <!--
 <div>
@@ -169,10 +205,41 @@ click <label for="reviewsToggle" style="cursor: pointer;">here</label> for revie
 <div style="margin-top:-5px">please <a href="{{ url_for('auth.login') }}?next=/book/{{bookID}}"  class="login">log in</a> to leave a review</div>
 
 {% else %}
+
+{% if user_review != "" %}
+   Your Rating:
+   {% for i in range(user_score) %}
+      <span style="color:gold">&#9733;</span>
+   {% endfor %}
+
+
+   {{user_review | safe }}
+
+{% endif %}
+
+
+
+<!-- START: NEW DIALOG FORM -->
+
+<div>
+
+
+<span id="yourReviewEdit" class="label">edit</span> your review
+
+<dialog id="yourReviewDialog" style="background: #F5F5F5;" data-isOpen='closed'>
+  <div class="label" style="text-align:right;background: #F5F5F5;"><label id="yourReviewClose" for="yourReviewToggle" style="background-color: #F5F5F5;">close</label></div>
+  <div>
+
+
+
 <div>
 <form name=reviewForm id=reviewForm method="post" action="{{url_for('main.book')}}">
 <input type="hidden" name="bookID" id="bookID" value="{{bookID}}">
 <input type="hidden" name="score" id="score" value="">
+
+
+
+<div class="form-group green-border-focus">
 
 <div class="rating">
 <span id="star_1" class="star">&#9734;</span>
@@ -182,14 +249,56 @@ click <label for="reviewsToggle" style="cursor: pointer;">here</label> for revie
 <span id="star_5" class="star">&#9734;</span>
 </div>
 
-
-<div class="form-group green-border-focus">
-  <label for="review">Colorful border for review on :focus state</label>
-  <textarea class="form-control review" style="white-space: pre-wrap; "name="review" id="review" rows="3" ></textarea>
+  <textarea class="form-control review" style="white-space: pre-wrap; "name="review" id="review" rows="3"></textarea>
 </div>
 <button type="submit" class="btn btn-primary mb-2">Rate this book</button>
 </form>
 </div>
+
+
+
+
+
+  </div>
+
+</dialog>
+
+</div>
+
+<!-- END: NEW DIALOG FORM -->
+
+
+
+<!-- START: ORIGINAL SAVED FORM -->
+<!--
+<div>
+<form name=reviewForm id=reviewForm method="post" action="{{url_for('main.book')}}">
+<input type="hidden" name="bookID" id="bookID" value="{{bookID}}">
+<input type="hidden" name="score" id="score" value="">
+
+
+
+<div class="form-group green-border-focus">
+  <label for="review" style="color:black">Edit Your Review</label>
+
+<div class="rating">
+<span id="star_1" class="star">&#9734;</span>
+<span id="star_2" class="star">&#9734;</span>
+<span id="star_3" class="star">&#9734;</span>
+<span id="star_4" class="star">&#9734;</span>
+<span id="star_5" class="star">&#9734;</span>
+</div>
+
+  <textarea class="form-control review" style="white-space: pre-wrap; "name="review" id="review" rows="3"></textarea>
+</div>
+<button type="submit" class="btn btn-primary mb-2">Rate this book</button>
+</form>
+</div>
+-->
+<!-- END: ORIGINAL SAVED FORM -->
+
+
+
 {% endif %}
 
 
@@ -271,6 +380,50 @@ $("#show_more_less").on("click", function() {
       $("#lessMore").text("less ...")
   }
 });
+
+
+$( "#yourReviewEdit" ).click(function() {
+  //$('#yourReviewDialog').attr("open", "open");
+
+  var isOpen = $('#yourReviewDialog').attr("data-isOpen" )
+
+
+  /*
+  if ($('#yourReviewEdit').attr('open') !== undefined) {
+     alert("the form is open, close the form")
+     $('#yourReviewDialog').removeAttr("open");
+  } else {
+     alert("the form is closed, open the form")
+     $('#yourReviewDialog').attr("open", "open");
+     alert("the value of the open attribute is " + $('#yourReviewDialog').attr("open") )
+  }
+  */
+
+
+
+  if (isOpen == "open") {
+     $('#yourReviewDialog').removeAttr("open");
+     $('#yourReviewDialog').attr("data-isOpen", "closed");
+
+  } else {
+
+     $('#yourReviewDialog').attr("open", "open");
+     $('#yourReviewDialog').attr("data-isOpen", "open");
+
+  }
+
+
+
+
+
+});
+
+$( "#yourReviewClose" ).click(function() {
+  $('#yourReviewDialog').removeAttr("open");
+
+});
+
+
 
 
  </script>

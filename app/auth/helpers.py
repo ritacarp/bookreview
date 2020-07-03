@@ -67,18 +67,6 @@ def lookup(symbol):
         return None
 
 
-def usd(value):
-    """Format value as USD."""
-    return f"${value:,.2f}"
-
-
-def stringSlice(source,charater,position):
-    """ Return some part of a string."""
-    """ Example: stringSlice(".", 0, 1) """
-    value = source.split(charater)[position]
-    return f"{value}"
-
-
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file

@@ -65,6 +65,20 @@ def book(bookID=""):
             return redirect(url_for('main.index'))
                             
         book = Book.query.get(bookID)
+        
+        user_review = ""
+        user_score = 0
+        if current_user.is_authenticated:
+           try:
+               book_review = BookReview.query.filter( and_(  BookReview.people_id==current_user.id, BookReview.book_id==bookID  )  ).first()
+               user_review=book_review.review
+               user_score = book_review.score
+           except:
+               user_review = "" 
+               user_score=0
+        
+        print(f"\n\n\nUser is authenticated = {current_user.is_authenticated}")
+        print(f"user_review = {user_review}, user_score = {user_score}")
 
         averageScore = book.average_score
         if averageScore == 5.0:
@@ -79,7 +93,7 @@ def book(bookID=""):
             clearStars = 5 - (yellowStars + 1)
          
         book.scorePercent = scorePercent
-        book.f_scorePercent = f"{scorePercent:,.2f}"
+        #book.f_scorePercent = f"{scorePercent:,.2f}"
 
         allBookReviews = BookReview.query.filter(BookReview.book_id==bookID).order_by(BookReview.review_date.desc()).all()
         countBookReviews = BookReview.query.filter(BookReview.book_id==bookID).count()
@@ -89,6 +103,8 @@ def book(bookID=""):
                                 bookID=bookID,
                                 allBookReviews=allBookReviews,
                                 countBookReviews=countBookReviews,
+                                user_review=user_review,
+                                user_score=user_score,
                                 loginNext=f"?next=/book/{bookID}")
 
     review = request.form.get("review")
@@ -112,8 +128,12 @@ def book(bookID=""):
 
     
     ##return f"Thank you, {userName} / {userID}  for your review of book {bookID} {review}"
-    flash(f"Thank you, {userName} / {userID} for your review of {score} stars for book {bookID} {review}", "success")
-    return redirect(url_for('main.index'))
+    
+    print(f"\n\n\n6)in main.book, posting review for book {book_review.book.title}, id={bookID}")
+
+    flash(f"Thank you, {userName} for your review", "success")
+    return redirect(url_for('main.book', bookID=bookID))
+
 
 
     

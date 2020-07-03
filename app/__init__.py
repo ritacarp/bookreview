@@ -74,8 +74,13 @@ def create_app(config_class=Config):
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('flask-bookreviews-tasks', connection=app.redis)
 
-
+    # Custom filter
+    app.jinja_env.filters["usd"] = usd
+    app.jinja_env.filters["pct"] = pct
+    app.jinja_env.filters["stringSlice"] = stringSlice
+    app.jinja_env.filters["formatByLocale"] = formatByLocale
     
+
     print("create_app:  Secret Key = ", app.config['SECRET_KEY'])
     print("create_app:  Database URL = ", app.config['SQLALCHEMY_DATABASE_URI'])
 
@@ -90,3 +95,5 @@ def create_app(config_class=Config):
 
 
 from app import models
+
+from app.main.helpers import usd, pct, stringSlice, formatByLocale

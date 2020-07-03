@@ -74,20 +74,20 @@
         {% endif %}
         -->
 
-        <!---
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+           {% if messages %}
+              {% for category, message in messages %}
+                 <ul style="list-style-type: none;">
+                    <li><img src="/static/images/{{category}}_15.png"> {{ message | safe }}</li>
+                 </ul>
+              {% endfor %}
+           {% endif %}
         {% endwith %}
-        --->
 
 
 
+<!---
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -100,6 +100,7 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
+--->
 
 
         <main class="container p-6">

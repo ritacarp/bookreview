@@ -4,6 +4,7 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 from app.models import Book
 import math
+import locale
 
 
 
@@ -223,3 +224,21 @@ def googleLookupByISBN(isbn):
         
     return None
 
+def usd(value):
+    """Format value as USD."""
+    return f"${value:,.2f}"
+
+def pct(value):
+    """Format value as percent."""
+    return f"{value:,.2f}"
+    
+def formatByLocale(value):
+    locale.setlocale(locale.LC_ALL, '')
+    return f'{value:n}'
+
+
+def stringSlice(source,charater,position):
+    """ Return some part of a string."""
+    """ Example: stringSlice(".", 0, 1) """
+    value = source.split(charater)[position]
+    return f"{value}"

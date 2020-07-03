@@ -55,7 +55,7 @@
 .rating {
   unicode-bidi: bidi-override;
   direction: rtl;
-  text-align: center;
+  text-align: left;
   font-size: 30px;
 }
 .rating > span {
