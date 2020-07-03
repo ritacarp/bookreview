@@ -176,6 +176,18 @@ class BookReview(db.Model):
     score = db.Column(db.Integer, nullable=False)
     review_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
  
- 
+    def set_score(self, score):
+        try:
+            self.score = int(score)
+        except:
+            self.score = 0
 
+    def set_review(self, review):
+        self.review = review
+
+    def set_review_date(self, review_date):
+        try:
+            self.review_date = review_date
+        except:
+            self.review_date = datetime.utcnow()
 

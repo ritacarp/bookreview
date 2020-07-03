@@ -41,8 +41,8 @@ def login():
         #if next_page:
         #   print(f"\n\nnext_page = {next_page};  url_parse(next_page).netloc = {url_parse(next_page).netloc}")
         
-        #if not next_page or url_parse(next_page).netloc != '':
-        #    next_page = url_for('main.index')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('main.index')
         
         return redirect(next_page)
 

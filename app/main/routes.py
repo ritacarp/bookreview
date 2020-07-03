@@ -5,7 +5,8 @@ from app.models import People, Book, BookReview
 from app.main import bp
 from app.main.helpers import grLookupByID
 import math
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc,  and_, or_
+from datetime import datetime
 
 import psycopg2
 import os
@@ -80,10 +81,15 @@ def book(bookID=""):
         book.scorePercent = scorePercent
         book.f_scorePercent = f"{scorePercent:,.2f}"
 
+        allBookReviews = BookReview.query.filter(BookReview.book_id==bookID).order_by(BookReview.review_date.desc()).all()
+        countBookReviews = BookReview.query.filter(BookReview.book_id==bookID).count()
     
         return render_template("book.html",
                                 book=book,
-                                bookID=bookID)
+                                bookID=bookID,
+                                allBookReviews=allBookReviews,
+                                countBookReviews=countBookReviews,
+                                loginNext=f"?next=/book/{bookID}")
 
     review = request.form.get("review")
     
@@ -92,6 +98,19 @@ def book(bookID=""):
     userName = current_user.username
     userID = current_user.id
     bookID = request.form.get("bookID")
+    
+    book_review = BookReview.query.filter( and_(  BookReview.people_id==userID, BookReview.book_id==bookID  )  ).first()
+    if book_review is None:
+        print(f'book review not found for book id {bookID}, person {userName};  inserting book')
+        book_review = BookReview(people_id=userID, book_id=bookID, review=review, score=score, review_date=datetime.utcnow())
+        db.session.add(book_review)
+    else:
+        book_review.set_review(review)
+        book_review.set_score(score)
+        book_review.set_review_date(datetime.utcnow())
+    db.session.commit()
+
+    
     ##return f"Thank you, {userName} / {userID}  for your review of book {bookID} {review}"
     flash(f"Thank you, {userName} / {userID} for your review of {score} stars for book {bookID} {review}", "success")
     return redirect(url_for('main.index'))

@@ -81,22 +81,95 @@
 
 
        <div class="col-sm-8">
-Book: {{book["title"]}}<br>
-Author:  {{book["author"]}}<br>
 
+<div>book: {{book["title"]}}</div>
+<div style="margin-top:3px;margin-bottom:5px;">author:  {{book["author"]}}</div>
+
+<!--
 <div>
 <div id="description" class="expandable" style="padding-top:10px">
 {{book["description"] | safe}}
 </div>
 <a href="javascript:void(0)" id="show_more_less"><span id="lessMore">more ...</span></a>
 <div>
+-->
+
+
+<div>
+<input type="checkbox" id="descriptionToggle">
+click <label for="descriptionToggle" style="cursor: pointer;">here</label> for description
+
+<dialog>
+  <div style="text-align:right;"><label for="descriptionToggle" style="background-color: #F5F5F5;">close</label></div>
+  <div>
+  <span><h5><small>description</small></h5></span>
+
+<div id="wrapper">
+      <div class="scrollbar" id="style-14">
+            <div class="force-overflow">
+
+{{book["description"] | safe}}
+
+                    </div>
+                    </div>
+                    </div>
+  </div>
+
+</dialog>
+</div>
+
+
+{% if countBookReviews == 0 %}
+<p>be the first to write a review</p>
+{% else %}
+
+<div>
+<input type="checkbox" id="reviewsToggle">
+click <label for="reviewsToggle" style="cursor: pointer;">here</label> for reviews
+
+
+<dialog>
+  <div style="text-align:right"><label for="reviewsToggle" style="background-color: #F5F5F5;">close</label></div>
+  <div>
+    <span><h5><small>reviews for {{book["title"]}}</small></h5></span>
+
+<div id="wrapper">
+      <div class="scrollbar" id="style-6">
+            <div class="force-overflow">
+<!-- REVIEWS GO HERE -->
+             {% for review in allBookReviews %}
+             <div>by <span style="font-weight:bold">{{review["reviewer"]["username"]}}</span> on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span></div>
+             <span>
+             {% for i in range(review["score"]) %}
+             <span class="homerating">&#9733;</span>
+             {% endfor %}
+             </span>
+             <span style="padding-left:10px">{{review["review"]  | safe }}</span>
+             {% endfor %}
+
+
+                    </div>
+                    </div>
+                    </div>
+
+
+  </div>
+
+</dialog>
+</div>
+{% endif %}
+
+
+
+
 
 
 {% if current_user.is_anonymous %}
 
-<div style="padding-top:10px">please <a href="{{ url_for('auth.login') }}?next=/book/{{bookID}}">log in</a> to leave a review</div>
+<div style="margin-top:-5px">please <a href="{{ url_for('auth.login') }}?next=/book/{{bookID}}"  class="login">log in</a> to leave a review</div>
 
 {% else %}
+<div>
 <form name=reviewForm id=reviewForm method="post" action="{{url_for('main.book')}}">
 <input type="hidden" name="bookID" id="bookID" value="{{bookID}}">
 <input type="hidden" name="score" id="score" value="">
@@ -116,6 +189,7 @@ Author:  {{book["author"]}}<br>
 </div>
 <button type="submit" class="btn btn-primary mb-2">Rate this book</button>
 </form>
+</div>
 {% endif %}
 
 
@@ -129,6 +203,17 @@ Author:  {{book["author"]}}<br>
 
 
  <script type="text/javascript">
+
+
+   $(document).ready(function(){
+      val = $("#loginNext").text()
+      if (val) {
+        newUrl = "{{ url_for('auth.login') }}"  + val
+        $("#loginA").attr("href", newUrl)
+      }
+    });
+
+
   $('.bookButton').on('click', function () {
      var bookID = $(this).attr("data-amazonLookupID" )
      var url = "https://www.amazon.com/dp/" + bookID
@@ -186,8 +271,6 @@ $("#show_more_less").on("click", function() {
       $("#lessMore").text("less ...")
   }
 });
-
-
 
 
  </script>
