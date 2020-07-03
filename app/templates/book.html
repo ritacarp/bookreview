@@ -31,23 +31,106 @@
 --->
 
 <div class="row" style="margin-left:1px">
-   <img class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;">
+   <img height="140" class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;">
    <span style="margin-left:5px">
          <div>{{book["title"]}}</div>
          <div style="margin-top:3px;margin-bottom:5px;">by {{book["author"]}}</div>
-<div>
-  <div class="homerating" >
-    <span class="homerating-upper" style="width: {{book['scorePercent']}}%;">
-        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-    </span>
-    <span class="homerating-lower">
-        <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
-    </span>
 
-  </div>
-</div>
+         <!-- START Stars Percent -->
+         <div>
+           <div class="homerating" >
+             <span class="homerating-upper" style="width: {{book['scorePercent']}}%;">
+                 <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+             </span>
+             <span class="homerating-lower">
+                 <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
+             </span>
+           </div>
+         </div>
+         <!-- END Stars Percent -->
+
+         <!-- START Description -->
+         <div>
+         <input type="checkbox" id="descriptionToggle">
+         <label for="descriptionToggle" style="cursor: pointer;">description</label>
+
+         <dialog>
+           <div style="text-align:right;"><label for="descriptionToggle" style="background-color: #F5F5F5;">close</label></div>
+           <div>
+           <span><h5><small>description</small></h5></span>
+
+           <div id="wrapper">
+               <div class="scrollbar" id="style-14">
+                     <div class="force-overflow">
+
+                        {{book["description"] | safe}}
+
+                     </div>
+               </div>
+           </div>
+           </div>
+
+         </dialog>
+         </div>
+         <!-- END Description -->
+
+         <!-- START Ratings -->
+         {% if countBookReviews == 0 %}
+         <p>be the first to write a review</p>
+         {% else %}
+
+         <div>
+         <input type="checkbox" id="reviewsToggle">
+         <label for="reviewsToggle" style="cursor: pointer;">reviews</label>
+
+
+         <dialog>
+           <div style="text-align:right"><label for="reviewsToggle" style="background-color: #F5F5F5;">close</label></div>
+           <div>
+             <span><h5><small>reviews for {{book["title"]}}</small></h5></span>
+
+             <div id="wrapper">
+                <div class="scrollbar" id="style-6">
+                     <div class="force-overflow">
+
+                      {# START: REVIEWS GO HERE #}
+                      {% for review in allBookReviews %}
+                      <div>by <span style="font-weight:bold">{{review["reviewer"]["username"]}}</span> on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span></div>
+                      <span>
+                      {% for i in range(review["score"]) %}
+                      <span class="homerating">&#9733;</span>
+                      {% endfor %}
+                      </span>
+                      <span style="padding-left:10px">{{review["review"]  | safe }}</span>
+                      {% endfor %}
+                       {# END: REVIEWS GO HERE #}
+
+
+                     </div>
+                </div>
+             </div>
+
+
+           </div>
+
+         </dialog>
+         </div>
+         {% endif %}
+         <!-- End Ratings -->
+
+
+
+
+
    </span>
 </div>
+
+
+
+
+
+
+
 
 <!---
 <div>
@@ -116,10 +199,6 @@
 
        <div class="col-sm-8">
 
-<!--
-<div>book: {{book["title"]}}</div>
-<div style="margin-top:3px;margin-bottom:5px;">author:  {{book["author"]}}</div>
--->
 
 <!--
 <div>
@@ -130,7 +209,7 @@
 <div>
 -->
 
-
+<!---
 <div>
 <input type="checkbox" id="descriptionToggle">
 click <label for="descriptionToggle" style="cursor: pointer;">here</label> for description
@@ -153,8 +232,11 @@ click <label for="descriptionToggle" style="cursor: pointer;">here</label> for d
 
 </dialog>
 </div>
+--->
 
 
+<!-- START Ratings -->
+<!--
 {% if countBookReviews == 0 %}
 <p>be the first to write a review</p>
 {% else %}
@@ -169,10 +251,11 @@ click <label for="reviewsToggle" style="cursor: pointer;">here</label> for revie
   <div>
     <span><h5><small>reviews for {{book["title"]}}</small></h5></span>
 
-<div id="wrapper">
-      <div class="scrollbar" id="style-6">
+    <div id="wrapper">
+       <div class="scrollbar" id="style-6">
             <div class="force-overflow">
-<!-- REVIEWS GO HERE -->
+
+             {# START: REVIEWS GO HERE #}
              {% for review in allBookReviews %}
              <div>by <span style="font-weight:bold">{{review["reviewer"]["username"]}}</span> on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span></div>
              <span>
@@ -182,11 +265,12 @@ click <label for="reviewsToggle" style="cursor: pointer;">here</label> for revie
              </span>
              <span style="padding-left:10px">{{review["review"]  | safe }}</span>
              {% endfor %}
+              {# END: REVIEWS GO HERE #}
 
 
-                    </div>
-                    </div>
-                    </div>
+            </div>
+       </div>
+    </div>
 
 
   </div>
@@ -194,7 +278,8 @@ click <label for="reviewsToggle" style="cursor: pointer;">here</label> for revie
 </dialog>
 </div>
 {% endif %}
-
+-->
+<!-- End Ratings -->
 
 
 
