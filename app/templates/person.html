@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <div class="row">
+         <span style="margin-top:5px"><img src="{{ person.avatar(80) }}"></span>
+         <span style="margin-left:5px">
+            {% if fullName %}<h6>name:  {{ fullName }}</h6>{% endif %}
+            <h6>user name: {{ person.username }}</h6>
+
+         </span>
+
+         </div>
+    <hr>
+
+
+
+    {# START: REVIEWS GO HERE #}
+    {% for review in allBookReviews %}
+
+<div class="row" style="margin-left:1px">
+
+   <div>
+      <a href='{{ url_for("main.book", bookID=review.book.id) }}'>
+        <img height="140" src='{{review["book"]["image_url"]}}' style="cursor: pointer;">
+      </a>
+   </div>
+
+
+   <div style="margin-left:5px">
+      <div>{{review["book"]["title"]}} by {{review["book"]["author"]}}</div>
+
+       {% include '_oneBookReview.html' %}
+
+   </div>
+
+
+</div>
+
+   <hr>
+    {% endfor %}
+    {# END: REVIEWS GO HERE #}
+
+
+
+{% endblock %}

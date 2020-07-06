@@ -1,0 +1,13 @@
+                      <div>
+                         reviewed on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span>
+                         {% if request.endpoint == "main.book" %}
+                            by <span style="font-weight:bold"><a href="{{ url_for('main.person', username=review.reviewer.username) }}">{{review["reviewer"]["username"]}}</a></span>
+                         {% endif %}
+                      </div>
+
+                      <span>
+                      {% for i in range(review["score"]) %}
+                         <span class="homerating">&#9733;</span>
+                      {% endfor %}
+                      </span>
+                      <span style="padding-left:10px">{{review["review"]  | safe }}</span>

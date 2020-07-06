@@ -33,6 +33,7 @@
 <div class="row" style="margin-left:1px">
    <img height="140" class="bookButton" src='{{book["image_url"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;">
    <span style="margin-left:5px">
+
          <div>{{book["title"]}}</div>
          <div style="margin-top:3px;margin-bottom:5px;">by {{book["author"]}}</div>
 
@@ -95,15 +96,25 @@
 
                       {# START: REVIEWS GO HERE #}
                       {% for review in allBookReviews %}
-                      <div>by <span style="font-weight:bold">{{review["reviewer"]["username"]}}</span> on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span></div>
+
+                      <!---
+                      <div>
+                         reviewed on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span>
+                         by <span style="font-weight:bold"><a href="{{ url_for('main.person', username=review.reviewer.username) }}">{{review["reviewer"]["username"]}}</a></span>
+                      </div>
+
                       <span>
                       {% for i in range(review["score"]) %}
-                      <span class="homerating">&#9733;</span>
+                         <span class="homerating">&#9733;</span>
                       {% endfor %}
                       </span>
                       <span style="padding-left:10px">{{review["review"]  | safe }}</span>
+                      --->
+
+                      {% include '_oneBookReview.html' %}
+
                       {% endfor %}
-                       {# END: REVIEWS GO HERE #}
+                      {# END: REVIEWS GO HERE #}
 
 
                      </div>

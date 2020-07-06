@@ -165,3 +165,31 @@ def search():
 #    flash(f"Thank you, {userName} / {userID} for your review of {score} stars for book {bookID} {review}", "success")
 #    return redirect(url_for('main.index'))
 
+
+@bp.route('/person')
+@bp.route('/person/<username>')
+def person(username = ""):
+
+    if username == "":
+        flash(f"username is required", "danger")  
+        return("username is required")
+    
+    
+    person = People.query.filter_by(username=username).first()
+    if person is None:
+        flash(f"user {username} does not exist", "danger")  
+        return f"user {username} does not exist"
+    
+    fullName = person.first_name
+    if fullName:
+       fullName = fullName + " " + person.last_name
+    allBookReviews = BookReview.query.filter(BookReview.people_id==person.id).order_by(BookReview.review_date.desc()).all()
+    
+    return render_template("person.html",
+                            person=person,
+                            fullName=fullName,
+                            allBookReviews=allBookReviews)
+
+    
+    flash(f"Huray! person {person.username} was found", "success")  
+    return f"Huray! person {person.username} was found"
