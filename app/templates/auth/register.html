@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Register
+    {{ title }}
 {% endblock %}
 
 {% block content %}
@@ -14,6 +14,9 @@
 
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
+
+        End point: {{ request.endpoint }}
+
 
         <div class="form-group">
             {{ form.username(size="32", autofocus=true, placeholder="Requested Username", class="form-control form-control-sm") }}
@@ -28,6 +31,21 @@
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
 
+        </div>
+
+
+        <div class="form-group">
+            {{ form.first_name(size="32", autofocus=true, placeholder="First Name", class="form-control form-control-sm") }}
+            {% for error in form.first_name.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.last_name(size="32", autofocus=true, placeholder="Last Name", class="form-control form-control-sm") }}
+            {% for error in form.last_name.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
         </div>
 
         <div class="form-group">

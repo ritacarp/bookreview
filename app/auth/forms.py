@@ -14,6 +14,8 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     username = StringField('Requested Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
     password = PasswordField('Password', validators=[DataRequired()])
     confirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 
@@ -27,7 +29,6 @@ class RegisterForm(FlaskForm):
             note = 'Please select a different username.'
             field.errors.append(note)
             #raise ValidationError(username.errors)
-
 
     def validate_email(form, field):
         # pass the regular expression 

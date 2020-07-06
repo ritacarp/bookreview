@@ -10,9 +10,10 @@ class EditProfileForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     first_name = StringField('First Name')
     last_name = PasswordField('Last Name')
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Submit')
-
 
     def validate_username(self, field):
         person = People.query.filter_by(username=field.data).first()
@@ -38,3 +39,55 @@ class EditProfileForm(FlaskForm):
                 #raise ValidationError(email.errors)
         else:  
             raise ValidationError('Email address is not valid')
+
+
+    def validate_password(form, field):
+      
+        SpecialSym =['$', '!', '#', '%', '_', '~'] 
+        val = True
+        message=""
+      
+        if len(field.data) < 8: 
+            note = 'Password length should be at least 8 characters.'
+            message = message + note
+            field.errors.append(note)
+            val = False
+                    
+        if not any(char.isdigit() for char in field.data): 
+            note = 'Password should have at least one numeral.'
+            message = message + note
+            field.errors.append(note)
+            val = False
+        
+        if not any(char.isalpha() for char in field.data): 
+            note = 'Password should have at least alphabetic letter.'
+            message = message + note
+            field.errors.append(note)
+            val = False
+          
+        # if not any(char.isupper() for char in field.data): 
+        #     note = 'Password should have at least one uppercase letter.'
+        #     message = message + note
+        #     field.errors.append(note)
+        #     val = False
+          
+        # if not any(char.islower() for char in field.data): 
+        #     note = 'Password should have at least one lowercase letter.'
+        #     message = message + note
+        #     field.errors.append(note)
+        #     val = False
+          
+        # if not any(char in SpecialSym for char in field.data): 
+        #     note = 'Password should have at least one of the symbols ($ ! # % _~).'
+        #     message = message + note
+        #     field.errors.append(note)
+        #     val = False
+
+    
+        #if not val:
+        #    raise ValidationError(field.errors)
+            
+
+
+    
+

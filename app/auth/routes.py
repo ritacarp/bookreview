@@ -75,13 +75,17 @@ def register():
     # if request.method == "POST":
 
     if form.validate_on_submit():
-        user = People(username=form.username.data, email=form.email.data, comments=form.password.data)
+        user = People(username=form.username.data, 
+                      email=form.email.data, 
+                      first_name=form.first_name.data,
+                      last_name=form.last_name.data,
+                      comments=form.password.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         #flash('Register requested for user {}, firstName={}, lastName={}'.format(
         #    form.username.data, form.firstName.data, form.lastName.data))
-        flash('Congratulations, you are now a registered user!<br>Please Log In.')
+        flash('Congratulations, you are now a registered user!<br>Please Log In.', "success")
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 

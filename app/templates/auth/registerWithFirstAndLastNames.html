@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Log In
+    Register
 {% endblock %}
 
 {% block content %}
@@ -32,15 +32,15 @@
 
 
         <div class="form-group">
-            {{ form.firstName(size="32", autofocus=true, placeholder="First Name", class="form-control form-control-sm") }}
-            {% for error in form.firstName.errors %}
+            {{ form.first_name(size="32", autofocus=true, placeholder="First Name", class="form-control form-control-sm") }}
+            {% for error in form.first_name.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
         </div>
 
         <div class="form-group">
-            {{ form.lastName(size="32", autofocus=true, placeholder="Last Name", class="form-control form-control-sm") }}
-            {% for error in form.lastName.errors %}
+            {{ form.last_name(size="32", autofocus=true, placeholder="Last Name", class="form-control form-control-sm") }}
+            {% for error in form.last_name.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
         </div>

@@ -7,10 +7,18 @@ from app.main.helpers import grLookupByID
 import math
 from sqlalchemy import asc, desc,  and_, or_
 from datetime import datetime
+from app.auth.forms import RegisterForm
 
 import psycopg2
 import os
 import random
+
+@bp.before_request
+def before_request():
+    if current_user:
+        if current_user.is_authenticated:
+            current_user.last_seen = datetime.utcnow()
+            db.session.commit()
 
 
 
@@ -190,6 +198,32 @@ def person(username = ""):
                             fullName=fullName,
                             allBookReviews=allBookReviews)
 
+        
+
+@bp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        pass
+        ## Update the user here
     
-    flash(f"Huray! person {person.username} was found", "success")  
-    return f"Huray! person {person.username} was found"
+        ## START DON'T DO THIS!! THIS ADDS A USER!!!
+        ## user = People(username=form.username.data, 
+        ##               email=form.email.data, 
+        ##               first_name=form.first_name.data,
+        ##               last_name=form.last_name.data,
+        ##               comments=form.password.data)
+        ## user.set_password(form.password.data)
+        ## db.session.add(user)
+        ## END: DON'T DO         
+        
+        
+        ## DO THIS WHEN ready
+        # db.session.commit()
+        
+        #flash('Register requested for user {}, firstName={}, lastName={}'.format(
+        #    form.username.data, form.firstName.data, form.lastName.data))
+        flash('Congratulations, you are now a registered user!<br>Please Log In.', "success")
+        return redirect(url_for('auth.login'))
+    return render_template('auth/register.html', title='Edit Profile', form=form)
