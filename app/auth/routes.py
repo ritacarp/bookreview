@@ -87,6 +87,8 @@ def register():
         #    form.username.data, form.firstName.data, form.lastName.data))
         flash('Congratulations, you are now a registered user!<br>Please Log In.', "success")
         return redirect(url_for('auth.login'))
+    
+    form.submit.label.text = 'Register'
     return render_template('auth/register.html', title='Register', form=form)
 
 

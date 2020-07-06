@@ -205,7 +205,6 @@ def person(username = ""):
 def edit_profile():
     form = RegisterForm()
     if form.validate_on_submit():
-        pass
         ## Update the user here
     
         ## START DON'T DO THIS!! THIS ADDS A USER!!!
@@ -226,4 +225,13 @@ def edit_profile():
         #    form.username.data, form.firstName.data, form.lastName.data))
         flash('Congratulations, you are now a registered user!<br>Please Log In.', "success")
         return redirect(url_for('auth.login'))
+    
+    
+    person = People.query.filter_by(username=current_user.username).first()
+    form.username.data = person.username
+    form.email.data = person.email
+    form.first_name.data = person.first_name
+    form.last_name.data = person.last_name
+    form.submit.label.text = 'Update Profile'
+
     return render_template('auth/register.html', title='Edit Profile', form=form)
