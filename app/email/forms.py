@@ -1,28 +1,14 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators
 from wtforms.validators import DataRequired, email_validator, EqualTo, ValidationError
-
-from app.models import People
 import re
+from app.models import People
 
-class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+
+class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
-    first_name = StringField('First Name')
-    last_name = PasswordField('Last Name')
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Submit')
+    submit = SubmitField('Request Password Reset')
 
-    def validate_username(self, field):
-        person = People.query.filter_by(username=field.data).first()
-        if person is not None and person.username != current_user.username:
-            note = 'This username is already in use.'
-            field.errors.append(note)
-            note = 'Please select a different username.'
-            field.errors.append(note)
-            #raise ValidationError(username.errors)
 
     def validate_email(form, field):
         # pass the regular expression 
@@ -31,14 +17,20 @@ class EditProfileForm(FlaskForm):
         regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
         if(re.search(regex,field.data)):  
             person = People.query.filter_by(email=field.data).first()
-            if person is not None and person.email != current_user.email:
-                note = 'This email address is already in use.'
+            if person is None:
+                note = 'This email address is was not found.'
                 field.errors.append(note)
-                note = 'Please use a different email address.'
+                note = 'Please try a different email address.'
                 field.errors.append(note)
                 #raise ValidationError(email.errors)
         else:  
             raise ValidationError('Email address is not valid')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
 
 
     def validate_password(form, field):
@@ -88,6 +80,4 @@ class EditProfileForm(FlaskForm):
         #    raise ValidationError(field.errors)
             
 
-
-    
 

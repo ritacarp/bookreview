@@ -1,9 +1,13 @@
 from datetime import datetime
+from time import time
 from app import db, login
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy_utils import force_instant_defaults
 from hashlib import md5
+import jwt
+
 
 
 #from flask_sqlalchemy import SQLAlchemy
@@ -46,12 +50,25 @@ class People(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.hash, password)
 
-
-    
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://s.gravatar.com/avatar/{digest}?s={size}&d=blank'
         
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return People.query.get(id)
+
 
 
 @login.user_loader

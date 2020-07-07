@@ -5,6 +5,8 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from config import Config
 from flask_login import LoginManager
+from flask_mail import Mail
+
 
 from redis import Redis
 import rq
@@ -40,6 +42,7 @@ login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 #login.login_message = ""
+mail = Mail()
 
 bootstrap = Bootstrap()
 
@@ -55,6 +58,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    mail.init_app(app)
     bootstrap.init_app(app)
 
     from app.errors import bp as errors_bp
@@ -67,9 +71,16 @@ def create_app(config_class=Config):
     from app.tasks import bp as tasks_bp
     app.register_blueprint(tasks_bp, url_prefix='/tasks')
 
+
+    from app.email import bp as email_bp
+    app.register_blueprint(email_bp, url_prefix='/email')
+
+
     
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+    
+
     
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('flask-bookreviews-tasks', connection=app.redis)

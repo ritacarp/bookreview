@@ -33,9 +33,13 @@
 
         <div class="form-check">{{ form.remember_me(class="form-check-input") }} {{ form.remember_me.label }}</div>
 
-        <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+        <div>{{ form.submit(class="myButton") }}</div>
 
-        <p>{{ form.submit(class="btn btn-primary") }}</p>
+
+        <div><small>New User? <a href="{{ url_for('auth.register') }}">click to register!</a></small></div>
+        <div><small><a href="{{ url_for('email.reset_password_request') }}">forgot password?</a></small></div>
+
+
     </form>
 
 

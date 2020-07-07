@@ -7,7 +7,7 @@ from app.main.helpers import grLookupByID
 import math
 from sqlalchemy import asc, desc,  and_, or_
 from datetime import datetime
-from app.auth.forms import RegisterForm
+from app.main.forms import EditProfileForm
 
 import psycopg2
 import os
@@ -184,9 +184,9 @@ def person(username = ""):
     
     
     person = People.query.filter_by(username=username).first()
-    if person is None:
-        flash(f"user {username} does not exist", "danger")  
-        return f"user {username} does not exist"
+    #if person is None:
+    #    flash(f"user {username} does not exist", "danger")  
+    #    return f"user {username} does not exist"
     
     fullName = person.first_name
     if fullName:
@@ -203,28 +203,21 @@ def person(username = ""):
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = RegisterForm()
+    print(f"\n\n1)  in main.edit_profile, method={request.method}")
+    form = EditProfileForm()
+    # if request.method == "POST":
     if form.validate_on_submit():
-        ## Update the user here
-    
-        ## START DON'T DO THIS!! THIS ADDS A USER!!!
-        ## user = People(username=form.username.data, 
-        ##               email=form.email.data, 
-        ##               first_name=form.first_name.data,
-        ##               last_name=form.last_name.data,
-        ##               comments=form.password.data)
-        ## user.set_password(form.password.data)
-        ## db.session.add(user)
-        ## END: DON'T DO         
-        
-        
-        ## DO THIS WHEN ready
-        # db.session.commit()
-        
-        #flash('Register requested for user {}, firstName={}, lastName={}'.format(
-        #    form.username.data, form.firstName.data, form.lastName.data))
-        flash('Congratulations, you are now a registered user!<br>Please Log In.', "success")
-        return redirect(url_for('auth.login'))
+        print(f"2)  in main.edit_profile, in validate_on_submit method should be POST, methid is {request.method}")
+        person = People.query.filter_by(username=current_user.username).first()
+        if person is not None:
+            person.email = form.email.data
+            person.first_name = form.first_name.data
+            person.last_name = form.last_name.data
+            print(f"3)  in main.edit_profile, before commit")
+            db.session.commit()
+            print(f"4)  in main.edit_profile, after commit")
+            flash("Your profile has been updated successfully","success")
+            return redirect(url_for('main.person', username=person.username))
     
     
     person = People.query.filter_by(username=current_user.username).first()
@@ -234,4 +227,4 @@ def edit_profile():
     form.last_name.data = person.last_name
     form.submit.label.text = 'Update Profile'
 
-    return render_template('auth/register.html', title='Edit Profile', form=form)
+    return render_template('editProfile.html', title='Edit Profile', form=form)
