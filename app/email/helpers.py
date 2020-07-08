@@ -45,7 +45,6 @@ def sengrid_password_reset_email(emailAddress):
                         html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                )
 
-   
 
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
