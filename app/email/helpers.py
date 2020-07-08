@@ -22,8 +22,8 @@ def send_password_reset_email(user):
                    )
     else:
         send_sengrid_email('subject=[Book Review] Reset Your Password',
-                            sender=(os.environ.get('ADMINS'),),
-                            recipients=(user.email,),
+                            sender=(os.environ.get('ADMINS')),
+                            recipients=(user.email),
                             text_body=render_template('email/email_reset_password.txt',user=user, token=token),
                             html_body=render_template('email/email_reset_password.html',user=user, token=token)
                    )
