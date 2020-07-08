@@ -20,7 +20,7 @@ def reset_password_request():
         if user:
             #send_password_reset_email(user)
             send_password_reset_email(user.email)
-            print(f"user.email = {user.email}")
+            print(f"email route reset_password_request():  user.email = {user.email}")
         flash('Check your email for the instructions to reset your password',"information")
         return redirect(url_for('auth.login'))
     return render_template('email/reset_password_request.html',
