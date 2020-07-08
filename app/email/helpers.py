@@ -1,7 +1,6 @@
 from flask_mail import Message
 from app import mail
-from flask import current_app, render_template, redirect, url_for
-from app.tasks.tasks import task_sengrid_password_reset_email
+from flask import current_app, render_template
 
 import os
 from sendgrid import SendGridAPIClient
@@ -13,7 +12,7 @@ from app.models import People
 #from sendgrid.helpers.mail import *
 
 def send_password_reset_email(emailAddress):
-    print(f"email helpers send_password_reset_email(emailAddress): emailAddress  = {emailAddress}")
+    print(f"emailAddress = {emailAddress}")
     user = People.query.filter_by(email=emailAddress).first()
     token = user.get_reset_password_token()
     server = os.environ.get('SERVER')
@@ -25,27 +24,13 @@ def send_password_reset_email(emailAddress):
                     html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                    )
     else:
-        print(f"email helpers send_password_reset_email(emailAddress):  launching task sengrid_password_reset_email with argument {emailAddress}")
-        return redirect(url_for('tasks.launchTask', taskName=task_sengrid_password_reset_email, args=emailAddress ))
-        #send_sengrid_email('subject=[Book Review] Reset Your Password',
-        #                    sender=(os.environ.get('ADMINS')),
-        #                    recipients=(emailAddress),
-        #                    text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-        #                    html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-        #           )
-
-
-def sengrid_password_reset_email(emailAddress):
-    print(f"sengrid_password_reset_email(emailAddress):  emailAddress = {emailAddress}")
-    user = People.query.filter_by(email=emailAddress).first()
-    token = user.get_reset_password_token()
-    send_sengrid_email('subject=[Book Review] Reset Your Password',
-                        sender=(os.environ.get('ADMINS')),
-                        recipients=(emailAddress),
-                        text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-                        html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-               )
-
+        send_sengrid_email('subject=[Book Review] Reset Your Password',
+                            sender=(os.environ.get('ADMINS')),
+                            recipients=(emailAddress),
+                            text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+                            html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+                   )
+   
 
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
