@@ -24,7 +24,7 @@ def send_password_reset_email(emailAddress):
                     html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                    )
     else:
-        print(f"email helpers send_password_reset_email(emailAddress):  launching task sengrid_password_reset_email with argument {emailAddress})"
+        print(f"email helpers send_password_reset_email(emailAddress):  launching task sengrid_password_reset_email with argument {emailAddress}")
         return redirect(url_for('tasks.launchTask', taskName=sengrid_password_reset_email, args=emailAddress ))
         #send_sengrid_email('subject=[Book Review] Reset Your Password',
         #                    sender=(os.environ.get('ADMINS')),
