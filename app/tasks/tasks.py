@@ -67,3 +67,4 @@ def task_sengrid_password_reset_email(emailAddress):
     job = get_current_job()
     print(f"task sengrid_password_reset_email with email addresss {emailAddress}")
     sengrid_password_reset_email(emailAddress)
+
