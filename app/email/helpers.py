@@ -2,12 +2,12 @@ from flask_mail import Message
 from app import mail
 from flask import current_app, render_template
 
-#import os
-#from sendgrid import SendGridAPIClient
-#from sendgrid.helpers.mail import Mail
-
-import sendgrid
 import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+#import sendgrid
+#import os
 #from sendgrid.helpers.mail import *
 
 def send_password_reset_email(user):
@@ -21,10 +21,10 @@ def send_password_reset_email(user):
                     html_body=render_template('email/email_reset_password.html',user=user, token=token)
                    )
     else:
-        send_sengrid_email('[Book Review] Reset Your Password',
-                            from_email=os.environ.get('ADMINS'),
-                            to_emails=[user.email],
-                            text_body="",
+        send_sengrid_email('subject=[Book Review] Reset Your Password',
+                            sender=os.environ.get('ADMINS'),
+                            recipients=[user.email],
+                            text_body=render_template('email/email_reset_password.txt',user=user, token=token),
                             html_body=render_template('email/email_reset_password.html',user=user, token=token)
                    )
    
@@ -45,11 +45,12 @@ def send_email(subject, sender, recipients, text_body, html_body):
 
 # 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
 
-def x_send_sengrid_email(subject, sender, recipients, text_body, html_body):
+def send_sengrid_email(subject, sender, recipients, text_body, html_body):
     message = Mail(
         from_email=sender,
         to_emails=recipients,
         subject=subject,
+        plain_text_content=text_body, 
         html_content=html_body)
     try:
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
@@ -61,15 +62,22 @@ def x_send_sengrid_email(subject, sender, recipients, text_body, html_body):
         print(e.message)
 
 
-def send_sengrid_email(subject, sender, recipients, text_body, html_body):
+def x_send_sengrid_email(subject, sender, recipients, text_body, html_body):
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
     from_email = sender
+    to_emails = recipients
     subject = subject
-    to_email = Email(recipients)
-    content = Content("text/plain", text_body)
+    plain_text_content=text_body
+    html_content = html_body
     #mail = Mail(from_email, subject, to_email, content)
     
-    mail = sendgrid.helpers.mail.Mail(from_email=from_email, subject=subject, to_email=to_email, content=content)
+    
+    mail = sendgrid.helpers.mail.Mail(
+                                      from_email=sender, 
+                                      to_emails=recipients,  
+                                      subject=subject, 
+                                      plain_text_content=text_body,  
+                                      html_content=html_body)
     
     response = sg.client.mail.send.post(request_body=mail.get())
     print(response.status_code)
