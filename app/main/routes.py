@@ -180,13 +180,13 @@ def person(username = ""):
 
     if username == "":
         flash(f"username is required", "danger")  
-        return("username is required")
+        return redirect(url_for('main.index'))
     
     
     person = People.query.filter_by(username=username).first()
-    #if person is None:
-    #    flash(f"user {username} does not exist", "danger")  
-    #    return f"user {username} does not exist"
+    if person is None:
+        flash(f"user {username} does not exist", "danger")  
+        return redirect(url_for('main.index'))
     
     fullName = person.first_name
     if fullName:
