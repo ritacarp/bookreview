@@ -46,19 +46,25 @@ def send_email(subject, sender, recipients, text_body, html_body):
 # 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
 
 def send_sengrid_email(subject, sender, recipients, text_body, html_body):
+    print("\n\n1) in send_sengrid_email - this is 1")
     message = Mail(
         from_email=sender,
         to_emails=recipients,
         subject=subject,
         plain_text_content=text_body, 
         html_content=html_body)
+    print("2) in send_sengrid_email - this is 2")
     try:
+        print("3) in send_sengrid_email try - this is 3")
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        print("4) in send_sengrid_email try - this is 4")
         response = sg.send(message)
+        print("5) in send_sengrid_email try - this is 5")
         print(response.status_code)
         print(response.body)
         print(response.headers)
     except Exception as e:
+        print("6) in send_sengrid_email except - this is 6")
         print(e.message)
 
 
