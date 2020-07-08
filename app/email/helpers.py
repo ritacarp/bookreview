@@ -18,7 +18,7 @@ def send_password_reset_email(user):
                    )
     else:
         send_sengrid_email('[Book Review] Reset Your Password',
-                            from_email=current_app.config['ADMINS'][0],
+                            from_email=os.environ.get('ADMINS'),
                             to_emails=[user.email],
                             text_body="",
                             html_body=render_template('email/email_reset_password.html',user=user, token=token)
