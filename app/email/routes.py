@@ -18,7 +18,9 @@ def reset_password_request():
     if form.validate_on_submit():
         user = People.query.filter_by(email=form.email.data).first()
         if user:
-            send_password_reset_email(user)
+            #send_password_reset_email(user)
+            send_password_reset_email(user.email)
+            print(f"user.email = {user.email}")
         flash('Check your email for the instructions to reset your password',"information")
         return redirect(url_for('auth.login'))
     return render_template('email/reset_password_request.html',
@@ -42,7 +44,7 @@ def reset_password(token):
         person.comments=form.password.data
         person.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash('Your password has been reset.',"success")
         return redirect(url_for('auth.login'))
     
     
