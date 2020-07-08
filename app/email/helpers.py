@@ -1,6 +1,6 @@
 from flask_mail import Message
 from app import mail
-from flask import current_app, render_template, redirect, url_for, 
+from flask import current_app, render_template, redirect, url_for
 
 import os
 from sendgrid import SendGridAPIClient
