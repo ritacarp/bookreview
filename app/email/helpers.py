@@ -57,7 +57,7 @@ def send_sengrid_email(subject, sender, recipients, text_body, html_body):
         response = sg.send(message)
         print(f"\n\n1) response.status_code = {response.status_code}")
         print(f"2) response.body = {response.body}")
-        print(f"3) response.headers = {response.headers})
+        print(f"3) response.headers = {response.headers}")
         print("4)finished try - this is 4")
 
     except Exception as e:
