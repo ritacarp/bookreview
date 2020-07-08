@@ -8,7 +8,7 @@ from flask import current_app, render_template
 
 import sendgrid
 import os
-from sendgrid.helpers.mail import *
+#from sendgrid.helpers.mail import *
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
@@ -67,7 +67,10 @@ def send_sengrid_email(subject, sender, recipients, text_body, html_body):
     subject = subject
     to_email = Email(recipients)
     content = Content("text/plain", text_body)
-    mail = Mail(from_email, subject, to_email, content)
+    #mail = Mail(from_email, subject, to_email, content)
+    
+    mail = sendgrid.helpers.mail.Mail(from_email=from_email, subject=subject, to_email=to_email, content=content)
+    
     response = sg.client.mail.send.post(request_body=mail.get())
     print(response.status_code)
     print(response.body)
