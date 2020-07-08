@@ -22,8 +22,8 @@ def send_password_reset_email(user):
                    )
     else:
         send_sengrid_email('subject=[Book Review] Reset Your Password',
-                            sender=os.environ.get('ADMINS'),
-                            recipients=[user.email],
+                            sender=(os.environ.get('ADMINS'),),
+                            recipients=(user.email,),
                             text_body=render_template('email/email_reset_password.txt',user=user, token=token),
                             html_body=render_template('email/email_reset_password.html',user=user, token=token)
                    )
@@ -58,12 +58,10 @@ def send_sengrid_email(subject, sender, recipients, text_body, html_body):
         print(f"\n\n1) response.status_code = {response.status_code}")
         print(f"2) response.body = {response.body}")
         print(f"3) response.headers = {response.headers}")
-        print("4)finished try - this is 4")
 
     except Exception as e:
         print("5) in send_sengrid_email except - this is 5")
         print(e.message)
-    print("\n\n6) in send_sengrid_email finished successfully - this is 6")
 
 
 def x_send_sengrid_email(subject, sender, recipients, text_body, html_body):
