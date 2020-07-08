@@ -63,7 +63,7 @@ def send_sengrid_email(subject, sender, recipients, text_body, html_body):
     except Exception as e:
         print("5) in send_sengrid_email except - this is 5")
         print(e.message)
-    print(\n\n"6) in send_sengrid_email finished successfully - this is 6")
+    print("\n\n6) in send_sengrid_email finished successfully - this is 6")
 
 
 def x_send_sengrid_email(subject, sender, recipients, text_body, html_body):
