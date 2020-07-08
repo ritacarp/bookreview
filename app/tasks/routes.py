@@ -5,6 +5,8 @@ from app.models import People, Book, BookReview
 from app.tasks import bp
 # from app.main.helpers import grLookupByID
 from app.tasks.helpers import grUpdateIDByISBN, booksUpdateByGRID, booksGoogleUpdateByISBN
+from app.email.helpers import sengrid_password_reset_email
+
 import math
 
 import psycopg2

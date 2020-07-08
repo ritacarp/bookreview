@@ -2,6 +2,7 @@ import time
 from rq import get_current_job
 from app.main.helpers import grLookupByID
 from app.tasks.helpers import grLookupByISBN, grUpdateIDByISBN, booksUpdateByGRID, booksGoogleUpdateByISBN
+from app.email.helpers import sengrid_password_reset_email
 
 from app import create_app
 
@@ -56,9 +57,13 @@ def task_updateBooksByGRID():
     booksUpdateByGRID()
 
 
-
 def task_booksGoogleUpdateByISBN():
     job = get_current_job()
     print(f"Starting task_booksGoogleUpdateByISBN with no arguments")
     booksGoogleUpdateByISBN()
 
+def task_sengrid_password_reset_email(emailAddress):
+    # https://flask-bookreviews.herokuapp.com/tasks/launchTask/task_sengrid_password_reset_email/ritacarp@gmail.com
+    job = get_current_job()
+    print(f"task sengrid_password_reset_email with email addresss {emailAddress}")
+    sengrid_password_reset_email(emailAddress)

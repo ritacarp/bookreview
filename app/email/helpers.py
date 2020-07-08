@@ -24,12 +24,26 @@ def send_password_reset_email(emailAddress):
                     html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                    )
     else:
-        send_sengrid_email('subject=[Book Review] Reset Your Password',
-                            sender=(os.environ.get('ADMINS')),
-                            recipients=(emailAddress),
-                            text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-                            html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-                   )
+        return redirect(url_for('tasks.launchTask', taskName=sengrid_password_reset_email, args=emailAddress ))
+        #send_sengrid_email('subject=[Book Review] Reset Your Password',
+        #                    sender=(os.environ.get('ADMINS')),
+        #                    recipients=(emailAddress),
+        #                    text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+        #                    html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+        #           )
+
+
+def sengrid_password_reset_email(emailAddress):
+    print(f"sengrid_password_reset_email:  emailAddress = {emailAddress}")
+    user = People.query.filter_by(email=emailAddress).first()
+    token = user.get_reset_password_token()
+    send_sengrid_email('subject=[Book Review] Reset Your Password',
+                        sender=(os.environ.get('ADMINS')),
+                        recipients=(emailAddress),
+                        text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+                        html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+               )
+
    
 
 def send_email(subject, sender, recipients, text_body, html_body):
