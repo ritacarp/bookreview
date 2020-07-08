@@ -112,3 +112,11 @@ def test_booksGoogleUpdateByISBN():
     print("test_googleLookupByISBN(): started helpers.booksUpdateByGRID()")
     booksGoogleUpdateByISBN()
     return "test_booksGoogleUpdateByISBN(): booksGoogleUpdateByISBN() Finished Successfully!"
+
+
+# 127.0.0.1/tasks/test_sengrid_password_reset_email/ritacarp@gmail.com
+@bp.route("/test_sengrid_password_reset_email/<email>", methods=["GET", "POST"])
+def test_sengrid_password_reset_email(email):
+    print(f"test_sengrid_password_reset_email({email}): started helpers.sengrid_password_reset_email({email})")
+    sengrid_password_reset_email(email)
+    return f"test_sengrid_password_reset_email({email}): sengrid_password_reset_email({email}) Finished Successfully!"
