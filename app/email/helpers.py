@@ -2,9 +2,13 @@ from flask_mail import Message
 from app import mail
 from flask import current_app, render_template
 
+#import os
+#from sendgrid import SendGridAPIClient
+#from sendgrid.helpers.mail import Mail
+
+import sendgrid
 import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import *
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
@@ -41,7 +45,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
 
 # 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
 
-def send_sengrid_email(subject, sender, recipients, text_body, html_body):
+def x_send_sengrid_email(subject, sender, recipients, text_body, html_body):
     message = Mail(
         from_email=sender,
         to_emails=recipients,
@@ -55,3 +59,16 @@ def send_sengrid_email(subject, sender, recipients, text_body, html_body):
         print(response.headers)
     except Exception as e:
         print(e.message)
+
+
+def send_sengrid_email(subject, sender, recipients, text_body, html_body):
+    sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+    from_email = sender
+    subject = subject
+    to_email = Email(recipients)
+    content = Content("text/plain", text_body)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
