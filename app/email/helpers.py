@@ -5,6 +5,14 @@ from flask import current_app, render_template
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+
 from app.models import People
 
 #import sendgrid
@@ -19,19 +27,59 @@ def send_password_reset_email(emailAddress):
     token = user.get_reset_password_token()
     server = os.environ.get('SERVER')
     if server == "localhost":
-        send_email('[Book Review] Reset Your Password',
+        gmail_send_email('[Book Review] Reset Your Password',
                     sender=(os.environ.get('ADMINS')),
-                    recipients=[emailAddress],
+                    recipients=emailAddress,
                     text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
                     html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                    )
     else:
-        send_sengrid_email('subject=[Book Review] Reset Your Password',
+        # was send_sengrid_email
+        # MAIL_SERVER=smtp.sendgrid.net
+        # MAIL_USERNAME=apikey
+        # MAIL_PASSWORD=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
+        # ADMINS=flask.bookreviews@gmail.com
+        # was send_sengrid_email
+        
+        gmail_send_email('subject=[Book Review] Reset Your Password',
                             sender=(os.environ.get('ADMINS')),
-                            recipients=(emailAddress),
+                            recipients=emailAddress,
                             text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
                             html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                    )
+
+
+
+def gmail_send_email(subject, sender, recipients, text_body, html_body):
+    port = os.environ.get('MAIL_PORT')  # For starttls
+    smtp_server = os.environ.get('MAIL_SERVER')
+    
+    sender_email = os.environ.get('MAIL_USERNAME')
+    password = os.environ.get('MAIL_PASSWORD')
+
+    receiver_email = recipients
+    
+    message = MIMEMultipart("alternative")
+    message["Subject"] = subject
+    message["From"] = sender_email
+    message["To"] = receiver_email
+
+    part1 = MIMEText(text_body, "plain")
+    part2 = MIMEText(html_body, "html")
+
+    # Add HTML/plain-text parts to MIMEMultipart message
+    # The email client will try to render the last part first
+    message.attach(part1)
+    message.attach(part2)
+
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    connection = smtplib.SMTP(smtp_server, port)
+    connection.starttls(context=context)
+    connection.login(sender_email, password)
+    connection.sendmail(sender_email, receiver_email, message.as_string())
+
+
+    
    
 
 def send_email(subject, sender, recipients, text_body, html_body):
