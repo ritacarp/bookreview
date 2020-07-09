@@ -12,7 +12,9 @@ from app.models import People
 #from sendgrid.helpers.mail import *
 
 def send_password_reset_email(emailAddress):
-    print(f"emailAddress = {emailAddress}")
+    print(f"\n\n1)  send_password_reset_email:  emailAddress = {emailAddress}")
+    print(f"\n\n2)  send_password_reset_email:  email server =  {os.environ.get('MAIL_SERVER')}")
+    
     user = People.query.filter_by(email=emailAddress).first()
     token = user.get_reset_password_token()
     server = os.environ.get('SERVER')
@@ -33,6 +35,9 @@ def send_password_reset_email(emailAddress):
    
 
 def send_email(subject, sender, recipients, text_body, html_body):
+    print(f"\n\n3)  send_password_reset_email:  emailAddress = {emailAddress}")
+    print(f"\n\n4)  send_password_reset_email:  email server =  {os.environ.get('MAIL_SERVER')}")
+
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
@@ -45,12 +50,16 @@ def send_email(subject, sender, recipients, text_body, html_body):
 # https://app.sendgrid.com/settings/api_keys
 # https://devcenter.heroku.com/articles/sendgrid#python
 # https://devcenter.heroku.com/articles/sendgrid#setup-api-key-environment-variable
+# https://sendgrid.com/docs/for-developers/sending-email/getting-started-smtp/#before-you-begin
 
 # https://app.sendgrid.com/guide/integrate/langs/smtp
 
 # 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
 
 def send_sengrid_email(subject, sender, recipients, text_body, html_body):
+    print(f"\n\n5)  send_password_reset_email:  emailAddress = {emailAddress}")
+    print(f"\n\n6)  send_password_reset_email:  email server =  {os.environ.get('MAIL_SERVER')}")
+
     message = Mail(
         from_email=sender,
         to_emails=recipients,
