@@ -17,19 +17,19 @@ def send_password_reset_email(emailAddress):
     token = user.get_reset_password_token()
     server = os.environ.get('SERVER')
     #if server == "localhost":
-    send_email('[Book Review] Reset Your Password',
-                sender=(os.environ.get('ADMINS')),
-                recipients=[emailAddress],
-                text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-                html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-               )
-    #else:
-    #    send_sengrid_email('subject=[Book Review] Reset Your Password',
-    #                        sender=(os.environ.get('ADMINS')),
-    #                        recipients=(emailAddress),
-    #                        text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-    #                        html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-    #               )
+        send_email('[Book Review] Reset Your Password',
+                    sender=current_app.config['ADMINS'][0],
+                    recipients=[emailAddress],
+                    text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+                    html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+                   )
+    else:
+        send_sengrid_email('subject=[Book Review] Reset Your Password',
+                            sender=(os.environ.get('ADMINS')),
+                            recipients=(emailAddress),
+                            text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+                            html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+                   )
    
 
 def send_email(subject, sender, recipients, text_body, html_body):
