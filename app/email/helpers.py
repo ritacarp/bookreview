@@ -19,7 +19,7 @@ def send_password_reset_email(emailAddress):
     #if server == "localhost":
     send_email('[Book Review] Reset Your Password',
                 sender=(os.environ.get('ADMINS')),
-                recipients=[emailAddress],
+                recipients=(emailAddress),
                 text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
                 html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                 )
