@@ -35,7 +35,7 @@ def send_password_reset_email(emailAddress):
    
 
 def send_email(subject, sender, recipients, text_body, html_body):
-    print(f"\n\n3)  send_password_reset_email:  emailAddress = {emailAddress}")
+    print(f"\n\n3)  send_password_reset_email:  emailAddress = {recipients}")
     print(f"\n\n4)  send_password_reset_email:  email server =  {os.environ.get('MAIL_SERVER')}")
 
     msg = Message(subject, sender=sender, recipients=recipients)
@@ -57,7 +57,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
 # 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
 
 def send_sengrid_email(subject, sender, recipients, text_body, html_body):
-    print(f"\n\n5)  send_password_reset_email:  emailAddress = {emailAddress}")
+    print(f"\n\n5)  send_password_reset_email:  emailAddress = {recipients}")
     print(f"\n\n6)  send_password_reset_email:  email server =  {os.environ.get('MAIL_SERVER')}")
 
     message = Mail(
