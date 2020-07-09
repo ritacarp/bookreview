@@ -16,20 +16,20 @@ def send_password_reset_email(emailAddress):
     user = People.query.filter_by(email=emailAddress).first()
     token = user.get_reset_password_token()
     server = os.environ.get('SERVER')
-    if server == "localhost":
-        send_email('[Book Review] Reset Your Password',
-                    sender=current_app.config['ADMINS'][0],
-                    recipients=[emailAddress],
-                    text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-                    html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-                   )
-    else:
-        send_sengrid_email('subject=[Book Review] Reset Your Password',
-                            sender=(os.environ.get('ADMINS')),
-                            recipients=(emailAddress),
-                            text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
-                            html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
-                   )
+    #if server == "localhost":
+    send_email('[Book Review] Reset Your Password',
+                sender=current_app.config['ADMINS'][0],
+                recipients=[emailAddress],
+                text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+                html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+               )
+    #else:
+    #    send_sengrid_email('subject=[Book Review] Reset Your Password',
+    #                        sender=(os.environ.get('ADMINS')),
+    #                        recipients=(emailAddress),
+    #                        text_body=render_template('email/email_reset_password.txt',username=user.username, token=token),
+    #                        html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
+    #               )
    
 
 def send_email(subject, sender, recipients, text_body, html_body):
@@ -45,6 +45,8 @@ def send_email(subject, sender, recipients, text_body, html_body):
 # https://app.sendgrid.com/settings/api_keys
 # https://devcenter.heroku.com/articles/sendgrid#python
 # https://devcenter.heroku.com/articles/sendgrid#setup-api-key-environment-variable
+
+# https://app.sendgrid.com/guide/integrate/langs/smtp
 
 # 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
 
