@@ -54,6 +54,8 @@ def send_password_reset_email(emailAddress):
 
 
 def gmail_send_email(subject, sender, recipients, text_body, html_body):
+    # Described at this URL  https://realpython.com/python-send-email/#option-1-setting-up-a-gmail-account-for-development
+    
     port = os.environ.get('MAIL_PORT')  # For starttls
     smtp_server = os.environ.get('MAIL_SERVER')
     
