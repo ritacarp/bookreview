@@ -16,7 +16,7 @@ def send_password_reset_email(emailAddress):
     user = People.query.filter_by(email=emailAddress).first()
     token = user.get_reset_password_token()
     server = os.environ.get('SERVER')
-    #if server == "localhost":
+    if server == "localhost":
         send_email('[Book Review] Reset Your Password',
                     sender=current_app.config['ADMINS'][0],
                     recipients=[emailAddress],
