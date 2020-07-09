@@ -34,6 +34,9 @@ def send_password_reset_email(emailAddress):
                     html_body=render_template('email/email_reset_password.html',username=user.username, token=token)
                    )
     else:
+        # local and server are using the same method to send email
+        # but I'm keeping this anyway in case I need to go back to it
+        
         # was send_sengrid_email
         # MAIL_SERVER=smtp.sendgrid.net
         # MAIL_USERNAME=apikey
