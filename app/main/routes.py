@@ -228,3 +228,8 @@ def edit_profile():
     form.submit.label.text = 'Update Profile'
 
     return render_template('editProfile.html', title='Edit Profile', form=form)
+
+@bp.route('/oauth2callback', methods=['GET', 'POST'])
+@bp.route('/oauth2callback/<token>', methods=['GET', 'POST'])
+def oauth2callback(token=""):
+    print(f"the oauth2 callback token is {token}")
