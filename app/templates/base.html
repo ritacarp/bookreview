@@ -47,10 +47,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbar">
 
+                    {#
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.search') }}">Search</a></li>
                         <input type = "text" name="search" id="search" value="">
                     </ul>
+                    #}
                     {% if not current_user.is_anonymous %}
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.person', username=current_user.username) }}">Hi, {{ current_user.username }}!</a></li>
