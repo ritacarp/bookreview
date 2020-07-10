@@ -6,19 +6,14 @@
 {% endblock %}
 
 {% block content %}
-        {#
-        <h1>{{book.title}}</h1>
-        <p>{{book.author}}<p>
-        <p>{{book.amazon_lookup_id}}<p>
-        #}
-        {% set imagesPerRow = namespace(value=10) %}
 
+</div style="text-align:center;">
 
         {% set count = namespace(value=0) %}
         {% for book in allBooks %}
            {% set count.value = count.value + 1 %}
 
-           {% if count.value % imagesPerRow.value == 1 %}
+           {% if count.value % imagesPerRow == 1 %}
            <div class="card-body">
               <div class="row" style="padding-right:10px;">
            {% endif %}
@@ -35,26 +30,49 @@
 
 
 <div style="text-align:center">
-<div class="homerating">
+  <div class="homerating">
     <div class="homerating-upper" style="width: {{book['scorePercent']}}%;">
         <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
     </div>
     <div class="homerating-lower">
         <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
     </div>
-</div>
+  </div>
 </div>
 
 </span>
 
 
 
-          {% if count.value % imagesPerRow.value == 0 %}
+
+          {% if count.value % imagesPerRow == 0 %}
               </div>
            </div>
           {% endif %}
         {% endfor %}
 
+</div>
+
+    <div style="text-align:center;">
+
+    {% set first_url = url_for('main.index') + '?page=1' %}
+    {% set last_url = url_for('main.index') + '?page=' + lastPage %}
+    {% if prev_url %}
+        <a style="padding:5px" href="{{ first_url }}"><i class="arrow left"></i><i class="arrow left"></i></a>&nbsp;
+        <a style="padding:5px"  href="{{ prev_url }}"><i class="arrow left"></i></a>&nbsp;
+    {% else %}
+        <i class="noarrow left"></i><i class="noarrow left"></i>&nbsp;
+        <i class="noarrow left"></i>&nbsp;
+    {% endif %}
+
+    {% if next_url %}
+        <a href="{{ next_url }}"><i class="arrow right"></i></a>&nbsp;
+        <a href="{{ last_url }}"><i class="arrow right"></i><i class="arrow right"></i></a>&nbsp;
+    {% else %}
+         <i class="noarrow right"></i>&nbsp;
+         <i class="noarrow right"></i><i class="noarrow right"></i>&nbsp;
+    {% endif %}
+    </div>
 
 
 <script>

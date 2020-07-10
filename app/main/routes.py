@@ -26,21 +26,39 @@ def before_request():
 @bp.route('/index')
 
 def index():
-    imagesPerRow = 10
+    page = request.args.get('page', 1, type=int)
+    imagesPerRow = 9
     bookList = []
-    books  = Book.query.filter(Book.image_url != None).order_by(desc(Book.average_score)).limit(100).all()
-    for book in books: 
-        bookID = book.id
-        bookList.append(bookID)
-    randomList = bookList.copy()
-    random.shuffle(randomList)
+
+    
+    allBooks  = Book.query.filter(Book.image_url != None).order_by(desc(Book.average_score)).paginate(page, int(imagesPerRow*2), False)
+    bookCount = Book.query.filter(Book.image_url != None).count()
+    lastPage = math.ceil(bookCount / (imagesPerRow*2))
+
+    if allBooks.has_next:
+        next_url = url_for('main.index', page=allBooks.next_num)
+    else:
+        next_url = None
+
+    if allBooks.has_prev:
+        prev_url  = url_for('main.index', page=allBooks.prev_num)
+    else:
+        prev_url  = None
+
+
+    #books  = Book.query.filter(Book.image_url != None).order_by(desc(Book.average_score)).limit(100).all()
+    #for book in books: 
+    #    bookID = book.id
+    #    bookList.append(bookID)
+    #randomList = bookList.copy()
+    #random.shuffle(randomList)
     # print("\n\nbookList = ", str(bookList).strip('[]'))
     # print("\n\n1) randomList = ", str(randomList).strip('[]'))
-    displayList = randomList[0:imagesPerRow]
+    #displayList = randomList[0:imagesPerRow]
     # print("\n\n2) displayList = ", str(displayList).strip('[]'))
-    allBooks = Book.query.filter(Book.id.in_(displayList))
+    #allBooks = Book.query.filter(Book.id.in_(displayList))
     
-    for book in allBooks:
+    for book in allBooks.items:
         averageScore = book.average_score
         if averageScore == 5.0:
             scorePercent = 100
@@ -58,8 +76,10 @@ def index():
 
 
     return render_template("homepage.html",
-                            allBooks=allBooks,
-                            imagesPerRow=imagesPerRow
+                            allBooks=allBooks.items,
+                            imagesPerRow=imagesPerRow,
+                            next_url=next_url, prev_url=prev_url,
+                            lastPage=str(lastPage)
                             )
 
 
