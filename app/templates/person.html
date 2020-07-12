@@ -6,7 +6,8 @@
          <span style="margin-left:5px">
             {% if fullName %}<h6>name:  {{ fullName }}</h6>{% endif %}
             <h6>user name: {{ person.username }}</h6>
-            {% if person.last_seen %}<h6>Last seen on: {{ person.last_seen }}</h6>{% endif %}
+            {# if person.last_seen %}<h6>Last seen on: {{ person.last_seen }}</h6>{% endif #}
+            {% if person.last_seen %}<h6>Last seen on: {{ moment(person.last_seen).format('LLL') }}</h6>{% endif %}
             {% if person == current_user %}
                <p><a href="{{ url_for('main.edit_profile') }}"><small>edit your profile</small></a></p>
             {% endif %}

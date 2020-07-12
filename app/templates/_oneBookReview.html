@@ -1,5 +1,6 @@
                       <div>
-                         reviewed on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span>
+                         <!-- reviewed on <span style="font-weight:bold">{{ review.review_date.strftime('%m-%d-%Y') }}</span> -->
+                         reviewed on <span style="font-weight:bold">{{  moment(review.review_date).format('LL') }}</span>
                          {% if request.endpoint == "main.book" %}
                             by <span style="font-weight:bold"><a href="{{ url_for('main.person', username=review.reviewer.username) }}">{{review["reviewer"]["username"]}}</a></span>
                          {% endif %}
