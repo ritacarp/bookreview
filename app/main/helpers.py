@@ -2,9 +2,32 @@ import os
 import requests
 import urllib.parse
 import xml.etree.ElementTree as ET
+from app import db
 from app.models import Book
 import math
 import locale
+
+
+def grLookupByISBN(grISBN):
+    """Look up quote for symbol."""
+    # https://docs.python.org/3.4/library/xml.etree.elementtree.html
+
+    # Contact API
+    try:
+        api_key = os.environ.get("GOODREADS_PUBLIC_KEY")
+        response = requests.get(f"https://www.goodreads.com/book/isbn_to_id/{grISBN}?key={api_key}") 
+        response.raise_for_status()
+    except requests.RequestException:        
+        print(f"There was an exception raised in function grLookupByISBN({grISBN}) \n\n")
+        return None
+        
+    try:  
+        grBookID = str(response.content, 'utf-8')
+        return grBookID
+        
+    except (KeyError, TypeError, ValueError):
+        print(f"There was an exception raised in function grLookupByISBN({grISBN}) trying to read the response \n\n")
+        return None
 
 
 
@@ -223,6 +246,207 @@ def googleLookupByISBN(isbn):
         return None
         
     return None
+    
+
+def googleLookup(source):
+    """Look up quote for symbol."""
+    # https://docs.python.org/3.4/library/xml.etree.elementtree.html
+
+    # Contact API
+    try:
+        response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={source}")
+        response.raise_for_status()
+    except requests.RequestException:        
+        return None
+
+    try:
+        count = 0
+        bookIDs = []
+        isbns=[]
+        book = response.json()
+        
+        print("\n\n")
+        for item in book["items"]:
+        
+            isbn = ""
+            title = ""
+            authors=""
+            year = 0
+            review_count = 0
+            ratings_count = 0
+            average_score = 0.0
+            gr_bookid = 0
+            asin = ""
+            kindle_asin = ""
+            isbn13 = ""
+            stars_1 = 0
+            stars_2 = 0
+            stars_3 = 0
+            stars_4 = 0
+            stars_5 = 0
+            image_url = ""
+            thumbnail_url = ""
+            description = ""
+            amazon_lookup_id = ""
+            google_image_url = ""
+            homepage_image_url = ""
+
+
+           
+            industryIDs = item["volumeInfo"]["industryIdentifiers"]
+            for id in industryIDs:
+                try:
+                    type = id["type"] 
+                    value = id["identifier"]
+                    if type == "ISBN_10":
+                        isbn = value
+                    if type == "ISBN_13":
+                        isbn13 = value
+                except:
+                    isbn = ""
+                    isbn13 = ""
+           
+            try:
+                title = item["volumeInfo"]["title"]
+            except:
+                title = ""
+                
+            try:
+                for oneAuthor in item["volumeInfo"]["authors"]:
+                    if authors != "":
+                        authors += ", "
+                    authors += oneAuthor
+            except:
+                authors=""
+
+
+            try:
+                year = (item["volumeInfo"]["publishedDate"])[0:4]
+            except:
+                year = 0
+
+           
+            try:
+                image_url = item["volumeInfo"]["imageLinks"]["thumbnail"]
+                thumbnail_url = image_url
+                google_image_url = image_url
+                homepage_image_url = image_url
+            except:
+                image_url = ""
+                thumbnail_url = ""
+                google_image_url = ""
+                homepage_image_url = ""
+
+
+            try:
+                description = item["volumeInfo"]["description"]
+            except:
+                description = ""
+                
+  
+            print(f"\n\nisbn = {isbn}")
+            print(f"title = {title}")
+            print(f"isbn13 = {isbn13}")
+            print(f"authors = {authors}")
+            print(f"year = {year}")
+            print(f"image_url = {image_url}")
+            
+            # If we have the ISBN in our DB, just update the pictures and the description.
+            
+            ourBook = Book.query.filter(Book.isbn == isbn).first()
+            
+            if ourBook != None:
+                # Update the images and description
+                print(f"Found isbn {ourBook.isbn}, id = {ourBook.id}")
+                ourBook.set_amazon_lookup_id(isbn)
+                ourBook.set_image_url(image_url)
+                ourBook.set_isbn13(isbn13)
+                ourBook.set_thumbnail_url(image_url)
+                ourBook.set_google_image_url(image_url)
+                ourBook.set_homepage_image_url(image_url)
+                ourBook.set_description = description
+
+            # Look up the book in goodreads
+            # First get the goodreads book ID by isbn
+            print(f"\n\nLook up goodreads isbn {isbn}")
+            goodreadsBookID = grLookupByISBN(isbn)
+            if goodreadsBookID != None:
+                print(f"Found goodreadsBookID {goodreadsBookID} for isbn {isbn}")
+                # Get the ratings from gooreads
+                goodreadsBook = grLookupByID(goodreadsBookID)
+                if ourBook != None:
+                    print(f"\n\nWe have this book in our DB, id = {ourBook.id}, bookreads id = {goodreadsBookID}")
+                    ourBook.set_review_count(goodreadsBook["review_count"])
+                    ourBook.set_ratings_count(goodreadsBook["ratings_count"])
+                    ourBook.set_average_score(goodreadsBook["average_score"])
+                    ourBook.set_asin(goodreadsBook["asin"])
+                    ourBook.set_kindle_asin(goodreadsBook["kindle_asin"])
+                    ourBook.set_stars_1(goodreadsBook["stars_1"])
+                    ourBook.set_stars_2(goodreadsBook["stars_2"])
+                    ourBook.set_stars_3(goodreadsBook["stars_3"])
+                    ourBook.set_stars_4(goodreadsBook["stars_4"])
+                    ourBook.set_stars_5(goodreadsBook["stars_5"])
+                    
+                    db.session.commit()
+                    count += 1
+                    bookIDs.append(ourBook.id)
+                    isbns.append(isbn)
+
+
+                else:
+                    # Add the book to our DB
+                    print(f"\n\nThis is a new book that is being added to our DB, bookreads id = {goodreadsBookID}")
+                    newBook = Book(isbn=isbn,
+                                   title=title,
+                                   author=authors,
+                                   year=year,
+                                   amazon_lookup_id=isbn,
+                                   gr_bookid=goodreadsBookID,
+                                   isbn13=isbn13,
+                                   image_url=image_url,
+                                   thumbnail_url=image_url,
+                                   google_image_url=image_url,
+                                   homepage_image_url=image_url,
+                                   description=description,
+                                   review_count = goodreadsBook["review_count"],
+                                   ratings_count = goodreadsBook["ratings_count"],
+                                   average_score = goodreadsBook["average_score"],
+                                   asin = goodreadsBook["asin"],
+                                   kindle_asin = goodreadsBook["kindle_asin"],
+                                   stars_1 = goodreadsBook["stars_1"],
+                                   stars_2 = goodreadsBook["stars_2"],
+                                   stars_3 = goodreadsBook["stars_3"],
+                                   stars_4 = goodreadsBook["stars_4"],
+                                   stars_5 = goodreadsBook["stars_5"]
+                                   )
+                    db.session.add(newBook)
+                    db.session.commit()
+                    count += 1
+                    bookIDs.append(newBook.id)
+                    isbns.append(isbn)
+                    print(f"Added new book id = {newBook.id}")
+                    
+            else:
+                print(f"COULD NOT FIND goodreadsBookID for isbn {isbn}")
+
+        
+        return {
+           "count": count,
+           "isbns": isbns,
+           "bookIDs":bookIDs
+        }
+
+
+
+    except (KeyError, TypeError, ValueError):
+        print("An error occurred trying to parse content of response\n\n")
+        return None
+        
+    return None
+
+
+
+
 
 def usd(value):
     """Format value as USD."""

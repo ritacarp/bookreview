@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from app import db, grBookList
 from app.models import People, Book, BookReview
 from app.main import bp
-from app.main.helpers import grLookupByID
+from app.main.helpers import grLookupByID, googleLookup
 import math
 from sqlalchemy import asc, desc,  and_, or_
 from datetime import datetime
@@ -166,12 +166,89 @@ def book(bookID=""):
 
     
 
-@bp.route("/Search", methods=["GET", "POST"])
 @bp.route("/search", methods=["GET", "POST"])
-def search():
+@bp.route("/search/", methods=["GET", "POST"])
+@bp.route("/search/<value>", methods=["GET", "POST"])
+def search(value=""):
     # """Search for books""
-    return "Search for books"
     
+    # select * from books 
+    # Where id in (5007, 5004, 5008)
+    # And (
+    #       lower(title) like lower('%dear edward%')
+    #       or 
+    #       lower(author) like lower('%dear edward%') 
+    #      )
+
+    if value == "":
+        flash(f"please enter a search value", "danger")  
+        return redirect(url_for('main.index'))
+        
+    searchBook = googleLookup(value)
+    print("\n\n")
+
+
+    print(f"\n\nsearch:  isbns = {searchBook['isbns']}")
+    print(f"\nsearch:  ids = {searchBook['bookIDs']}")
+    
+    resultCount = searchBook['count']
+
+
+    print("\n\n")
+    # return f"The number of values returned is {searchBook['count']}"
+    
+
+    page = request.args.get('page', 1, type=int)
+    imagesPerRow = 9
+    bookList = []
+
+    lower_value = value.lower()
+    filter = "%" + lower_value + "%"
+
+    allBooks = Book.query.filter( and_(   Book.id.in_(searchBook['bookIDs']), (or_ ( Book.author.ilike(filter), Book.title.ilike(filter)))  )   ).paginate(page, int(imagesPerRow*2), False)
+    bookCount = Book.query.filter( and_(   Book.id.in_(searchBook['bookIDs']), (or_ ( Book.author.ilike(filter), Book.title.ilike(filter)))  )   ).count()
+    lastPage = math.ceil(bookCount / (imagesPerRow*2))
+
+    if allBooks.has_next:
+        next_url = url_for('main.index', page=allBooks.next_num)
+    else:
+        next_url = None
+
+    if allBooks.has_prev:
+        prev_url  = url_for('main.index', page=allBooks.prev_num)
+    else:
+        prev_url  = None
+
+    for book in allBooks.items:
+        averageScore = book.average_score
+        if averageScore == 5.0:
+            scorePercent = 100
+            yellowStars = 5
+            paritalYellowStars = 0
+            clearStars = 0
+        else:
+            scorePercent =  ((averageScore / 5) * 100);
+            yellowStars = math.floor(averageScore)
+            paritalYellowStars = averageScore - yellowStars
+            clearStars = 5 - (yellowStars + 1)
+         
+        book.scorePercent = scorePercent
+
+    if bookCount > 0:
+        flash(f"There were {bookCount} results for search value {value} ", "success") 
+        return render_template("homepage.html",
+                                allBooks=allBooks.items,
+                                imagesPerRow=imagesPerRow,
+                                next_url=next_url, prev_url=prev_url,
+                                lastPage=str(lastPage)
+                                )
+    else:
+        flash(f"There were no results for search value  {value} ", "danger")  
+        return redirect(url_for('main.index'))
+     
+
+
+
 
 #@bp.route("/review", methods=["GET", "POST"])
 #@login_required

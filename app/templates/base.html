@@ -30,6 +30,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+
 {% block scripts %}
     {{ moment.include_moment() }}
 {% endblock %}
@@ -51,12 +52,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbar">
 
-                    {#
                     <ul class="navbar-nav mr-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.search') }}">Search</a></li>
-                        <input type = "text" name="search" id="search" value="">
+                        <input style="margin-right:10px" type = "text" name="searchText" id="searchText" value="">
+                        <input type="button" class="myButton" id="searchButton" name="searchButton" value="Search">
                     </ul>
-                    #}
+
+
                     {% if not current_user.is_anonymous %}
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.person', username=current_user.username) }}">Hi, {{ current_user.username }}!</a></li>
@@ -120,4 +121,40 @@
 
     </body>
 
+
+
 </html>
+
+<script>
+  $('#searchButton').on('click', function () {
+     var value = $("#searchText").val()
+     if (! value) {
+        url="{{ url_for('main.search', value=value) }}"
+     } else {
+         url = "{{ url_for('main.search', value=value) }}" + value
+     }
+     var win = window.open(url,"_self");
+  });
+
+  $('#searchText').keypress(function(event){
+     var keycode = (event.keyCode ? event.keyCode : event.which);
+     if(keycode == '13'){
+        var value = $("#searchText").val()
+        if (! value) {
+           url="{{ url_for('main.search', value=value) }}"
+        } else {
+            url = "{{ url_for('main.search', value=value) }}" + value
+        }
+        var win = window.open(url,"_self");
+     }
+  });
+</script>
+
+
+
+
+
+
+
+
+

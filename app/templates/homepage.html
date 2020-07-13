@@ -20,12 +20,13 @@
 
 
 <span>
-
+                 <a href="{{ url_for('main.book', bookID=book['id']) }}">
                  {% if book["google_image_url"] %}
                      <img height="140" data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["id"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["google_image_url"]}}'>
                  {% else %}
                      <img  height="140"  data-toggle="tooltip" data-html="true" title='{{book["author"]}}<br />{{book["title"]}}' id="booksThumbnail_{{count.value }}" class="rounded bookButton" data-bookID='{{book["id"]}}' data-amazonLookupID='{{book["amazon_lookup_id"]}}' style="cursor: pointer;padding-right:4px;" class="rounded bookButton" src='{{book["image_url"]}}'>
                  {% endif %}
+                 </a>
 
 
 
@@ -94,6 +95,7 @@
   });
   */
 
+  /*
   $('.bookButton').on('click', function () {
      var thisID = $(this).attr("id" )
      var handle = "#" + thisID
@@ -102,6 +104,7 @@
      var win = window.open(url,"_self");
 
   });
+  */
 
 </script>
 
