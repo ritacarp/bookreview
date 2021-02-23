@@ -17,7 +17,7 @@
 
         <div class="form-group">
             <!-- {{ form.username.label }}<br> -->
-            {{ form.username(size="32", autofocus=true, placeholder="Username", class="form-control form-control-sm") }}
+            {{ form.username(size="32", autofocus=true, placeholder="Username", value="guest", class="form-control form-control-sm") }}
             {% for error in form.username.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
@@ -25,7 +25,7 @@
 
         <div class="form-group">
             <!-- {{ form.password.label }}<br> -->
-            {{ form.password(size="32", placeholder="Password", class="form-control form-control-sm") }}
+            {{ form.password(size="32", placeholder="Password", value="test1234", class="form-control form-control-sm") }}
             {% for error in form.password.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
@@ -37,6 +37,7 @@
 
 
         <div><small>New User? <a href="{{ url_for('auth.register') }}">click to register!</a></small></div>
+        <div><small>Guests Log in with username guest / password test1234</small></div>
         <div><small><a href="{{ url_for('email.reset_password_request') }}">forgot password?</a></small></div>
 
 
