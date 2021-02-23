@@ -186,6 +186,10 @@ def search(value=""):
         
     searchBook = googleLookup(value)
     print("\n\n")
+    
+    if searchBook is None
+        flash(f"There were no results for search value  {value} ", "danger")  
+        return redirect(url_for('main.index'))
 
 
     # print(f"\n\nsearch:  isbns = {searchBook['isbns']}")
