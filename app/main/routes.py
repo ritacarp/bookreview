@@ -187,7 +187,7 @@ def search(value=""):
     searchBook = googleLookup(value)
     print("\n\n")
     
-    if searchBook is None
+    if searchBook is None:
         flash(f"There were no results for search value  {value} ", "danger")  
         return redirect(url_for('main.index'))
 
@@ -253,6 +253,7 @@ def search(value=""):
 
 
 
+
 #@bp.route("/review", methods=["GET", "POST"])
 #@login_required
 #def review():
@@ -298,7 +299,7 @@ def person(username = ""):
                             fullName=fullName,
                             allBookReviews=allBookReviews)
 
-
+        
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
