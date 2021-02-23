@@ -253,7 +253,6 @@ def search(value=""):
 
 
 
-
 #@bp.route("/review", methods=["GET", "POST"])
 #@login_required
 #def review():
@@ -299,7 +298,7 @@ def person(username = ""):
                             fullName=fullName,
                             allBookReviews=allBookReviews)
 
-        
+
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
