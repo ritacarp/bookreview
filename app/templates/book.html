@@ -167,7 +167,17 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
-<span class="homerating">&#9733;</span> {{ ((book['stars_5'] / book['ratings_count']) * 100) | pct }}%
+<span class="homerating">&#9733;</span>
+
+{% if book['ratings_count'] == 0 %}
+0
+{% else %}
+{{ ((book['stars_5'] / book['ratings_count']) * 100) | pct }}%
+{% endif %}
+
+
+
+
 </div>
 
 <div>
@@ -175,7 +185,12 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
-<span class="homerating">&#9734;</span> {{ ((book['stars_4'] / book['ratings_count']) * 100) | pct }}%
+<span class="homerating">&#9734;</span>
+{% if book['ratings_count'] == 0 %}
+0
+{% else %}
+{{ ((book['stars_4'] / book['ratings_count']) * 100) | pct }}%
+{% endif %}
 </div>
 
 <div>
@@ -183,7 +198,12 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9734;</span>
-<span class="homerating">&#9734;</span> {{ ((book['stars_3'] / book['ratings_count']) * 100) | pct }}%
+<span class="homerating">&#9734;</span>
+{% if book['ratings_count'] == 0 %}
+0
+{% else %}
+{{ ((book['stars_3'] / book['ratings_count']) * 100) | pct }}%
+{% endif %}
 </div>
 
 <div>
@@ -191,7 +211,13 @@
 <span class="homerating">&#9733;</span>
 <span class="homerating">&#9734;</span>
 <span class="homerating">&#9734;</span>
-<span class="homerating">&#9734;</span> {{ ((book['stars_2'] / book['ratings_count']) * 100) | pct }}%
+
+<span class="homerating">&#9734;</span>
+{% if book['ratings_count'] == 0 %}
+0
+{% else %}
+{{ ((book['stars_2'] / book['ratings_count']) * 100) | pct }}%
+{% endif %}
 </div>
 
 <div>
@@ -199,7 +225,12 @@
 <span class="homerating">&#9734;</span>
 <span class="homerating">&#9734;</span>
 <span class="homerating">&#9734;</span>
-<span class="homerating">&#9734;</span> {{ ((book['stars_1'] / book['ratings_count']) * 100) | pct }}%
+<span class="homerating">&#9734;</span>
+{% if book['ratings_count'] == 0 %}
+0
+{% else %}
+{{ ((book['stars_1'] / book['ratings_count']) * 100) | pct }}%
+{% endif %}
 </div>
 
 </span>

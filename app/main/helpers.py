@@ -11,6 +11,8 @@ import locale
 def grLookupByISBN(grISBN):
     """Look up quote for symbol."""
     # https://docs.python.org/3.4/library/xml.etree.elementtree.html
+    
+    return None
 
     # Contact API
     try:
@@ -254,6 +256,7 @@ def googleLookup(source):
 
     # Contact API
     try:
+        print(f"\n\nCalling googleapis with url https://www.googleapis.com/books/v1/volumes?q={source}")
         response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={source}")
         response.raise_for_status()
     except requests.RequestException:        
@@ -365,69 +368,108 @@ def googleLookup(source):
                 ourBook.set_google_image_url(image_url)
                 ourBook.set_homepage_image_url(image_url)
                 ourBook.set_description = description
-
-            # Look up the book in goodreads
-            # First get the goodreads book ID by isbn
-            print(f"\n\nLook up goodreads isbn {isbn}")
-            goodreadsBookID = grLookupByISBN(isbn)
-            if goodreadsBookID != None:
-                print(f"Found goodreadsBookID {goodreadsBookID} for isbn {isbn}")
-                # Get the ratings from gooreads
-                goodreadsBook = grLookupByID(goodreadsBookID)
-                if ourBook != None:
-                    print(f"\n\nWe have this book in our DB, id = {ourBook.id}, bookreads id = {goodreadsBookID}")
-                    ourBook.set_review_count(goodreadsBook["review_count"])
-                    ourBook.set_ratings_count(goodreadsBook["ratings_count"])
-                    ourBook.set_average_score(goodreadsBook["average_score"])
-                    ourBook.set_asin(goodreadsBook["asin"])
-                    ourBook.set_kindle_asin(goodreadsBook["kindle_asin"])
-                    ourBook.set_stars_1(goodreadsBook["stars_1"])
-                    ourBook.set_stars_2(goodreadsBook["stars_2"])
-                    ourBook.set_stars_3(goodreadsBook["stars_3"])
-                    ourBook.set_stars_4(goodreadsBook["stars_4"])
-                    ourBook.set_stars_5(goodreadsBook["stars_5"])
-                    
-                    db.session.commit()
-                    count += 1
-                    bookIDs.append(ourBook.id)
-                    isbns.append(isbn)
-
-
-                else:
-                    # Add the book to our DB
-                    print(f"\n\nThis is a new book that is being added to our DB, bookreads id = {goodreadsBookID}")
-                    newBook = Book(isbn=isbn,
-                                   title=title,
-                                   author=authors,
-                                   year=year,
-                                   amazon_lookup_id=isbn,
-                                   gr_bookid=goodreadsBookID,
-                                   isbn13=isbn13,
-                                   image_url=image_url,
-                                   thumbnail_url=image_url,
-                                   google_image_url=image_url,
-                                   homepage_image_url=image_url,
-                                   description=description,
-                                   review_count = goodreadsBook["review_count"],
-                                   ratings_count = goodreadsBook["ratings_count"],
-                                   average_score = goodreadsBook["average_score"],
-                                   asin = goodreadsBook["asin"],
-                                   kindle_asin = goodreadsBook["kindle_asin"],
-                                   stars_1 = goodreadsBook["stars_1"],
-                                   stars_2 = goodreadsBook["stars_2"],
-                                   stars_3 = goodreadsBook["stars_3"],
-                                   stars_4 = goodreadsBook["stars_4"],
-                                   stars_5 = goodreadsBook["stars_5"]
-                                   )
-                    db.session.add(newBook)
-                    db.session.commit()
-                    count += 1
-                    bookIDs.append(newBook.id)
-                    isbns.append(isbn)
-                    print(f"Added new book id = {newBook.id}")
-                    
+                
+                db.session.commit()
+                count += 1
+                bookIDs.append(ourBook.id)
+                isbns.append(isbn)
+                
             else:
-                print(f"COULD NOT FIND goodreadsBookID for isbn {isbn}")
+                print(f"\n\nThis is a new book that is being added to our DB")
+                newBook = Book(isbn=isbn,
+                               title=title,
+                               author=authors,
+                               year=year,
+                               amazon_lookup_id=isbn,
+                               image_url=image_url,
+                               thumbnail_url=image_url,
+                               google_image_url=image_url,
+                               homepage_image_url=image_url,
+                               description=description,
+                               review_count = 0,
+                               ratings_count = 0,
+                               average_score = 0,
+                               asin = isbn,
+                               kindle_asin = isbn,
+                               stars_1 = 0,
+                               stars_2 = 0,
+                               stars_3 = 0,
+                               stars_4 = 0,
+                               stars_5 = 0
+                               )
+                db.session.add(newBook)
+                db.session.commit()
+                count += 1
+                bookIDs.append(newBook.id)
+                isbns.append(isbn)
+                print(f"Added new book id = {newBook.id}")
+
+
+
+
+#            # Look up the book in goodreads
+#            # First get the goodreads book ID by isbn
+#            print(f"\n\nLook up goodreads isbn {isbn}")
+#            goodreadsBookID = grLookupByISBN(isbn)
+#            if goodreadsBookID != None:
+#                print(f"Found goodreadsBookID {goodreadsBookID} for isbn {isbn}")
+#                # Get the ratings from gooreads
+#                goodreadsBook = grLookupByID(goodreadsBookID)
+#                if ourBook != None:
+#                    print(f"\n\nWe have this book in our DB, id = {ourBook.id}, bookreads id = {goodreadsBookID}")
+#                    ourBook.set_review_count(goodreadsBook["review_count"])
+#                    ourBook.set_ratings_count(goodreadsBook["ratings_count"])
+#                    ourBook.set_average_score(goodreadsBook["average_score"])
+#                    ourBook.set_asin(goodreadsBook["asin"])
+#                    ourBook.set_kindle_asin(goodreadsBook["kindle_asin"])
+#                    ourBook.set_stars_1(goodreadsBook["stars_1"])
+#                    ourBook.set_stars_2(goodreadsBook["stars_2"])
+#                    ourBook.set_stars_3(goodreadsBook["stars_3"])
+#                    ourBook.set_stars_4(goodreadsBook["stars_4"])
+#                    ourBook.set_stars_5(goodreadsBook["stars_5"])
+                    
+                    
+#                    db.session.commit()
+#                    count += 1
+#                    bookIDs.append(ourBook.id)
+#                    isbns.append(isbn)
+
+
+#                else:
+#                    # Add the book to our DB
+#                    print(f"\n\nThis is a new book that is being added to our DB, bookreads id = {goodreadsBookID}")
+#                    newBook = Book(isbn=isbn,
+#                                   title=title,
+#                                   author=authors,
+#                                   year=year,
+#                                   amazon_lookup_id=isbn,
+#                                   gr_bookid=goodreadsBookID,
+#                                   isbn13=isbn13,
+#                                   image_url=image_url,
+#                                   thumbnail_url=image_url,
+#                                   google_image_url=image_url,
+#                                   homepage_image_url=image_url,
+#                                   description=description,
+#                                   review_count = goodreadsBook["review_count"],
+#                                   ratings_count = goodreadsBook["ratings_count"],
+#                                   average_score = goodreadsBook["average_score"],
+#                                   asin = goodreadsBook["asin"],
+#                                   kindle_asin = goodreadsBook["kindle_asin"],
+#                                   stars_1 = goodreadsBook["stars_1"],
+#                                   stars_2 = goodreadsBook["stars_2"],
+#                                   stars_3 = goodreadsBook["stars_3"],
+#                                   stars_4 = goodreadsBook["stars_4"],
+#                                   stars_5 = goodreadsBook["stars_5"]
+#                                   )
+#                    db.session.add(newBook)
+#                    db.session.commit()
+#                    count += 1
+#                    bookIDs.append(newBook.id)
+#                    isbns.append(isbn)
+#                    print(f"Added new book id = {newBook.id}")
+                    
+#            else:
+#                print(f"COULD NOT FIND goodreadsBookID for isbn {isbn}")
 
         
         return {
