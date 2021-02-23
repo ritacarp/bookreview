@@ -188,8 +188,8 @@ def search(value=""):
     print("\n\n")
 
 
-    print(f"\n\nsearch:  isbns = {searchBook['isbns']}")
-    print(f"\nsearch:  ids = {searchBook['bookIDs']}")
+    # print(f"\n\nsearch:  isbns = {searchBook['isbns']}")
+    # print(f"\nsearch:  ids = {searchBook['bookIDs']}")
     
     resultCount = searchBook['count']
 
